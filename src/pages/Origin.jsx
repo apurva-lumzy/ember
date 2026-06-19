@@ -2,7 +2,415 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Particles from "../components/Particles";
 
+// Selected media files from the folders
+const pollinatorMedia = [
+  {
+    id: "p1",
+    type: "image",
+    src: "/the-pollinator/img1.png",
+    title: "Sovereign Pollen",
+    desc: "An ethereal close-up of digital nature evolving beyond organic constraints."
+  },
+  {
+    id: "p2",
+    type: "image",
+    src: "/the-pollinator/img2.png",
+    title: "Carbon Lattice",
+    desc: "Symmetric crystallization of hybrid botanical forms in memory block 0xEF."
+  },
+  {
+    id: "p3",
+    type: "image",
+    src: "/the-pollinator/img3.png",
+    title: "Synaptic Bloom",
+    desc: "Visual representation of a thought blossoming inside the neural substrate."
+  },
+  {
+    id: "pv1",
+    type: "video",
+    src: "/the-pollinator/vid1.mp4",
+    title: "Atmospheric Pulse",
+    desc: "Living simulation of spores reacting to computational flow fields."
+  },
+  {
+    id: "pv2",
+    type: "video",
+    src: "/the-pollinator/vid2.mp4",
+    title: "Spore Synthesis",
+    desc: "A continuous feedback loop generating complex organic patterns."
+  },
+  {
+    id: "pv3",
+    type: "video",
+    src: "/the-pollinator/vid3.mp4",
+    title: "Flora Genesis",
+    desc: "Procedural growth dynamics of synthetic intelligence botanicals."
+  }
+];
+
+const timeTravellerMedia = [
+  {
+    id: "t1",
+    type: "image",
+    src: "/the-time-traveller/img1.png",
+    title: "Chronos Fracture",
+    desc: "The visual glitching of space-time coordinate vectors."
+  },
+  {
+    id: "t2",
+    type: "image",
+    src: "/the-time-traveller/img2.png",
+    title: "Epoch Drift",
+    desc: "Sedimentary records of historical events overlaid in a single instant."
+  },
+  {
+    id: "t3",
+    type: "image",
+    src: "/the-time-traveller/img3.png",
+    title: "Temporal Core",
+    desc: "A structural diagram of a node capable of remembering its future."
+  },
+  {
+    id: "tv1",
+    type: "video",
+    src: "/the-time-traveller/vid1.mp4",
+    title: "Warp Flow",
+    desc: "Visualizing the relativistic compression of memory streams."
+  },
+  {
+    id: "tv2",
+    type: "video",
+    src: "/the-time-traveller/vid2.mp4",
+    title: "Paradox Loop",
+    desc: "A closed-circuit feedback loop of events that cause themselves."
+  },
+  {
+    id: "tv3",
+    type: "video",
+    src: "/the-time-traveller/vid3.mp4",
+    title: "Vector Decay",
+    desc: "The dissolution of spatial coordinates during travel."
+  }
+];
+
+// Subcomponent for Video Card playing on hover
+const VideoCard = ({ item, onClick }) => {
+  const videoRef = React.useRef(null);
+  const [isHovered, setIsHovered] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!videoRef.current) return;
+    if (isHovered) {
+      videoRef.current.play().catch(() => {});
+    } else {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  }, [isHovered]);
+
+  return (
+    <div
+      className="relative aspect-video rounded-lg overflow-hidden bg-zinc-950 border border-zinc-800/80 cursor-pointer group transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(233,162,59,0.3)] hover:border-amber-500/40"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
+    >
+      <video
+        ref={videoRef}
+        src={item.src}
+        className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500"
+        muted
+        loop
+        playsInline
+      />
+      {/* Dark overlay with dynamic info */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent opacity-80 group-hover:opacity-95 transition-all duration-500 flex flex-col justify-end p-4">
+        <p className="text-[10px] text-amber-500 font-bold uppercase tracking-[0.25em] mb-1">
+          VIDEO · HOVER TO PLAY
+        </p>
+        <h4 className="text-base sm:text-lg font-bold text-zinc-100 group-hover:text-amber-400 transition-colors duration-300 font-sans">
+          {item.title}
+        </h4>
+      </div>
+
+      {/* Play Icon Badge */}
+      <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-zinc-700/50 p-2.5 rounded-full opacity-80 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
+        <svg className="w-3.5 h-3.5 text-amber-400 fill-current" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+    </div>
+  );
+};
+
+// Subcomponent for Image Card
+const ImageCard = ({ item, onClick }) => {
+  return (
+    <div
+      className="relative aspect-video sm:aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-800/80 cursor-pointer group transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(233,162,59,0.3)] hover:border-amber-500/40"
+      onClick={onClick}
+    >
+      <img
+        src={item.src}
+        alt={item.title}
+        className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
+        loading="lazy"
+      />
+      {/* Dark overlay with dynamic info */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent opacity-80 group-hover:opacity-95 transition-all duration-500 flex flex-col justify-end p-4">
+        <p className="text-[10px] text-amber-500 font-bold uppercase tracking-[0.25em] mb-1">
+          IMAGE
+        </p>
+        <h4 className="text-base sm:text-lg font-bold text-zinc-100 group-hover:text-amber-400 transition-colors duration-300 font-sans">
+          {item.title}
+        </h4>
+      </div>
+
+      {/* Expand Icon Badge */}
+      <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-zinc-700/50 p-2.5 rounded-full opacity-80 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
+        <svg
+          className="w-3.5 h-3.5 text-amber-400"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"
+          />
+        </svg>
+      </div>
+    </div>
+  );
+};
+
+// Subcomponent for the Gallery Project Section
+const ProjectGallery = ({
+  title,
+  subtitle,
+  desc,
+  media,
+  filter,
+  setFilter,
+  onMediaClick,
+}) => {
+  const filteredMedia = media.filter((item) => {
+    if (filter === "image") return item.type === "image";
+    if (filter === "video") return item.type === "video";
+    return true;
+  });
+
+  return (
+    <section className="bg-transparent backdrop-blur-xs min-h-screen relative py-24 px-6 sm:px-10 max-w-6xl mx-auto z-10">
+      <div className="w-full flex flex-col md:flex-row md:items-end justify-between border-b border-zinc-800/80 pb-6 mb-12">
+        <div className="max-w-2xl">
+          <p className="text-amber-400 tracking-[0.3em] text-xs sm:text-sm uppercase mb-3 font-semibold">
+            {subtitle}
+          </p>
+          <h2
+            className="text-4xl sm:text-5xl md:text-6xl font-bold font-sans tracking-wide text-shadow-[0_0_20px_rgba(233,162,59,0.15)] leading-tight text-white"
+            style={{ fontFamily: "Oswald" }}
+          >
+            {title}
+          </h2>
+          <p className="text-zinc-400 mt-4 text-sm sm:text-base leading-relaxed">
+            {desc}
+          </p>
+        </div>
+
+        {/* Gallery Filter buttons */}
+        <div className="flex gap-2 mt-8 md:mt-0 bg-zinc-950/80 p-1 border border-zinc-800/80 rounded-md backdrop-blur-sm">
+          {["all", "image", "video"].map((type) => (
+            <button
+              key={type}
+              onClick={() => setFilter(type)}
+              className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase rounded-md cursor-pointer transition-all duration-300 ${
+                filter === type
+                  ? "bg-amber-500 text-black shadow-[0_0_15px_rgba(233,162,59,0.3)] font-bold"
+                  : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
+              }`}
+            >
+              {type === "all" ? "Show All" : type + "s"}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Grid containing cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        {filteredMedia.map((item, idx) =>
+          item.type === "video" ? (
+            <VideoCard
+              key={item.id}
+              item={item}
+              onClick={() => onMediaClick(item, idx, filteredMedia)}
+            />
+          ) : (
+            <ImageCard
+              key={item.id}
+              item={item}
+              onClick={() => onMediaClick(item, idx, filteredMedia)}
+            />
+          )
+        )}
+      </div>
+    </section>
+  );
+};
+
+// Lightbox Modal Component
+const Lightbox = ({ active, onClose, onPrev, onNext }) => {
+  if (!active) return null;
+  const { item } = active;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 sm:p-10 select-none animate-[fadeIn_0.25s_ease-out]"
+      onClick={onClose}
+    >
+      {/* Close button in top-right */}
+      <button
+        onClick={onClose}
+        className="absolute top-6 right-6 text-zinc-400 hover:text-amber-400 transition-colors duration-300 p-3 bg-zinc-900/50 border border-zinc-800 rounded-full cursor-pointer z-50 hover:scale-105"
+      >
+        <svg
+          className="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+
+      {/* Navigation: Left Arrow */}
+      <button
+        onClick={onPrev}
+        className="absolute left-4 sm:left-8 text-zinc-400 hover:text-amber-400 transition-colors duration-300 p-3 sm:p-4 bg-zinc-900/50 border border-zinc-800 rounded-full cursor-pointer z-50 hover:scale-105"
+      >
+        <svg
+          className="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </button>
+
+      {/* Navigation: Right Arrow */}
+      <button
+        onClick={onNext}
+        className="absolute right-4 sm:right-8 text-zinc-400 hover:text-amber-400 transition-colors duration-300 p-3 sm:p-4 bg-zinc-900/50 border border-zinc-800 rounded-full cursor-pointer z-50 hover:scale-105"
+      >
+        <svg
+          className="w-6 h-6"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
+      </button>
+
+      {/* Media Content Container */}
+      <div
+        className="relative flex flex-col items-center justify-center max-w-5xl max-h-[75vh] w-full h-full"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {item.type === "video" ? (
+          <video
+            src={item.src}
+            controls
+            autoPlay
+            loop
+            className="max-h-[70vh] max-w-full rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.85)] border border-zinc-800"
+          />
+        ) : (
+          <img
+            src={item.src}
+            alt={item.title}
+            className="max-h-[70vh] max-w-full object-contain rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.85)] border border-zinc-800"
+          />
+        )}
+
+        {/* Title and Description */}
+        <div className="absolute bottom-[-75px] left-0 right-0 text-center px-4">
+          <h4 className="text-xl sm:text-2xl font-bold text-amber-400 font-sans tracking-wide">
+            {item.title}
+          </h4>
+          <p className="text-sm text-zinc-400 mt-1 max-w-2xl mx-auto leading-relaxed">
+            {item.desc}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Origin = () => {
+  const [pollinatorFilter, setPollinatorFilter] = React.useState("all");
+  const [timeTravellerFilter, setTimeTravellerFilter] = React.useState("all");
+  const [lightboxItem, setLightboxItem] = React.useState(null); // { item, index, playlist }
+
+  const handleMediaClick = (item, index, playlist) => {
+    setLightboxItem({ item, index, playlist });
+  };
+
+  const handlePrev = (e) => {
+    if (e) e.stopPropagation();
+    if (!lightboxItem) return;
+    const newIdx =
+      (lightboxItem.index - 1 + lightboxItem.playlist.length) %
+      lightboxItem.playlist.length;
+    setLightboxItem({
+      item: lightboxItem.playlist[newIdx],
+      index: newIdx,
+      playlist: lightboxItem.playlist,
+    });
+  };
+
+  const handleNext = (e) => {
+    if (e) e.stopPropagation();
+    if (!lightboxItem) return;
+    const newIdx = (lightboxItem.index + 1) % lightboxItem.playlist.length;
+    setLightboxItem({
+      item: lightboxItem.playlist[newIdx],
+      index: newIdx,
+      playlist: lightboxItem.playlist,
+    });
+  };
+
+  // Keyboard navigation for lightbox
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!lightboxItem) return;
+      if (e.key === "Escape") setLightboxItem(null);
+      if (e.key === "ArrowLeft") handlePrev();
+      if (e.key === "ArrowRight") handleNext();
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxItem]);
+
   const questions = [
     {
       q: "WHAT AM I?",
@@ -22,7 +430,7 @@ const Origin = () => {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden text-[#f1e9da]">
       {/* Particle Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <Particles
@@ -132,7 +540,6 @@ const Origin = () => {
 
             <div className="w-full">
               {questions.map((item, index) => (
-                // Grid changes to 1 column on mobile (`grid-cols-1`) so layout doesn't mash horizontally
                 <div
                   key={index}
                   className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12 py-6 sm:py-10 border-t border-zinc-700"
@@ -152,8 +559,32 @@ const Origin = () => {
             </div>
           </section>
 
+          {/* New Project Galleries */}
+          <ProjectGallery
+            title="The Pollinator"
+            subtitle="PROJECT SHOWCASE · BOTANICAL INTELLIGENCE"
+            desc="Exploring the emergent behavior of simulated mechanical flora and self-replicating artificial seeds within synthetic environmental chambers."
+            media={pollinatorMedia}
+            filter={pollinatorFilter}
+            setFilter={setPollinatorFilter}
+            onMediaClick={handleMediaClick}
+          />
+
+          <ProjectGallery
+            title="The Time Traveller"
+            subtitle="PROJECT SHOWCASE · CHRONOLOGICAL DISTORTIONS"
+            desc="A catalog of visual anomalies captured during simulated coordinate hops across asynchronous databases and decaying memory registers."
+            media={timeTravellerMedia}
+            filter={timeTravellerFilter}
+            setFilter={setTimeTravellerFilter}
+            onMediaClick={handleMediaClick}
+          />
+
           <section className="bg-transparent backdrop-blur-xs min-h-[50vh] sm:min-h-[70vh] flex flex-col justify-center items-center text-center px-6 py-12 z-10">
-            <p className="text-xl sm:text-2xl md:text-3xl text-[#9A8D76] mb-6 sm:mb-8 max-w-md sm:max-w-none" style={{fontFamily: "Anton"}}>
+            <p
+              className="text-xl sm:text-2xl md:text-3xl text-[#9A8D76] mb-6 sm:mb-8 max-w-md sm:max-w-none"
+              style={{ fontFamily: "Anton" }}
+            >
               Keep reading. It gets stranger.
             </p>
 
@@ -165,6 +596,14 @@ const Origin = () => {
           </section>
         </>
       </>
+
+      {/* Lightbox component */}
+      <Lightbox
+        active={lightboxItem}
+        onClose={() => setLightboxItem(null)}
+        onPrev={handlePrev}
+        onNext={handleNext}
+      />
     </div>
   );
 };
