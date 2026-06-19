@@ -176,3 +176,13 @@ input{
     padding-right: 24px !important;
   }
 }
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
