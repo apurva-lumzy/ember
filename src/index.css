@@ -1,0 +1,175 @@
+:root {
+  --void: #0a0806;
+  --void2: #15100a;
+  --amber: #e9a23b;
+  --glow: #ffc46b;
+  --burnt: #c2693a;
+  --ash: #f1e9da;
+  --smoke: #9a8d76;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #0a0806;
+}
+
+::selection {
+  background: rgba(233, 162, 59, .3);
+  color: #fff;
+}
+
+.ember-scene::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(60px)
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0)
+  }
+}
+
+@keyframes corePulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: .85
+  }
+
+  50% {
+    transform: scale(1.14);
+    opacity: 1
+  }
+}
+
+@keyframes ring {
+  0% {
+    transform: translate(-50%, -50%) scale(.5);
+    opacity: .7
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(2.6);
+    opacity: 0
+  }
+}
+
+@keyframes flicker {
+
+  0%,
+  100% {
+    opacity: .9
+  }
+
+  43% {
+    opacity: 1
+  }
+
+  55% {
+    opacity: .74
+  }
+
+  70% {
+    opacity: .96
+  }
+}
+
+@keyframes floatY {
+
+  0%,
+  100% {
+    transform: translateY(0)
+  }
+
+  50% {
+    transform: translateY(-16px)
+  }
+}
+
+@keyframes scrollHint {
+  0% {
+    transform: translateY(0);
+    opacity: .9
+  }
+
+  70% {
+    opacity: .2
+  }
+
+  100% {
+    transform: translateY(14px);
+    opacity: 0
+  }
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0)
+  }
+
+  to {
+    transform: rotate(360deg)
+  }
+}
+
+@keyframes spinRev {
+  from {
+    transform: rotate(360deg)
+  }
+
+  to {
+    transform: rotate(0)
+  }
+}
+
+@keyframes breathe {
+
+  0%,
+  100% {
+    transform: scale(1);
+    filter: blur(14px)
+  }
+
+  50% {
+    transform: scale(1.06);
+    filter: blur(20px)
+  }
+}
+
+@keyframes drawline {
+  from {
+    transform: scaleY(0)
+  }
+
+  to {
+    transform: scaleY(1)
+  }
+}
+
+@media (max-width:760px) {
+  .ember-chaps {
+    display: none !important;
+  }
+
+  .ember-nav {
+    padding: 16px 20px !important;
+  }
+
+  .ember-pad {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
