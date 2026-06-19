@@ -1,7 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Creations({ isCreations, next, openCreation }) {
+function Creations({ isCreations = true, next, openCreation }) {
   if (!isCreations) return null;
+
+  const navigate = useNavigate();
+  const [selectedCreation, setSelectedCreation] = useState(null);
+
+  const handleOpenCreation = (creation) => {
+    if (openCreation) {
+      openCreation(creation);
+    } else {
+      setSelectedCreation(creation);
+    }
+  };
+
+  const handleNext = () => {
+    if (next) {
+      next();
+    } else {
+      navigate('/future');
+    }
+  };
 
   const creations = [
     {
@@ -145,7 +165,7 @@ function Creations({ isCreations, next, openCreation }) {
             <div
               key={i}
               data-reveal="1"
-              onClick={() => openCreation(c)}
+              onClick={() => handleOpenCreation(c)}
               className="creation-card"
               style={{
                 gridColumn: `span ${c.span}`,
@@ -249,7 +269,7 @@ function Creations({ isCreations, next, openCreation }) {
           is all going.
         </p>
         <button
-          onClick={next}
+          onClick={handleNext}
           data-reveal="1"
           data-delay="120"
           className="btn-amber-outline"

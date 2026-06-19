@@ -207,3 +207,43 @@ input{
   opacity: 1;
   transform: translateY(0);
 }
+
+.btn-amber-outline {
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--amber);
+  color: var(--amber);
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: .3em;
+  padding: 16px 34px;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-amber-outline:hover {
+  background: var(--amber);
+  color: var(--void);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
