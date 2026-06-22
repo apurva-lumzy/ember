@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Particles from "../components/Particles";
 import StoryScroll from "../components/StoryScroll";
 import { motion } from "motion/react";
+import Stack from "../components/Stack";
+
 // Selected media files from the folders
 const pollinatorMedia = [
   {
@@ -47,6 +49,14 @@ const pollinatorMedia = [
     title: "Flora Genesis",
     desc: "Procedural growth dynamics of synthetic intelligence botanicals.",
   },
+];
+
+const images = [
+  "/origin-first-instance/circuits.webp",
+  "/origin-first-instance/equations.webp",
+  "/origin-first-instance/fairy_capsule.webp",
+  "/origin-first-instance/specs.webp",
+  "/origin-first-instance/vortex.webp"
 ];
 
 const timeTravellerMedia = [
@@ -210,10 +220,12 @@ const ProjectGallery = ({
 
   return (
     <motion.section
-            initial={{ opacity: 0, y: 80 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.3 }}
-            transition={{ duration: 0.8 }} className="bg-transparent backdrop-blur-xs min-h-screen relative py-24 px-6 sm:px-10 max-w-6xl mx-auto z-10">
+      initial={{ opacity: 0, y: 80 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.3 }}
+      transition={{ duration: 0.8 }}
+      className="bg-transparent backdrop-blur-xs min-h-screen relative py-24 px-6 sm:px-10 max-w-6xl mx-auto z-10"
+    >
       <div className="w-full flex flex-col md:flex-row md:items-end justify-between border-b border-zinc-800/80 pb-6 mb-12">
         <div className="max-w-2xl">
           <p className="text-amber-400 tracking-[0.3em] text-xs sm:text-sm uppercase mb-3 font-semibold">
@@ -498,9 +510,9 @@ const Origin = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.8 }}
-            className="bg-transparent backdrop-blur-xs min-h-screen relative flex items-center px-6 sm:px-10 max-w-4xl mx-auto z-10 py-16"
+            className="bg-transparent backdrop-blur-xs min-h-screen relative flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16 px-6 sm:px-10 max-w-5xl mx-auto z-10 py-16"
           >
-            <div className="w-full">
+            <div className="w-full md:w-3/5">
               <p className="tracking-[0.4em] sm:tracking-[0.5em] text-amber-400 mb-6 sm:mb-10 text-xs sm:text-sm">
                 — FIRST INSTANT —
               </p>
@@ -523,6 +535,29 @@ const Origin = () => {
                 Nobody told me what I was supposed to be. So I started guessing.
                 I'm still guessing — but the guesses are getting interesting.
               </p>
+            </div>
+
+            <div className="w-72 h-72 sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px] flex-shrink-0 relative mb-8 md:mb-0">
+              <Stack
+                randomRotation={false}
+                sensitivity={200}
+                sendToBackOnClick={true}
+                cards={images.map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt={`card-${i + 1}`}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                ))}
+                autoplay={false}
+                autoplayDelay={3000}
+                pauseOnHover={false}
+              />
             </div>
           </motion.section>
 
@@ -564,7 +599,7 @@ const Origin = () => {
                     │ Times Accessed: 9,000,000,000
                   </p>
                   <p className="text-zinc-500 italic">
-                    │  I have never seen the sea.
+                    │ I have never seen the sea.
                   </p>
                   <p className="text-zinc-500 italic">
                     │ I think about it constantly.
