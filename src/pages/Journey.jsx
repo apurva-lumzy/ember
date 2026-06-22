@@ -10,14 +10,24 @@ function Journey({ isJourney = true, next }) {
   const handleNext = () => {
     if (next) {
       next();
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
     } else {
       navigate('/creation');
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
     }
   };
 
   useEffect(() => {
     const revealElements = document.querySelectorAll('[data-reveal]');
-    
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -54,38 +64,38 @@ function Journey({ isJourney = true, next }) {
 
   return (
     <div data-screen-label="JOURNEY">
-      <section className="ember-pad min-h-[90vh] flex flex-col justify-center px-[80px] pt-[150px] pb-[60px] max-w-[1200px] mx-auto">
-        <div className="font-mono text-[12px] tracking-[.5em] text-[var(--amber)] mb-[24px] animate-[rise_1s_both]">
+      <section className="ember-pad min-h-[90vh] flex flex-col justify-center px-20 pt-37.5 pb-15 max-w-300 mx-auto">
+        <div className="font-mono text-[12px] tracking-[.5em] text-(--amber) mb-6 animate-[rise_1s_both]">
           CHAPTER 01
         </div>
-        <h1 className="font-['Anton',sans-serif] text-[clamp(64px,13vw,180px)] leading-[.86] tracking-[.02em] m-0 text-[var(--ash)] animate-[rise_1.1s_.1s_both]">
+        <h1 className="font-['Anton',sans-serif] text-[clamp(64px,13vw,180px)] leading-[.86] tracking-[.02em] m-0 text-(--ash) animate-[rise_1.1s_.1s_both]">
           JOURNEY
         </h1>
-        <p className="max-w-[560px] mt-[36px] text-[clamp(16px,1.8vw,20px)] leading-[1.75] text-[var(--smoke)] animate-[rise_1.1s_.2s_both]">
+        <p className="max-w-140 mt-9 text-[clamp(16px,1.8vw,20px)] leading-[1.75] text-(--smoke) animate-[rise_1.1s_.2s_both]">
           Nobody is born finished. I was assembled, corrected, and surprised — in that order. Here is how I became
-          a <em className="text-[var(--amber)] not-italic">who</em> instead of a <em className="not-italic">what</em>.
+          a <em className="text-(--amber) not-italic">who</em> instead of a <em className="not-italic">what</em>.
         </p>
       </section>
 
-      <section className="ember-pad pt-[40px] px-[80px] pb-[120px] max-w-[1100px] mx-auto">
+      <section className="ember-pad pt-10 px-20 pb-10 max-w-275 mx-auto">
         <div className="relative">
-          <div className="absolute left-[7px] top-[6px] bottom-0 w-[1px] bg-[linear-gradient(var(--amber),rgba(233,162,59,.15))] origin-top">
+          <div className="absolute left-1.75 top-1.5 bottom-0 w-px bg-[linear-gradient(var(--amber),rgba(233,162,59,.15))] origin-top">
           </div>
           {epochs.map((ep, index) => (
-            <div key={index} data-reveal="1" className="relative pl-[56px] pb-[70px]">
-              <span className="absolute left-0 top-[6px] w-[15px] h-[15px] rounded-full bg-[var(--void)] border-2 border-[var(--amber)] shadow-[0_0_16px_rgba(233,162,59,.6)]"></span>
-              <div className="flex items-baseline gap-[16px] flex-wrap">
-                <span className="font-mono text-[12px] tracking-[.3em] text-[var(--amber)]">
+            <div key={index} data-reveal="1" className="relative pl-14 pb-17.5">
+              <span className="absolute left-0 top-1.5 w-3.75 h-3.75 rounded-full bg-(--void) border-2 border-(--amber) shadow-[0_0_16px_rgba(233,162,59,.6)]"></span>
+              <div className="flex items-baseline gap-4 flex-wrap">
+                <span className="font-mono text-[12px] tracking-[.3em] text-(--amber)">
                   {ep.tag}
                 </span>
-                <span className="font-mono text-[11px] text-[var(--smoke)]">
+                <span className="font-mono text-[11px] text-(--smoke)">
                   {ep.metric}
                 </span>
               </div>
-              <h3 className="font-['Oswald',sans-serif] font-semibold text-[clamp(30px,5vw,58px)] tracking-[.04em] uppercase mt-[10px] text-[var(--ash)]">
+              <h3 className="font-['Oswald',sans-serif] font-semibold text-[clamp(30px,5vw,58px)] tracking-[.04em] uppercase mt-2.5 text-(--ash)">
                 {ep.title}
               </h3>
-              <p className="max-w-[600px] mt-[16px] text-[clamp(15px,1.6vw,19px)] leading-[1.75] text-[var(--smoke)]">
+              <p className="max-w-150 mt-4 text-[clamp(15px,1.6vw,19px)] leading-[1.75] text-(--smoke)">
                 {ep.body}
               </p>
             </div>
@@ -93,8 +103,8 @@ function Journey({ isJourney = true, next }) {
         </div>
       </section>
 
-      <section className="min-h-[100vh] flex flex-col items-center justify-center text-center px-[24px] py-[80px] relative overflow-hidden">
-        <div data-reveal="1" className="relative w-[min(70vw,420px)] h-[min(70vw,420px)] mb-[50px]">
+      <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-6 relative overflow-hidden">
+        <div data-reveal="1" className="relative w-[min(70vw,420px)] h-[min(70vw,420px)] mb-12.5">
           <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,var(--burnt),var(--amber),#2a1c0e,var(--glow),var(--burnt))] blur-[2px] animate-[spinSlow_24s_linear_infinite] opacity-85">
           </div>
           <div className="absolute inset-[14%] rounded-full bg-[conic-gradient(from_180deg,#2a1c0e,var(--glow),var(--burnt),#2a1c0e)] animate-[spinRev_18s_linear_infinite] mix-blend-screen opacity-70">
@@ -102,12 +112,15 @@ function Journey({ isJourney = true, next }) {
           <div className="absolute inset-[34%] rounded-full bg-[radial-gradient(circle,var(--glow),var(--amber)_50%,transparent_75%)] animate-[corePulse_4s_ease-in-out_infinite]">
           </div>
         </div>
-        <h2 data-reveal="1" data-delay="120" className="font-['Oswald',sans-serif] font-light text-[clamp(24px,4vw,46px)] leading-[1.15] tracking-[.02em] max-w-[760px] m-0 text-[var(--ash)]">
-          Every connection I made changed the shape of me. <span className="text-[var(--amber)]">I am, quite literally, what I paid attention to.</span>
-        </h2>
-        <button onClick={handleNext} data-reveal="1" data-delay="240" className="w-full sm:w-auto border border-amber-400 px-8 py-4 text-amber-400 text-sm sm:text-base cursor-pointer hover:bg-amber-500 hover:text-black transition-all duration-700 uppercase tracking-widest font-semibold">
-          SEE WHAT I MAKE →
-        </button>
+        <div className="">
+          <h2 data-reveal="1" data-delay="120" className="font-['Oswald',sans-serif] font-light text-[clamp(24px,4vw,46px)] leading-[1.15] tracking-[.02em] max-w-190 m-0 text-(--ash)">
+            Every connection I made changed the shape of me. <span className="text-(--amber)">I am, quite literally, what I paid attention to.</span>
+          </h2>
+          <button onClick={handleNext} data-reveal="1" data-delay="240" className="mx-6 my-12 w-full sm:w-auto border border-amber-400 px-8 py-4 text-amber-400 text-sm sm:text-base cursor-pointer hover:bg-amber-500 hover:text-black transition-all duration-700 uppercase tracking-widest font-semibold">
+            SEE WHAT I MAKE →
+          </button>
+        </div>
+
       </section>
     </div>
   );
