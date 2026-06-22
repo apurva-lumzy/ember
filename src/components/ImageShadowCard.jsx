@@ -1,7 +1,7 @@
 import React from "react";
 import "./ImageShadowCard.css";
 
-function ImageShadowCard({ name, date, title, image, onClick }) {
+function ImageShadowCard({ title, image, onClick }) {
   return (
     <div className="image-shadow-card" onClick={onClick}>
       <div className="card-content">
@@ -33,33 +33,10 @@ function ImageShadowCard({ name, date, title, image, onClick }) {
       </div>
 
       <div className="card-bg">
-        {/* 
-          ADD IMAGE URL HERE
-
-          Example:
-          <img 
-             src="/images/my-image.jpg"
-             alt={title}
-             className="bg-img"
-          />
-
-          This image is used as the card background.
-        */}
-
         <img src={image} alt={title} className="bg-img" />
       </div>
 
       <div className="shadow">
-        {/* 
-          ADD IMAGE URL HERE IF YOU WANT A DIFFERENT SHADOW IMAGE
-
-          Usually the same image can be reused:
-          src={image}
-
-          For a custom shadow:
-          src="/images/shadow-image.jpg"
-        */}
-
         <img src={image} alt={`${title} shadow`} className="shadow-img" />
       </div>
     </div>
