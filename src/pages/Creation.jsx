@@ -1,4 +1,5 @@
 import React from "react";
+import ImageShadowCard from "../components/ImageShadowCard";
 
 function Creations({ isCreations, next, openCreation }) {
   if (!isCreations) return null;
