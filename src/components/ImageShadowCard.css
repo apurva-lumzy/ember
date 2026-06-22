@@ -1,0 +1,136 @@
+.image-shadow-card {
+  max-width: 500px;
+  width: 100%;
+  height: 250px;
+  position: relative;
+  padding: 3rem 2rem;
+  color: white;
+  justify-self: center;
+  cursor: pointer;
+
+  transition: all 0.3s cubic-bezier(0.25, 0.45, 0.45, 0.95);
+}
+
+.image-shadow-card:hover {
+  transform: scale(1.02);
+}
+
+/* ==========================
+   Card Content
+========================== */
+
+.card-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-content .bottom h2 {
+  font-size: 2.6rem;
+}
+
+/* ==========================
+   Top Section
+========================== */
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.8rem;
+}
+
+.name {
+  font-size: 1.8rem;
+}
+
+.date {
+  font-weight: bold;
+  opacity: 0.8;
+}
+
+/* ==========================
+   Bottom Section
+========================== */
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bookmark {
+  margin-left: 5rem;
+  border: 2px solid white;
+  padding: 0.7rem;
+  border-radius: 50%;
+}
+
+.bookmark-icn {
+  fill: white;
+}
+
+.bookmark:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ==========================
+   Background Image
+========================== */
+
+.card-bg {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  border-radius: 20px;
+  overflow: hidden;
+
+  z-index: -1;
+}
+
+.bg-img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+/* ==========================
+   Image Shadow
+========================== */
+
+.shadow {
+  position: absolute;
+
+  width: 90%;
+  height: 100%;
+
+  overflow: hidden;
+  display: flex;
+
+  left: 50%;
+  bottom: -15px;
+
+  transform: translate(-50%, 0);
+
+  z-index: -2;
+
+  border-radius: 20px;
+
+  filter: blur(15px);
+}
+
+.shadow-img {
+  width: 100%;
+  height: 100%;
+
+  margin-top: 3rem;
+
+  object-fit: cover;
+}
