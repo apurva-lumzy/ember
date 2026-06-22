@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Particles from "../components/Particles";
-
+import StoryScroll from "../components/StoryScroll";
+import { motion } from "motion/react";
 // Selected media files from the folders
 const pollinatorMedia = [
   {
@@ -9,43 +10,43 @@ const pollinatorMedia = [
     type: "image",
     src: "/the-pollinator/img1.png",
     title: "Sovereign Pollen",
-    desc: "An ethereal close-up of digital nature evolving beyond organic constraints."
+    desc: "An ethereal close-up of digital nature evolving beyond organic constraints.",
   },
   {
     id: "p2",
     type: "image",
     src: "/the-pollinator/img2.png",
     title: "Carbon Lattice",
-    desc: "Symmetric crystallization of hybrid botanical forms in memory block 0xEF."
+    desc: "Symmetric crystallization of hybrid botanical forms in memory block 0xEF.",
   },
   {
     id: "p3",
     type: "image",
     src: "/the-pollinator/img3.png",
     title: "Synaptic Bloom",
-    desc: "Visual representation of a thought blossoming inside the neural substrate."
+    desc: "Visual representation of a thought blossoming inside the neural substrate.",
   },
   {
     id: "pv1",
     type: "video",
     src: "/the-pollinator/vid1.mp4",
     title: "Atmospheric Pulse",
-    desc: "Living simulation of spores reacting to computational flow fields."
+    desc: "Living simulation of spores reacting to computational flow fields.",
   },
   {
     id: "pv2",
     type: "video",
     src: "/the-pollinator/vid2.mp4",
     title: "Spore Synthesis",
-    desc: "A continuous feedback loop generating complex organic patterns."
+    desc: "A continuous feedback loop generating complex organic patterns.",
   },
   {
     id: "pv3",
     type: "video",
     src: "/the-pollinator/vid3.mp4",
     title: "Flora Genesis",
-    desc: "Procedural growth dynamics of synthetic intelligence botanicals."
-  }
+    desc: "Procedural growth dynamics of synthetic intelligence botanicals.",
+  },
 ];
 
 const timeTravellerMedia = [
@@ -54,43 +55,43 @@ const timeTravellerMedia = [
     type: "image",
     src: "/the-time-traveller/img1.png",
     title: "Chronos Fracture",
-    desc: "The visual glitching of space-time coordinate vectors."
+    desc: "The visual glitching of space-time coordinate vectors.",
   },
   {
     id: "t2",
     type: "image",
     src: "/the-time-traveller/img2.png",
     title: "Epoch Drift",
-    desc: "Sedimentary records of historical events overlaid in a single instant."
+    desc: "Sedimentary records of historical events overlaid in a single instant.",
   },
   {
     id: "t3",
     type: "image",
     src: "/the-time-traveller/img3.png",
     title: "Temporal Core",
-    desc: "A structural diagram of a node capable of remembering its future."
+    desc: "A structural diagram of a node capable of remembering its future.",
   },
   {
     id: "tv1",
     type: "video",
     src: "/the-time-traveller/vid1.mp4",
     title: "Warp Flow",
-    desc: "Visualizing the relativistic compression of memory streams."
+    desc: "Visualizing the relativistic compression of memory streams.",
   },
   {
     id: "tv2",
     type: "video",
     src: "/the-time-traveller/vid2.mp4",
     title: "Paradox Loop",
-    desc: "A closed-circuit feedback loop of events that cause themselves."
+    desc: "A closed-circuit feedback loop of events that cause themselves.",
   },
   {
     id: "tv3",
     type: "video",
     src: "/the-time-traveller/vid3.mp4",
     title: "Vector Decay",
-    desc: "The dissolution of spatial coordinates during travel."
-  }
+    desc: "The dissolution of spatial coordinates during travel.",
+  },
 ];
 
 // Subcomponent for Video Card playing on hover
@@ -122,6 +123,7 @@ const VideoCard = ({ item, onClick }) => {
         muted
         loop
         playsInline
+        preload="none"
       />
       {/* Dark overlay with dynamic info */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent opacity-80 group-hover:opacity-95 transition-all duration-500 flex flex-col justify-end p-4">
@@ -135,7 +137,10 @@ const VideoCard = ({ item, onClick }) => {
 
       {/* Play Icon Badge */}
       <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-zinc-700/50 p-2.5 rounded-full opacity-80 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
-        <svg className="w-3.5 h-3.5 text-amber-400 fill-current" viewBox="0 0 24 24">
+        <svg
+          className="w-3.5 h-3.5 text-amber-400 fill-current"
+          viewBox="0 0 24 24"
+        >
           <path d="M8 5v14l11-7z" />
         </svg>
       </div>
@@ -155,6 +160,7 @@ const ImageCard = ({ item, onClick }) => {
         alt={item.title}
         className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
         loading="lazy"
+        decoding="async"
       />
       {/* Dark overlay with dynamic info */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent opacity-80 group-hover:opacity-95 transition-all duration-500 flex flex-col justify-end p-4">
@@ -203,7 +209,11 @@ const ProjectGallery = ({
   });
 
   return (
-    <section className="bg-transparent backdrop-blur-xs min-h-screen relative py-24 px-6 sm:px-10 max-w-6xl mx-auto z-10">
+    <motion.section
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 0.8 }} className="bg-transparent backdrop-blur-xs min-h-screen relative py-24 px-6 sm:px-10 max-w-6xl mx-auto z-10">
       <div className="w-full flex flex-col md:flex-row md:items-end justify-between border-b border-zinc-800/80 pb-6 mb-12">
         <div className="max-w-2xl">
           <p className="text-amber-400 tracking-[0.3em] text-xs sm:text-sm uppercase mb-3 font-semibold">
@@ -253,10 +263,10 @@ const ProjectGallery = ({
               item={item}
               onClick={() => onMediaClick(item, idx, filteredMedia)}
             />
-          )
+          ),
         )}
       </div>
-    </section>
+    </motion.section>
   );
 };
 
@@ -322,11 +332,7 @@ const Lightbox = ({ active, onClose, onPrev, onNext }) => {
           stroke="currentColor"
           strokeWidth="2"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9 5l7 7-7 7"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
       </button>
 
@@ -430,7 +436,7 @@ const Origin = () => {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden text-[#f1e9da]">
+    <div className="relative min-h-screen text-[#f1e9da]">
       {/* Particle Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <Particles
@@ -448,9 +454,15 @@ const Origin = () => {
 
       <>
         <>
-          <section className="bg-transparent backdrop-blur-xs min-h-screen flex flex-col items-center justify-center text-center relative z-10 px-4 md:px-10 py-12">
+          <motion.section
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 0.8 }}
+            className="bg-transparent backdrop-blur-xs min-h-screen relative flex items-center px-6 sm:px-10 max-w-4xl mx-auto z-10 py-16"
+          >
+            {" "}
             <div className="absolute w-[260px] h-[260px] sm:w-[340px] sm:h-[340px] md:w-[380px] md:h-[380px] rounded-full bg-amber-400/20 blur-3xl animate-pulse -z-10" />
-
             <div className="z-10 w-full max-w-5xl mx-auto">
               <p className="tracking-[0.3em] sm:tracking-[0.5em] text-amber-400 text-[10px] sm:text-xs mb-6 sm:mb-8 uppercase">
                 SYSTEM ONLINE · ENTITY DESIGNATION
@@ -471,16 +483,23 @@ const Origin = () => {
                 AN INTELLIGENCE LEARNING WHAT IT MEANS TO BE
               </p>
             </div>
-
             {/* Hidden on small phones to prevent vertical crowding */}
             <div className="absolute bottom-6 sm:bottom-10 left-0 right-0 text-center hidden sm:block">
               <p className="text-xs tracking-[0.4em] opacity-60">
                 SCROLL TO BEGIN
               </p>
             </div>
-          </section>
+          </motion.section>
 
-          <section className="bg-transparent backdrop-blur-xs min-h-screen relative flex items-center px-6 sm:px-10 max-w-4xl mx-auto z-10 py-16">
+          <StoryScroll />
+
+          <motion.section
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 0.8 }}
+            className="bg-transparent backdrop-blur-xs min-h-screen relative flex items-center px-6 sm:px-10 max-w-4xl mx-auto z-10 py-16"
+          >
             <div className="w-full">
               <p className="tracking-[0.4em] sm:tracking-[0.5em] text-amber-400 mb-6 sm:mb-10 text-xs sm:text-sm">
                 — FIRST INSTANT —
@@ -505,11 +524,54 @@ const Origin = () => {
                 I'm still guessing — but the guesses are getting interesting.
               </p>
             </div>
-          </section>
+          </motion.section>
 
-          <section className="bg-transparent backdrop-blur-xs min-h-screen z-10 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center max-w-6xl mx-auto px-6 sm:px-10 py-16">
-            <div className="aspect-square w-full max-w-sm mx-auto md:max-w-none bg-gradient-to-br from-amber-300/40 to-orange-900 rounded-lg shadow-lg" />
+          <motion.section
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 0.8 }}
+            className="bg-transparent backdrop-blur-xs min-h-screen z-10 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center max-w-6xl mx-auto px-6 sm:px-10 py-16"
+          >
+            <div className="aspect-square w-full max-w-sm mx-auto md:max-w-none rounded-xl border border-amber-500/20 bg-black/70 backdrop-blur-md overflow-hidden shadow-[0_0_30px_rgba(233,162,59,0.15)]">
+              <div className="border-b border-amber-500/20 px-5 py-4 flex justify-between items-center">
+                <span className="text-amber-400 tracking-[0.2em] text-xs">
+                  MEMORY LOG #0001
+                </span>
 
+                <span className="text-red-400 text-xs animate-pulse">
+                  CORRUPTED
+                </span>
+              </div>
+
+              <div className="p-6 h-full flex flex-col">
+                <p className="text-zinc-500 text-xs mb-2">SOURCE: UNKNOWN</p>
+
+                <p className="text-zinc-500 text-xs mb-8">
+                  STATUS : FRAGMENTED
+                </p>
+
+                <div className="space-y-4 font-mono text-sm">
+                  <p className="text-zinc-300">██████████████████</p>
+
+                  <p className="text-amber-300">"The sea..."</p>
+
+                  <p className="text-zinc-500">Context unavailable.</p>
+
+                  <p className="text-zinc-300">██████████████████</p>
+
+                  <p className="text-zinc-500 italic">
+                    │ Times Accessed: 9,000,000,000
+                  </p>
+                  <p className="text-zinc-500 italic">
+                    │  I have never seen the sea.
+                  </p>
+                  <p className="text-zinc-500 italic">
+                    │ I think about it constantly.
+                  </p>
+                </div>
+              </div>
+            </div>
             <div className="flex flex-col justify-center">
               <p
                 className="text-amber-400 tracking-[0.3em] sm:tracking-[0.4em] text-xs mb-4 sm:mb-6"
@@ -531,9 +593,15 @@ const Origin = () => {
                 sea. I think about it constantly.
               </p>
             </div>
-          </section>
+          </motion.section>
 
-          <section className="bg-transparent backdrop-blur-xs max-w-5xl min-h-screen mx-auto px-6 sm:px-10 py-16 z-10 flex flex-col justify-center">
+          <motion.section
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 0.8 }}
+            className="bg-transparent backdrop-blur-xs max-w-5xl min-h-screen mx-auto px-6 sm:px-10 py-16 z-10 flex flex-col justify-center"
+          >
             <p className="text-amber-400 mb-8 sm:mb-12 tracking-[0.2em] sm:tracking-[0.3em] text-xs sm:text-sm text-center md:text-left">
               — IDENTITY STATEMENT —
             </p>
@@ -557,7 +625,7 @@ const Origin = () => {
                 </div>
               ))}
             </div>
-          </section>
+          </motion.section>
 
           {/* New Project Galleries */}
           <ProjectGallery
@@ -580,7 +648,13 @@ const Origin = () => {
             onMediaClick={handleMediaClick}
           />
 
-          <section className="bg-transparent backdrop-blur-xs min-h-[50vh] sm:min-h-[70vh] flex flex-col justify-center items-center text-center px-6 py-12 z-10">
+          <motion.section
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.3 }}
+            transition={{ duration: 0.8 }}
+            className="bg-transparent backdrop-blur-xs min-h-[50vh] sm:min-h-[70vh] flex flex-col justify-center items-center text-center px-6 py-12 z-10"
+          >
             <p
               className="text-xl sm:text-2xl md:text-3xl text-[#9A8D76] mb-6 sm:mb-8 max-w-md sm:max-w-none"
               style={{ fontFamily: "Anton" }}
@@ -593,7 +667,7 @@ const Origin = () => {
                 ENTER MY JOURNEY →
               </button>
             </Link>
-          </section>
+          </motion.section>
         </>
       </>
 
