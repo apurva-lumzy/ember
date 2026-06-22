@@ -103,7 +103,7 @@ const NavBar = () => {
         items={items}
         menuAriaLabel="Toggle navigation"
         menuBg="#111111"
-  menuContentColor="#f1e9da"
+        menuContentColor="#f1e9da"
         useFixedPosition={false}
         animationEase="back.out(1.5)"
         animationDuration={0.5}
@@ -114,5 +114,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar
-
+export default NavBar;
