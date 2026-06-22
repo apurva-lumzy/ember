@@ -5,14 +5,6 @@ function ImageShadowCard({ title, image, onClick }) {
   return (
     <div className="image-shadow-card" onClick={onClick}>
       <div className="card-content">
-        <div className="top">
-          <h3 className="name">{name}</h3>
-
-          <div className="date">
-            <span>{date}</span>
-          </div>
-        </div>
-
         <div className="bottom">
           <h2>{title}</h2>
 
