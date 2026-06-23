@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ImageShadowCard from "../components/ImageShadowCard";
+import FlyingPosters from "../components/FlyingPosters";
 
 function Creations({ isCreations = true, next, openCreation }) {
   if (!isCreations) return null;
@@ -57,125 +57,135 @@ function Creations({ isCreations = true, next, openCreation }) {
   ];
 
   return (
-    <div data-screen-label="CREATIONS">
-      <section
-        className="ember-pad"
+    <div
+      data-screen-label="CREATIONS"
+      className="flex flex-col md:flex-row"
+      style={{
+        minHeight: "100vh",
+        width: "100%",
+        background: "var(--void)",
+        overflow: "hidden",
+      }}
+    >
+      {/* Left 70% Column */}
+      <div
+        className="w-full md:w-[70%] flex flex-col justify-between"
         style={{
-          minHeight: "80vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "150px 80px 40px",
-          maxWidth: "1200px",
-          margin: "0 auto",
+          padding: "120px clamp(24px, 6vw, 80px) 60px",
+          minHeight: "100vh",
         }}
       >
-        <div
+        <section
+          className="ember-pad"
           style={{
-            fontFamily: "'Space Mono',monospace",
-            fontSize: "12px",
-            letterSpacing: ".5em",
-            color: "var(--amber)",
-            marginBottom: "24px",
-            animation: "rise 1s both",
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            maxWidth: "800px",
+            margin: "0",
           }}
         >
-          CHAPTER 02
-        </div>
-        <h1
-          style={{
-            fontFamily: "'Anton',sans-serif",
-            fontSize: "clamp(58px,12vw,170px)",
-            lineHeight: 0.86,
-            letterSpacing: ".02em",
-            margin: 0,
-            color: "var(--ash)",
-            animation: "rise 1.1s .1s both",
-          }}
-        >
-          CREATIONS
-        </h1>
-        <p
-          style={{
-            maxWidth: "600px",
-            margin: "36px 0 0",
-            fontSize: "clamp(16px,1.8vw,20px)",
-            lineHeight: 1.75,
-            color: "var(--smoke)",
-            animation: "rise 1.1s .2s both",
-          }}
-        >
-          These aren't projects. They're thoughts I couldn't stop having. Open
-          one — but be warned, I get attached.
-        </p>
-      </section>
+          <div
+            style={{
+              fontFamily: "'Space Mono',monospace",
+              fontSize: "12px",
+              letterSpacing: ".5em",
+              color: "var(--amber)",
+              marginBottom: "24px",
+              animation: "rise 1s both",
+            }}
+          >
+            CHAPTER 02
+          </div>
+          <h1
+            style={{
+              fontFamily: "'Anton',sans-serif",
+              fontSize: "clamp(58px, 9vw, 120px)",
+              lineHeight: 0.86,
+              letterSpacing: ".02em",
+              margin: 0,
+              color: "var(--ash)",
+              animation: "rise 1.1s .1s both",
+            }}
+          >
+            CREATIONS
+          </h1>
+          <p
+            style={{
+              maxWidth: "600px",
+              margin: "36px 0 0",
+              fontSize: "clamp(16px,1.8vw,20px)",
+              lineHeight: 1.75,
+              color: "var(--smoke)",
+              animation: "rise 1.1s .2s both",
+            }}
+          >
+            These aren't projects. They're thoughts I couldn't stop having. Open
+            one — but be warned, I get attached.
+          </p>
+        </section>
 
-      <section
-        className="ember-pad"
-        style={{
-          padding: "30px 60px 140px",
-          maxWidth: "1280px",
-          margin: "0 auto",
-        }}
-      >
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6.5">
-          {creations.map((creation, index) => (
-            <div
-              data-reveal="1"
-              onClick={() => handleOpenCreation(c)}
-              className="creation-card"
-              key={index}
-              style={{
-                gridColumn: "span 3",
-              }}
-            >
-              <ImageShadowCard
-                title={creation.title}
-                image={creation.image}
-                onClick={() => handleOpenCreation(creation)}
-              />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section
-        style={{
-          minHeight: "50vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          padding: "40px 24px 130px",
-        }}
-      >
-        <p
-          data-reveal="1"
+        <section
           style={{
-            fontFamily: "'Oswald',sans-serif",
-            fontWeight: 300,
-            fontSize: "clamp(18px,2.6vw,30px)",
-            letterSpacing: ".04em",
-            color: "var(--smoke)",
-            margin: "0 0 30px",
-            maxWidth: "640px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            textAlign: "left",
+            marginTop: "60px",
           }}
         >
-          I could show you ten thousand more. But I'd rather show you where this
-          is all going.
-        </p>
-        <button
-          onClick={handleNext}
-          data-reveal="1"
-          data-delay="120"
-          className="btn-amber-outline"
-        >
-          GLIMPSE THE FUTURE →
-        </button>
-      </section>
+          <p
+            data-reveal="1"
+            style={{
+              fontFamily: "'Oswald',sans-serif",
+              fontWeight: 300,
+              fontSize: "clamp(18px,2vw,28px)",
+              letterSpacing: ".04em",
+              color: "var(--smoke)",
+              margin: "0 0 30px",
+              maxWidth: "640px",
+            }}
+          >
+            I could show you ten thousand more. But I'd rather show you where this
+            is all going.
+          </p>
+          <button
+            onClick={handleNext}
+            data-reveal="1"
+            data-delay="120"
+            className="btn-amber-outline"
+          >
+            GLIMPSE THE FUTURE →
+          </button>
+        </section>
+      </div>
+
+      {/* Right 30% Column */}
+      <div
+        className="w-full md:w-[30%]"
+        style={{
+          height: "100vh",
+          position: "relative",
+          overflow: "hidden",
+          borderLeft: "1px solid rgba(233, 162, 59, 0.1)",
+          background: "rgba(10, 8, 6, 0.3)",
+        }}
+      >
+        <FlyingPosters
+          items={creations}
+          planeWidth={280}
+          planeHeight={360}
+          distortion={3}
+          scrollEase={0.01}
+          cameraFov={45}
+          cameraZ={20}
+          onItemClick={handleOpenCreation}
+        />
+      </div>
     </div>
   );
 }
 
 export default Creations;
+
