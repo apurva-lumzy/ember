@@ -20,7 +20,7 @@ function Creations({ isCreations = true, next, openCreation }) {
     if (next) {
       next();
     } else {
-      navigate('/future');
+      navigate("/future");
     }
   };
 
@@ -121,9 +121,13 @@ function Creations({ isCreations = true, next, openCreation }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6.5">
           {creations.map((creation, index) => (
             <div
-              key={index}
               data-reveal="1"
+              onClick={() => handleOpenCreation(c)}
               className="creation-card"
+              key={index}
+              style={{
+                gridColumn: "span 3",
+              }}
             >
               <ImageShadowCard
                 title={creation.title}
