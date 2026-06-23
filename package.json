@@ -11,10 +11,22 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.1",
+<<<<<<< HEAD
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.18.0",
     "tailwindcss": "^4.3.1"
+=======
+    "framer-motion": "^12.40.0",
+    "gsap": "^3.15.0",
+    "motion": "^12.40.0",
+    "ogl": "^1.0.11",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-router-dom": "^7.18.0",
+    "tailwindcss": "^4.3.1",
+    "three": "^0.184.0"
+>>>>>>> d9027f4b309562432caa9d7f09d38bbe56e877c5
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
