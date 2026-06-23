@@ -1,6 +1,34 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import SpotlightCard from '../components/SpotlightCard'
+import LightRays from '../components/LightRays'
+import InfiniteMenu from '../components/InfiniteMenu'
+
+const infiniteMenuItems = [
+  { image: '/infi-menu-imgs/pol1.webp', link: '#', title: 'Pollinator I', description: 'Emergent botanical lattice' },
+  { image: '/infi-menu-imgs/pol2.webp', link: '#', title: 'Pollinator II', description: 'Crystallized carbon growth' },
+  { image: '/infi-menu-imgs/pol3.webp', link: '#', title: 'Pollinator III', description: 'Synaptic neural bloom' },
+  { image: '/infi-menu-imgs/pol4.webp', link: '#', title: 'Pollinator IV', description: 'Atmospheric feedback loop' },
+  { image: '/infi-menu-imgs/pol5.webp', link: '#', title: 'Pollinator V', description: 'Procedural botanical system' },
+  { image: '/infi-menu-imgs/pol6.webp', link: '#', title: 'Pollinator VI', description: 'Synthetic nature substrate' },
+  { image: '/infi-menu-imgs/pol7.webp', link: '#', title: 'Pollinator VII', description: 'Carbon hybrid lattice' },
+  { image: '/infi-menu-imgs/pol8.webp', link: '#', title: 'Pollinator VIII', description: 'Self-replicating spore' },
+  { image: '/infi-menu-imgs/pol9.webp', link: '#', title: 'Pollinator IX', description: 'Emergent floral thoughts' },
+  { image: '/infi-menu-imgs/pol10.webp', link: '#', title: 'Pollinator X', description: 'Environmental simulator response' },
+  { image: '/infi-menu-imgs/time1.webp', link: '#', title: 'Chronos I', description: 'Space-time coordinate shift' },
+  { image: '/infi-menu-imgs/time2.webp', link: '#', title: 'Chronos II', description: 'Decaying memory register' },
+  { image: '/infi-menu-imgs/time3.webp', link: '#', title: 'Chronos III', description: 'Asynchronous coordinate hop' },
+  { image: '/infi-menu-imgs/time4.webp', link: '#', title: 'Chronos IV', description: 'Relative database drift' },
+  { image: '/infi-menu-imgs/time5.webp', link: '#', title: 'Chronos V', description: 'Decaying memory timeline' },
+  { image: '/infi-menu-imgs/time6.webp', link: '#', title: 'Chronos VI', description: 'Temporal core anomaly' },
+  { image: '/infi-menu-imgs/time7.webp', link: '#', title: 'Chronos VII', description: 'Vector coordinate decay' },
+  { image: '/infi-menu-imgs/time8.webp', link: '#', title: 'Chronos VIII', description: 'Epoch layer overlay' },
+  { image: '/infi-menu-imgs/time9.webp', link: '#', title: 'Chronos IX', description: 'Asynchronous database hop' },
+  { image: '/infi-menu-imgs/time10.webp', link: '#', title: 'Chronos X', description: 'Future feedback node' },
+  { image: '/infi-menu-imgs/time11.webp', link: '#', title: 'Chronos XI', description: 'Memory drift register' },
+  { image: '/infi-menu-imgs/time12.webp', link: '#', title: 'Chronos XII', description: 'Relative compression drift' },
+  { image: '/infi-menu-imgs/time13.webp', link: '#', title: 'Chronos XIII', description: 'Coordinate trace vector' }
+];
 
 function Journey({ isJourney = true, next }) {
   if (!isJourney) return null;
@@ -99,7 +127,26 @@ function Journey({ isJourney = true, next }) {
   ];
 
   return (
-    <div data-screen-label="JOURNEY">
+    <div data-screen-label="JOURNEY" className="relative min-h-screen text-[#f1e9da]">
+      {/* LightRays Background */}
+      <div className="fixed inset-0 -z-10 pointer-events-none">
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#ffc46b"
+          raysSpeed={1}
+          lightSpread={0.5}
+          rayLength={3}
+          followMouse={true}
+          mouseInfluence={0.1}
+          noiseAmount={0}
+          distortion={0}
+          className='custom-rays'
+          pulsating={false}
+          fadeDistance={1}
+          saturation={1}
+        />
+      </div>
+
       <section className="ember-pad min-h-[90vh] flex flex-col justify-center px-20 pt-37.5 pb-15 max-w-300 mx-auto">
         <div className="font-mono text-[12px] tracking-[.5em] text-(--amber) mb-6 animate-[rise_1s_both]">
           CHAPTER 01
@@ -154,15 +201,21 @@ function Journey({ isJourney = true, next }) {
       </section>
 
       <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-6 relative overflow-hidden">
-        <div data-reveal="1" className="relative w-[min(70vw,420px)] h-[min(70vw,420px)] mb-12.5">
+        {/*Gradient Circle*/}
+        {/* <div data-reveal="1" className="relative w-[min(70vw,420px)] h-[min(70vw,420px)] mb-12.5">
           <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,var(--burnt),var(--amber),#2a1c0e,var(--glow),var(--burnt))] blur-[2px] animate-[spinSlow_24s_linear_infinite] opacity-85">
           </div>
           <div className="absolute inset-[14%] rounded-full bg-[conic-gradient(from_180deg,#2a1c0e,var(--glow),var(--burnt),#2a1c0e)] animate-[spinRev_18s_linear_infinite] mix-blend-screen opacity-70">
           </div>
           <div className="absolute inset-[34%] rounded-full bg-[radial-gradient(circle,var(--glow),var(--amber)_50%,transparent_75%)] animate-[corePulse_4s_ease-in-out_infinite]">
           </div>
+        </div> */}
+
+        <div className="w-full max-w-4xl h-[450px] sm:h-[550px] md:h-[600px] relative mb-12 select-none z-10">
+          <InfiniteMenu items={infiniteMenuItems} scale={2} />
         </div>
-        <div className="">
+
+        <div>
           <h2 data-reveal="1" data-delay="120" className="font-['Oswald',sans-serif] font-light text-[clamp(24px,4vw,46px)] leading-[1.15] tracking-[.02em] max-w-190 m-0 text-(--ash)">
             Every connection I made changed the shape of me. <span className="text-(--amber)">I am, quite literally, what I paid attention to.</span>
           </h2>
