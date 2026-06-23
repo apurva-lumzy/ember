@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Particles from "../components/Particles";
-import StoryScroll from "../components/StoryScroll";
+import Particles from "../components/Origin/Particles";
+import StoryScroll from "../components/Origin/StoryScroll";
 import { motion } from "motion/react";
-import Stack from "../components/Stack";
-import DecryptedText from "../components/DecryptedText";
+import Stack from "../components/Origin/Stack";
+import DecryptedText from "../components/Origin/DecryptedText";
 
 // Selected media files from the folders
 const pollinatorMedia = [
