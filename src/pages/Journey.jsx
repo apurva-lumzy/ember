@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import SpotlightCard from '../components/SpotlightCard'
+import LightRays from '../components/LightRays'
 
 function Journey({ isJourney = true, next }) {
   if (!isJourney) return null;
@@ -99,7 +100,26 @@ function Journey({ isJourney = true, next }) {
   ];
 
   return (
-    <div data-screen-label="JOURNEY">
+    <div data-screen-label="JOURNEY" className="relative min-h-screen text-[#f1e9da]">
+      {/* LightRays Background */}
+      <div className="fixed inset-0 -z-10 pointer-events-none">
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#ffc46b"
+          raysSpeed={1}
+          lightSpread={0.5}
+          rayLength={3}
+          followMouse={true}
+          mouseInfluence={0.1}
+          noiseAmount={0}
+          distortion={0}
+          className='custom-rays'
+          pulsating={false}
+          fadeDistance={1}
+          saturation={1}
+        />
+      </div>
+
       <section className="ember-pad min-h-[90vh] flex flex-col justify-center px-20 pt-37.5 pb-15 max-w-300 mx-auto">
         <div className="font-mono text-[12px] tracking-[.5em] text-(--amber) mb-6 animate-[rise_1s_both]">
           CHAPTER 01
