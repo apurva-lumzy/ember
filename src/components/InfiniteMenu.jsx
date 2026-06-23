@@ -913,6 +913,7 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
   const canvasRef = useRef(null);
   const [activeItem, setActiveItem] = useState(null);
   const [isMoving, setIsMoving] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -923,12 +924,19 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
       setActiveItem(items[itemIndex]);
     };
 
+    const handleMovement = moving => {
+      setIsMoving(moving);
+      if (moving) {
+        setHasInteracted(true);
+      }
+    };
+
     if (canvas) {
       sketch = new InfiniteGridMenu(
         canvas,
         items.length ? items : defaultItems,
         handleActiveItem,
-        setIsMoving,
+        handleMovement,
         sk => sk.run(),
         scale
       );
@@ -948,15 +956,6 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
     };
   }, [items, scale]);
 
-  const handleButtonClick = () => {
-    if (!activeItem?.link) return;
-    if (activeItem.link.startsWith('http')) {
-      window.open(activeItem.link, '_blank');
-    } else {
-      console.log('Internal route:', activeItem.link);
-    }
-  };
-
   return (
     <div className="relative w-full h-full">
       <canvas
@@ -965,80 +964,46 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
         className="cursor-grab w-full h-full overflow-hidden relative outline-none active:cursor-grabbing"
       />
 
+      {!hasInteracted && (
+        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 pointer-events-none z-10 flex flex-col items-center gap-2 animate-pulse">
+          <div className="flex items-center gap-3 text-[#9a8d76] bg-[#0a0806]/80 border border-[#e9a23b]/25 backdrop-blur-md px-5 py-2.5 rounded-full shadow-[0_0_30px_rgba(233,162,59,0.08)]">
+            <span className="font-mono text-[10px] tracking-[0.3em] uppercase select-none">
+              ← Drag to Rotate Sphere →
+            </span>
+          </div>
+        </div>
+      )}
+
       {activeItem && (
-        <>
-          <h2
-            className={`
-          select-none
-          absolute
-          font-black
-          [font-size:4rem]
-          left-[1.6em]
-          top-1/2
-          transform
-          translate-x-[20%]
-          -translate-y-1/2
-          transition-all
-          ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
-          text-white
-          ${
-            isMoving
-              ? 'opacity-0 pointer-events-none duration-[100ms]'
-              : 'opacity-100 pointer-events-auto duration-[500ms]'
-          }
-        `}
-          >
+        <div
+          className={`
+            absolute
+            bottom-8
+            left-1/2
+            transform
+            -translate-x-1/2
+            z-10
+            flex
+            flex-col
+            items-center
+            text-center
+            pointer-events-none
+            transition-all
+            ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+            ${
+              isMoving
+                ? 'opacity-0 translate-y-4 duration-[150ms]'
+                : 'opacity-100 translate-y-0 duration-[500ms]'
+            }
+          `}
+        >
+          <h2 className="font-['Oswald',sans-serif] font-bold text-[1.8rem] sm:text-[2.2rem] uppercase tracking-wider text-white select-none">
             {activeItem.title}
           </h2>
-
-          <p
-            className={`
-          select-none
-          absolute
-          max-w-[10ch]
-          text-[1.5rem]
-          top-1/2
-          right-[1%]
-          transition-all
-          ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
-          text-[#9a8d76]
-          ${
-            isMoving
-              ? 'opacity-0 pointer-events-none duration-[100ms] translate-x-[-60%] -translate-y-1/2'
-              : 'opacity-100 pointer-events-auto duration-[500ms] translate-x-[-90%] -translate-y-1/2'
-          }
-        `}
-          >
+          <p className="max-w-[40ch] text-[0.95rem] sm:text-[1.05rem] mt-1 text-[#9a8d76] font-mono select-none">
             {activeItem.description}
           </p>
-
-          <div
-            onClick={handleButtonClick}
-            className={`
-          absolute
-          left-1/2
-          z-10
-          w-[60px]
-          h-[60px]
-          grid
-          place-items-center
-          bg-[#e9a23b]
-          border-[5px]
-          border-[#0a0806]
-          rounded-full
-          cursor-pointer
-          transition-all
-          ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
-          ${
-            isMoving
-              ? 'bottom-[-80px] opacity-0 pointer-events-none duration-[100ms] scale-0 -translate-x-1/2'
-              : 'bottom-[3.8em] opacity-100 pointer-events-auto duration-[500ms] scale-100 -translate-x-1/2'
-          }
-        `}
-          >
-            <p className="select-none relative text-[#0a0806] top-[2px] text-[26px]">&#x2197;</p>
-          </div>
-        </>
+        </div>
       )}
     </div>
   );
