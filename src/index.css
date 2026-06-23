@@ -211,6 +211,7 @@ input {
   }
 }
 
+
 /* Custom styles for Journey page interactions and animations */
 .btn-amber {
   cursor: pointer;
@@ -409,6 +410,7 @@ input {
    minimum height without altering internal layout. */
 .uniform-height {
   min-height: var(--uniform-min-h);
+
 }
 
 .archivo-black {
