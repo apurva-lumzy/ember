@@ -5,13 +5,13 @@ const Future = () => {
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
 
-      {/* Hero Section */}
+    
       <section className="relative flex flex-col items-center justify-center text-center min-h-screen px-6">
 
-        {/* Animated Background Glow */}
+        
         <div className="absolute w-[500px] h-[500px] bg-orange-500/20 blur-3xl rounded-full animate-pulse"></div>
 
-        {/* Heading */}
+       
         <motion.h1
           initial={{ opacity: 0, y: 80 }}
           animate={{ opacity: 1, y: 0 }}
@@ -21,7 +21,7 @@ const Future = () => {
           The Future Begins Here
         </motion.h1>
 
-        {/* Paragraph */}
+        
         <motion.p
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
