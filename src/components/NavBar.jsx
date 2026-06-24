@@ -61,7 +61,7 @@ const NavBar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-12 py-6 backdrop-blur-md bg-gradient-to-b from-black/70 to-transparent">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-12 md:py-6 backdrop-blur-md bg-gradient-to-b from-black/70 to-transparent">
       <motion.div
         className="absolute top-0 left-0 h-[2px] bg-amber-400 origin-left shadow-[0_0_10px_rgba(233,162,59,0.8)]"
         style={{ scaleX, width: "100%" }}
@@ -79,7 +79,7 @@ const NavBar = () => {
 
       <div
         style={{ fontFamily: "Oswald" }}
-        className="flex gap-10 uppercase tracking-[0.2em] text-sm max-sm:hidden"
+        className="flex gap-6 md:gap-10 uppercase tracking-[0.2em] text-sm max-sm:hidden"
       >
         {links.map((link) => (
           <NavLink

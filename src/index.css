@@ -9,6 +9,7 @@
   --burnt: #c2693a;
   --ash: #f1e9da;
   --smoke: #9a8d76;
+  --uniform-min-h: 75vh;
 }
 
 * {
@@ -77,7 +78,6 @@ input {
 }
 
 @keyframes corePulse {
-
   0%,
   100% {
     transform: scale(1);
@@ -103,7 +103,6 @@ input {
 }
 
 @keyframes flicker {
-
   0%,
   100% {
     opacity: 0.9;
@@ -123,7 +122,6 @@ input {
 }
 
 @keyframes floatY {
-
   0%,
   100% {
     transform: translateY(0);
@@ -171,7 +169,6 @@ input {
 }
 
 @keyframes breathe {
-
   0%,
   100% {
     transform: scale(1);
@@ -216,9 +213,9 @@ input {
   background: transparent;
   border: 1px solid var(--amber);
   color: var(--amber);
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 12px;
-  letter-spacing: .3em;
+  letter-spacing: 0.3em;
   padding: 16px 34px;
   border-radius: 2px;
   transition: all 0.3s ease;
@@ -232,7 +229,9 @@ input {
 .reveal-item {
   opacity: 0;
   transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal-item.is-revealed {
@@ -245,9 +244,9 @@ input {
   background: transparent;
   border: 1px solid var(--amber);
   color: var(--amber);
-  font-family: 'Space Mono', monospace;
+  font-family: "Space Mono", monospace;
   font-size: 12px;
-  letter-spacing: .3em;
+  letter-spacing: 0.3em;
   padding: 16px 34px;
   border-radius: 2px;
   transition: all 0.3s ease;
@@ -398,4 +397,11 @@ input {
   margin-top: 3rem;
 
   object-fit: cover;
+}
+
+/* Minimal helper to unify section min-height across pages.
+   Applying `uniform-height` to a section enforces a consistent
+   minimum height without altering internal layout. */
+.uniform-height {
+  min-height: var(--uniform-min-h);
 }
