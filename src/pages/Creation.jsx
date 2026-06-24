@@ -238,4 +238,3 @@ function Creations({ isCreations = true, next, openCreation }) {
 }
 
 export default Creations;
-
