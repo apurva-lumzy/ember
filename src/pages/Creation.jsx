@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FlyingPosters from "../components/FlyingPosters";
 import ShinyText from "../components/ShinyText";
+import Particles from "../components/Particles";
 
 function Creations({ isCreations = true, next, openCreation }) {
   if (!isCreations) return null;
@@ -60,7 +61,7 @@ function Creations({ isCreations = true, next, openCreation }) {
   return (
     <div
       data-screen-label="CREATIONS"
-      className="flex flex-col md:flex-row"
+      className="flex flex-col md:flex-row relative"
       style={{
         minHeight: "100vh",
         width: "100%",
@@ -68,12 +69,38 @@ function Creations({ isCreations = true, next, openCreation }) {
         overflow: "hidden",
       }}
     >
+      {/* Background Particles */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      >
+        <Particles
+          particleColors={["#EAB308"]}
+          particleCount={200}
+          particleSpread={10}
+          speed={0.2}
+          particleBaseSize={100}
+          moveParticlesOnHover
+          alphaParticles={false}
+          disableRotation={false}
+          pixelRatio={1}
+        />
+      </div>
+
       {/* Left 70% Column */}
       <div
-        className="w-full md:w-[70%] flex flex-col justify-between"
+        className="w-full md:w-[70%] flex flex-col justify-between relative"
         style={{
           padding: "120px clamp(24px, 6vw, 80px) 60px",
           minHeight: "100vh",
+          zIndex: 2,
         }}
       >
         <section
@@ -186,13 +213,13 @@ function Creations({ isCreations = true, next, openCreation }) {
 
       {/* Right 30% Column */}
       <div
-        className="w-full md:w-[30%]"
+        className="w-full md:w-[30%] relative"
         style={{
           height: "100vh",
-          position: "relative",
           overflow: "hidden",
           borderLeft: "1px solid rgba(233, 162, 59, 0.1)",
           background: "rgba(10, 8, 6, 0.3)",
+          zIndex: 2,
         }}
       >
         <FlyingPosters
