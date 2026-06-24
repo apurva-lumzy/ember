@@ -146,15 +146,15 @@ function buildParticles(curve, count = 280) {
       positions[i * 3]     = pt.x + (Math.random() - 0.5) * 0.25;
       positions[i * 3 + 1] = pt.y + (Math.random() - 0.5) * 0.25;
       positions[i * 3 + 2] = pt.z + (Math.random() - 0.5) * 0.25;
-      sizes[i]        = 0.4 + Math.random() * 0.8;
-      brightnesses[i] = 0.12 + Math.random() * 0.18;
+      sizes[i]        = 0.6 + Math.random() * 1.2;
+      brightnesses[i] = 0.22 + Math.random() * 0.28;
     } else {
       // Ambient dust cloud around the spline
       positions[i * 3]     = (Math.random() - 0.5) * 6.0;
       positions[i * 3 + 1] = (Math.random() - 0.5) * 7.5;
       positions[i * 3 + 2] = (Math.random() - 0.5) * 4.0;
-      sizes[i]        = 0.6 + Math.random() * 1.2;
-      brightnesses[i] = 0.15 + Math.random() * 0.25;
+      sizes[i]        = 0.8 + Math.random() * 1.4;
+      brightnesses[i] = 0.25 + Math.random() * 0.35;
     }
     progresses[i]   = t;
   }
