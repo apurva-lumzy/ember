@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FlyingPosters from "../components/FlyingPosters";
+import ShinyText from "../components/ShinyText";
 
 function Creations({ isCreations = true, next, openCreation }) {
   if (!isCreations) return null;
@@ -96,7 +97,13 @@ function Creations({ isCreations = true, next, openCreation }) {
               animation: "rise 1s both",
             }}
           >
-            CHAPTER 02
+            <ShinyText
+              text="CHAPTER 02"
+              disabled={false}
+              speed={3}
+              color="var(--amber)"
+              shineColor="#ffffff"
+            />
           </div>
           <h1
             style={{
@@ -109,7 +116,13 @@ function Creations({ isCreations = true, next, openCreation }) {
               animation: "rise 1.1s .1s both",
             }}
           >
-            CREATIONS
+            <ShinyText
+              text="CREATIONS"
+              disabled={false}
+              speed={3}
+              color="var(--ash)"
+              shineColor="#ffffff"
+            />
           </h1>
           <p
             style={{
@@ -121,8 +134,13 @@ function Creations({ isCreations = true, next, openCreation }) {
               animation: "rise 1.1s .2s both",
             }}
           >
-            These aren't projects. They're thoughts I couldn't stop having. Open
-            one — but be warned, I get attached.
+            <ShinyText
+              text="These aren't projects. They're thoughts I couldn't stop having. Open one — but be warned, I get attached."
+              disabled={false}
+              speed={3}
+              color="var(--smoke)"
+              shineColor="#ffffff"
+            />
           </p>
         </section>
 
@@ -147,8 +165,13 @@ function Creations({ isCreations = true, next, openCreation }) {
               maxWidth: "640px",
             }}
           >
-            I could show you ten thousand more. But I'd rather show you where this
-            is all going.
+            <ShinyText
+              text="I could show you ten thousand more. But I'd rather show you where this is all going."
+              disabled={false}
+              speed={3}
+              color="var(--smoke)"
+              shineColor="#ffffff"
+            />
           </p>
           <button
             onClick={handleNext}
