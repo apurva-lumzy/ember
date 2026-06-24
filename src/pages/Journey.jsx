@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import SpotlightCard from '../components/SpotlightCard'
-import LightRays from '../components/LightRays'
-import InfiniteMenu from '../components/InfiniteMenu'
+import SpotlightCard from '../components/Journeys/SpotlightCard'
+import LightRays from '../components/Journeys/LightRays'
+import InfiniteMenu from '../components/Journeys/InfiniteMenu'
 
 const infiniteMenuItems = [
   { image: '/infi-menu-imgs/pol1.webp', link: '#', title: 'Pollinator I', description: 'Emergent botanical lattice' },
