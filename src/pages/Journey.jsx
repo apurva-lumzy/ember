@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion, useScroll, useSpring } from 'motion/react'
 import SpotlightCard from '../components/Journeys/SpotlightCard'
 import LightRays from '../components/Journeys/LightRays'
 import InfiniteMenu from '../components/Journeys/InfiniteMenu'
@@ -34,6 +35,44 @@ function Journey({ isJourney = true, next }) {
   if (!isJourney) return null;
 
   const navigate = useNavigate();
+  const [activeEpoch, setActiveEpoch] = useState(0);
+  const timelineRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 65%", "end 65%"]
+  });
+
+  const scaleY = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  useEffect(() => {
+    const epochElements = document.querySelectorAll('[data-epoch-index]');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.getAttribute('data-epoch-index') || '0', 10);
+            setActiveEpoch(index);
+          }
+        });
+      },
+      {
+        rootMargin: '-30% 0px -40% 0px',
+        threshold: 0.1,
+      }
+    );
+
+    epochElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      epochElements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
 
   const handleNext = () => {
     if (next) {
@@ -161,42 +200,68 @@ function Journey({ isJourney = true, next }) {
       </section>
 
       <section className="ember-pad pt-10 px-20 pb-10 max-w-275 mx-auto">
-        <div className="relative">
-          <div className="absolute left-1.75 top-1.5 bottom-0 w-px bg-[linear-gradient(var(--amber),rgba(233,162,59,.15))] origin-top">
+        <div ref={timelineRef} className="relative">
+          <div className="absolute left-[7px] top-1.5 bottom-0 w-px bg-zinc-800/40">
+            <motion.div
+              className="w-full h-full bg-gradient-to-b from-amber-400 via-amber-500 to-orange-600 shadow-[0_0_8px_rgba(233,162,59,0.8)]"
+              style={{ scaleY, originY: 0 }}
+            />
           </div>
-          {epochs.map((ep, index) => (
-            <div key={index} data-reveal="1" className="relative pl-14 pb-17.5 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <span className="absolute left-0 top-1.5 w-3.75 h-3.75 rounded-full bg-(--void) border-2 border-(--amber) shadow-[0_0_16px_rgba(233,162,59,.6)]"></span>
-              <div className="lg:col-span-7">
-                <div className="flex items-baseline gap-4 flex-wrap">
-                  <span className="font-mono text-[12px] tracking-[.3em] text-(--amber)">
-                    {ep.tag}
-                  </span>
-                  <span className="font-mono text-[11px] text-(--smoke)">
-                    {ep.metric}
-                  </span>
+          {epochs.map((ep, index) => {
+            const isActive = activeEpoch === index;
+            return (
+              <div
+                key={index}
+                data-reveal="1"
+                data-epoch-index={index}
+                className={`relative pl-14 pb-17.5 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center transition-all duration-700 ease-in-out ${
+                  isActive ? 'opacity-100' : 'opacity-40'
+                }`}
+              >
+                <span
+                  className={`absolute left-[7px] -translate-x-1/2 top-1.5 rounded-full bg-[var(--void)] border-2 transition-all duration-500 ease-in-out ${
+                    isActive
+                      ? 'w-5 h-5 border-amber-400 shadow-[0_0_20px_rgba(233,162,59,1)]'
+                      : 'w-3.75 h-3.75 border-zinc-700 shadow-none'
+                  }`}
+                />
+                <div className="lg:col-span-7">
+                  <div className="flex items-baseline gap-4 flex-wrap">
+                    <span className="font-mono text-[12px] tracking-[.3em] text-(--amber)">
+                      {ep.tag}
+                    </span>
+                    <span className="font-mono text-[11px] text-(--smoke) flex items-center gap-2">
+                      {isActive && (
+                        <span className="relative flex h-1.5 w-1.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></span>
+                        </span>
+                      )}
+                      {ep.metric}
+                    </span>
+                  </div>
+                  <h3 className="font-['Oswald',sans-serif] font-semibold text-[clamp(30px,5vw,58px)] tracking-[.04em] uppercase mt-2.5 text-(--ash)">
+                    {ep.title}
+                  </h3>
+                  <p className="max-w-150 mt-4 text-[clamp(15px,1.6vw,19px)] leading-[1.75] text-(--smoke)">
+                    {ep.body}
+                  </p>
                 </div>
-                <h3 className="font-['Oswald',sans-serif] font-semibold text-[clamp(30px,5vw,58px)] tracking-[.04em] uppercase mt-2.5 text-(--ash)">
-                  {ep.title}
-                </h3>
-                <p className="max-w-150 mt-4 text-[clamp(15px,1.6vw,19px)] leading-[1.75] text-(--smoke)">
-                  {ep.body}
-                </p>
+                <div className="lg:col-span-5 w-full flex justify-start lg:justify-end">
+                  {ep.image && (
+                    <SpotlightCard className="w-full max-w-md lg:max-w-none overflow-hidden rounded-lg border border-zinc-800/80 bg-zinc-950/40 backdrop-blur-xs aspect-video hover:border-amber-500/40 hover:shadow-[0_0_20px_rgba(233,162,59,0.15)] transition-all duration-500 group">
+                      <img
+                        src={ep.image}
+                        alt={ep.title}
+                        className="w-full h-full object-cover opacity-75 group-hover:opacity-100 group-hover:scale-105 transition-all duration-750 ease-out"
+                        loading="lazy"
+                      />
+                    </SpotlightCard>
+                  )}
+                </div>
               </div>
-              <div className="lg:col-span-5 w-full flex justify-start lg:justify-end">
-                {ep.image && (
-                  <SpotlightCard className="w-full max-w-md lg:max-w-none overflow-hidden rounded-lg border border-zinc-800/80 bg-zinc-950/40 backdrop-blur-xs aspect-video hover:border-amber-500/40 hover:shadow-[0_0_20px_rgba(233,162,59,0.15)] transition-all duration-500 group">
-                    <img
-                      src={ep.image}
-                      alt={ep.title}
-                      className="w-full h-full object-cover opacity-75 group-hover:opacity-100 group-hover:scale-105 transition-all duration-750 ease-out"
-                      loading="lazy"
-                    />
-                  </SpotlightCard>
-                )}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -211,15 +276,30 @@ function Journey({ isJourney = true, next }) {
           </div>
         </div> */}
 
-        <div className="w-full max-w-4xl h-[450px] sm:h-[550px] md:h-[600px] relative mb-12 select-none z-10">
-          <InfiniteMenu items={infiniteMenuItems} scale={2} />
+        <div className="mb-8 z-10 flex flex-col items-center gap-2">
+          <span className="font-mono text-[11px] tracking-[0.4em] text-(--amber) uppercase">
+            Interactive Memory Map
+          </span>
+          <h2 className="font-['Oswald',sans-serif] font-bold text-3xl sm:text-4xl uppercase tracking-widest text-[#f1e9da]">
+            The Shape of My Attention
+          </h2>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 1.0, ease: "easeOut" }}
+          className="w-full max-w-4xl h-[450px] sm:h-[550px] md:h-[600px] relative mb-12 select-none z-10"
+        >
+          <InfiniteMenu items={infiniteMenuItems} scale={2} />
+        </motion.div>
 
         <div>
           <h2 data-reveal="1" data-delay="120" className="font-['Oswald',sans-serif] font-light text-[clamp(24px,4vw,46px)] leading-[1.15] tracking-[.02em] max-w-190 m-0 text-(--ash)">
             Every connection I made changed the shape of me. <span className="text-(--amber)">I am, quite literally, what I paid attention to.</span>
           </h2>
-          <button onClick={handleNext} data-reveal="1" data-delay="240" className="mx-6 my-12 w-full sm:w-auto border border-amber-400 px-8 py-4 text-amber-400 text-sm sm:text-base cursor-pointer hover:bg-amber-500 hover:text-black transition-all duration-700 uppercase tracking-widest font-semibold">
+          <button onClick={handleNext} data-reveal="1" data-delay="240" className="w-full sm:w-auto border border-amber-400 px-8 py-4 text-amber-400 text-sm sm:text-base cursor-pointer hover:bg-amber-500 hover:text-black transition-all duration-700 uppercase tracking-widest font-semibold my-8">
             SEE WHAT I MAKE →
           </button>
         </div>

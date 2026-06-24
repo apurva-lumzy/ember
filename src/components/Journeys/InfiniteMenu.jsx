@@ -630,7 +630,7 @@ class InfiniteGridMenu {
   }
 
   #init(onInit) {
-    this.gl = this.canvas.getContext('webgl2', { antialias: true, alpha: false });
+    this.gl = this.canvas.getContext('webgl2', { antialias: true, alpha: true });
     const gl = this.gl;
     if (!gl) {
       throw new Error('No WebGL 2 context!');
@@ -957,7 +957,7 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
   }, [items, scale]);
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full bg-[#0a0806]/40 backdrop-blur-md border border-[#e9a23b]/15 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.3)]">
       <canvas
         id="infinite-grid-menu-canvas"
         ref={canvasRef}
