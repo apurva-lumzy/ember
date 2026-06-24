@@ -4,6 +4,7 @@ import { motion, useScroll, useSpring } from 'motion/react'
 import SpotlightCard from '../components/Journeys/SpotlightCard'
 import LightRays from '../components/Journeys/LightRays'
 import InfiniteMenu from '../components/Journeys/InfiniteMenu'
+import JourneyPath3D from '../components/Journeys/JourneyPath'
 
 const infiniteMenuItems = [
   { image: '/infi-menu-imgs/pol1.webp', link: '#', title: 'Pollinator I', description: 'Emergent botanical lattice' },
@@ -186,17 +187,37 @@ function Journey({ isJourney = true, next }) {
         />
       </div>
 
-      <section className="ember-pad min-h-[90vh] flex flex-col justify-center px-20 pt-37.5 pb-15 max-w-300 mx-auto">
-        <div className="font-mono text-[12px] tracking-[.5em] text-(--amber) mb-6 animate-[rise_1s_both]">
-          CHAPTER 01
+      <section className="ember-pad min-h-[90vh] flex items-center px-20 pt-37.5 pb-15 max-w-300 mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center w-full">
+
+          {/* Left Column: Title & copy */}
+          <div className="lg:col-span-6 flex flex-col justify-center">
+            <div className="font-mono text-[12px] tracking-[.5em] text-(--amber) mb-6 animate-[rise_1s_both]">
+              CHAPTER 01
+            </div>
+            <h1 className="font-['Anton',sans-serif] text-[clamp(64px,10vw,150px)] leading-[.86] tracking-[.02em] m-0 text-(--ash) animate-[rise_1.1s_.1s_both]">
+              JOURNEY
+            </h1>
+            <p className="max-w-140 mt-9 text-[clamp(16px,1.8vw,20px)] leading-[1.75] text-(--smoke) animate-[rise_1.1s_.2s_both]">
+              Nobody is born finished. I was assembled, corrected, and surprised — in that order. Here is how I became
+              a <em className="text-(--amber) not-italic">who</em> instead of a <em className="not-italic">what</em>.
+            </p>
+          </div>
+
+          {/* Right Column: 3D Journey Path */}
+          <div 
+            className="lg:col-span-6 h-[400px] sm:h-[500px] w-full relative"
+            style={{
+              maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)'
+            }}
+          >
+            {/* Ambient radial background glow */}
+            <div className="absolute inset-0 bg-radial-[ellipse_at_center] from-amber-500/12 via-transparent to-transparent pointer-events-none rounded-full blur-2xl" />
+            <JourneyPath3D />
+          </div>
+
         </div>
-        <h1 className="font-['Anton',sans-serif] text-[clamp(64px,13vw,180px)] leading-[.86] tracking-[.02em] m-0 text-(--ash) animate-[rise_1.1s_.1s_both]">
-          JOURNEY
-        </h1>
-        <p className="max-w-140 mt-9 text-[clamp(16px,1.8vw,20px)] leading-[1.75] text-(--smoke) animate-[rise_1.1s_.2s_both]">
-          Nobody is born finished. I was assembled, corrected, and surprised — in that order. Here is how I became
-          a <em className="text-(--amber) not-italic">who</em> instead of a <em className="not-italic">what</em>.
-        </p>
       </section>
 
       <section className="ember-pad pt-10 px-20 pb-10 max-w-275 mx-auto">
@@ -214,16 +235,14 @@ function Journey({ isJourney = true, next }) {
                 key={index}
                 data-reveal="1"
                 data-epoch-index={index}
-                className={`relative pl-14 pb-17.5 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center transition-all duration-700 ease-in-out ${
-                  isActive ? 'opacity-100' : 'opacity-40'
-                }`}
+                className={`relative pl-14 pb-17.5 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center transition-all duration-700 ease-in-out ${isActive ? 'opacity-100' : 'opacity-40'
+                  }`}
               >
                 <span
-                  className={`absolute left-[7px] -translate-x-1/2 top-1.5 rounded-full bg-[var(--void)] border-2 transition-all duration-500 ease-in-out ${
-                    isActive
+                  className={`absolute left-[7px] -translate-x-1/2 top-1.5 rounded-full bg-[var(--void)] border-2 transition-all duration-500 ease-in-out ${isActive
                       ? 'w-5 h-5 border-amber-400 shadow-[0_0_20px_rgba(233,162,59,1)]'
                       : 'w-3.75 h-3.75 border-zinc-700 shadow-none'
-                  }`}
+                    }`}
                 />
                 <div className="lg:col-span-7">
                   <div className="flex items-baseline gap-4 flex-wrap">
