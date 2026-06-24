@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Lightfall from "../components/lightfall";
 import FlyingPosters from "../components/flyingposter";
+import SpaceCards from "../components/SpaceCards";
 
 const Future = () => {
   return (
@@ -58,19 +59,24 @@ const Future = () => {
         </motion.button>
 
       </section>
+
+      {/* Flying Posters */}
       <FlyingPosters
-  items={[
-    "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
+        items={[
+          "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
 
-    "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop",
 
-    "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop",
 
-    "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
+          "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
 
-    "https://images.unsplash.com/photo-1484417894907-623942c8ee29?q=80&w=1200&auto=format&fit=crop"
-  ]}
-/>
+          "https://images.unsplash.com/photo-1484417894907-623942c8ee29?q=80&w=1200&auto=format&fit=crop"
+        ]}
+      />
+
+      {/* Draggable Space Cards */}
+      <SpaceCards />
 
       {/* Feature Cards */}
       <section className="relative z-10 grid md:grid-cols-3 gap-8 px-10 pb-24">
