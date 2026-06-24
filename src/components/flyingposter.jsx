@@ -1,8 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { Renderer, Camera, Transform, Plane, Program, Mesh, Texture } from 'ogl';
 
-import './flyingposter.css';
-
 const vertexShader = `
 precision highp float;
 
@@ -429,7 +427,7 @@ export default function FlyingPosters({
   planeWidth = 320,
   planeHeight = 320,
   distortion = 3,
-  scrollEase = 0.01,
+  scrollEase = 0.1,
   cameraFov = 45,
   cameraZ = 20,
   className,
@@ -488,8 +486,8 @@ export default function FlyingPosters({
   }, []);
 
   return (
-    <div ref={containerRef} className={`posters-container ${className}`} {...props}>
-      <canvas ref={canvasRef} className="posters-canvas" />
+    <div ref={containerRef} className={`w-full h-full overflow-hidden relative z-2 ${className}`} {...props}>
+      <canvas ref={canvasRef} className="block w-full h-full" />
     </div>
   );
 }

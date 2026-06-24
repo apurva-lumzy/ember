@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import Lightfall from "../components/Lightfall";
+import Lightfall from "../components/lightfall";
 import FlyingPosters from "../components/flyingposter";
 
 const Future = () => {
