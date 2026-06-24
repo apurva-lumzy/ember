@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
-import './Lightfall.css';
 
 const MAX_COLORS = 8;
 
@@ -351,7 +350,7 @@ const Lightfall = ({
   return (
     <div
       ref={containerRef}
-      className={`lightfall-container ${className ?? ''}`}
+      className={`w-full h-full overflow-hidden relative ${className ?? ''}`}
       style={{
         ...(mixBlendMode && { mixBlendMode })
       }}
