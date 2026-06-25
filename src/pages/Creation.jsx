@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import FlyingPosters from "../components/FlyingPosters";
 import ShinyText from "../components/ShinyText";
 import Particles from "../components/Particles";
+import PosterCard from "../components/PosterCard";
 
 function Creations({ isCreations = true, next, openCreation }) {
   if (!isCreations) return null;
@@ -11,10 +12,9 @@ function Creations({ isCreations = true, next, openCreation }) {
   const [selectedCreation, setSelectedCreation] = useState(null);
 
   const handleOpenCreation = (creation) => {
+    setSelectedCreation(creation);
     if (openCreation) {
       openCreation(creation);
-    } else {
-      setSelectedCreation(creation);
     }
   };
 
@@ -233,6 +233,13 @@ function Creations({ isCreations = true, next, openCreation }) {
           onItemClick={handleOpenCreation}
         />
       </div>
+
+      {selectedCreation && (
+        <PosterCard
+          creation={selectedCreation}
+          onClose={() => setSelectedCreation(null)}
+        />
+      )}
     </div>
   );
 }
