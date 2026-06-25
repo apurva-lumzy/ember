@@ -389,15 +389,15 @@ function Journey({ isJourney = true, next }) {
           {/* Horizontal Track containing cards */}
           <div 
             ref={trackRef} 
-            className="timeline-track flex flex-row flex-nowrap items-center h-[55vh] pl-[15vw] pr-[25vw] gap-[10vw] relative z-10"
+            className="timeline-track flex flex-row flex-nowrap items-center h-[50vh] pl-[15vw] pr-[25vw] gap-[10vw] relative z-10"
           >
             {epochs.map((ep, index) => {
               const isActive = activeEpoch === index;
               return (
                 <div
                   key={index}
-                  className={`timeline-card flex-shrink-0 flex items-center justify-between w-[70vw] max-w-[1000px] h-full gap-16 transition-opacity duration-700 ${
-                    isActive ? 'opacity-100' : 'opacity-30'
+                  className={`timeline-card flex-shrink-0 flex items-center justify-between w-[70vw] max-w-[1000px] h-full gap-12 lg:gap-16 transition-all duration-700 bg-zinc-900/20 backdrop-blur-lg border border-white/5 rounded-[2rem] p-8 lg:p-12 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ${
+                    isActive ? 'opacity-100 scale-100' : 'opacity-30 scale-95'
                   }`}
                 >
                   {/* Left Column: Text Info */}
@@ -437,7 +437,7 @@ function Journey({ isJourney = true, next }) {
           </div>
 
           {/* Bottom Progress Bar & Milestones */}
-          <div className="w-[70vw] mx-auto relative mb-12 select-none z-10">
+          <div className="w-[70vw] mx-auto relative mb-6 select-none z-10">
             <div className="h-[2px] bg-zinc-800/40 w-full relative">
               {/* Progress fill */}
               <div className="horizontal-progress absolute left-0 top-0 h-full w-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-600 shadow-[0_0_8px_rgba(233,162,59,0.8)] origin-left scale-x-0" />
