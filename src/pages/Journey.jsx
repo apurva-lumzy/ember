@@ -5,6 +5,7 @@ import SpotlightCard from '../components/Journeys/SpotlightCard'
 import LightRays from '../components/Journeys/LightRays'
 import InfiniteMenu from '../components/Journeys/InfiniteMenu'
 import JourneyPath3D from '../components/Journeys/JourneyPath'
+import GradientText from '../components/Journeys/GradientText'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -323,7 +324,14 @@ function Journey({ isJourney = true, next }) {
               CHAPTER 01
             </div>
             <h1 className="font-['Anton',sans-serif] text-[clamp(64px,10vw,150px)] leading-[.86] tracking-[.02em] m-0 text-(--ash) animate-[rise_1.1s_.1s_both]">
-              JOURNEY
+              <GradientText
+                colors={["#ffc275", "#ffe4be", "#ffa46b"]}
+                animationSpeed={6}
+                showBorder={false}
+                className="font-['Anton',sans-serif] text-[clamp(64px,10vw,150px)] leading-[.86] tracking-[.02em] !m-0 !justify-start cursor-default"
+              >
+                JOURNEY
+              </GradientText>
             </h1>
             <p className="max-w-140 mt-9 text-[clamp(16px,1.8vw,20px)] leading-[1.75] text-(--smoke) animate-[rise_1.1s_.2s_both]">
               Nobody is born finished. I was assembled, corrected, and surprised — in that order. Here is how I became
@@ -565,9 +573,29 @@ function Journey({ isJourney = true, next }) {
           <h2 data-reveal="1" data-delay="120" className="font-['Oswald',sans-serif] font-light text-[clamp(24px,4vw,46px)] leading-[1.15] tracking-[.02em] max-w-190 m-0 text-(--ash)">
             Every connection I made changed the shape of me. <span className="text-(--amber)">I am, quite literally, what I paid attention to.</span>
           </h2>
-          <button onClick={handleNext} data-reveal="1" data-delay="240" className="w-full sm:w-auto border border-amber-400 px-8 py-4 text-amber-400 text-sm sm:text-base cursor-pointer hover:bg-amber-500 hover:text-black transition-all duration-700 uppercase tracking-widest font-semibold my-8">
-            SEE WHAT I MAKE →
-          </button>
+          <div data-reveal="1" data-delay="240" className="w-full sm:w-auto inline-block my-8">
+            <motion.button 
+              onClick={handleNext} 
+              whileHover={{ 
+                scale: 1.03, 
+                backgroundColor: "#f59e0b",
+                color: "#000000",
+                boxShadow: "0px 0px 25px rgba(245, 158, 11, 0.4)",
+                borderColor: "#f59e0b"
+              }}
+              whileTap={{ scale: 0.98 }}
+              transition={{
+                scale: { type: "spring", stiffness: 400, damping: 25 },
+                backgroundColor: { type: "tween", ease: "easeInOut", duration: 0.2 },
+                color: { type: "tween", ease: "easeInOut", duration: 0.2 },
+                borderColor: { type: "tween", ease: "easeInOut", duration: 0.2 },
+                boxShadow: { type: "tween", ease: "easeInOut", duration: 0.25 }
+              }}
+              className="w-full sm:w-auto border border-amber-400 px-8 py-4 text-amber-400 text-sm sm:text-base cursor-pointer uppercase tracking-widest font-semibold bg-transparent"
+            >
+              SEE WHAT I MAKE →
+            </motion.button>
+          </div>
         </div>
 
       </section>
