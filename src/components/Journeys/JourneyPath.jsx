@@ -47,7 +47,7 @@ const PARTICLE_VERT = `
 `;
 
 const PARTICLE_FRAG = `
-  precision mediump float;
+  precision highp float;
   uniform vec3  uColorA;
   uniform vec3  uColorB;
   uniform float uTime;
@@ -75,7 +75,7 @@ const MILESTONE_VERT = `
 `;
 
 const MILESTONE_FRAG = `
-  precision mediump float;
+  precision highp float;
   uniform float uTime;
   varying float vPulse;
   void main() {

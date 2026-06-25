@@ -6,6 +6,7 @@ import LightRays from '../components/Journeys/LightRays'
 import InfiniteMenu from '../components/Journeys/InfiniteMenu'
 import JourneyPath3D from '../components/Journeys/JourneyPath'
 import GradientText from '../components/Journeys/GradientText'
+import TimelineBackground from '../components/Journeys/TimelineBackground'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -65,6 +66,7 @@ function Journey({ isJourney = true, next }) {
   const timelineRef = useRef(null);
   const triggerRef = useRef(null);
   const trackRef = useRef(null);
+  const timelineBgRef = useRef(null);
 
   const { scrollYProgress } = useScroll({
     target: timelineRef,
@@ -135,6 +137,9 @@ function Journey({ isJourney = true, next }) {
                 epochs.length - 1
               );
               setActiveEpoch(activeIndex);
+              if (timelineBgRef.current) {
+                timelineBgRef.current.updateProgress(progress);
+              }
             }
           }
         });
@@ -365,9 +370,10 @@ function Journey({ isJourney = true, next }) {
         }}
       >
         <div className="h-screen w-full sticky top-0 flex flex-col justify-between pt-32 pb-16 overflow-hidden">
+          <TimelineBackground ref={timelineBgRef} />
           
           {/* Header indicator */}
-          <div className="px-20 flex justify-between items-baseline select-none">
+          <div className="px-20 flex justify-between items-baseline select-none relative z-10">
             <div className="font-mono text-[12px] tracking-[.5em] text-(--amber) uppercase">
               EPOCH TIMELINE
             </div>
@@ -383,7 +389,7 @@ function Journey({ isJourney = true, next }) {
           {/* Horizontal Track containing cards */}
           <div 
             ref={trackRef} 
-            className="timeline-track flex flex-row flex-nowrap items-center h-[55vh] pl-[15vw] pr-[25vw] gap-[10vw]"
+            className="timeline-track flex flex-row flex-nowrap items-center h-[55vh] pl-[15vw] pr-[25vw] gap-[10vw] relative z-10"
           >
             {epochs.map((ep, index) => {
               const isActive = activeEpoch === index;
@@ -431,7 +437,7 @@ function Journey({ isJourney = true, next }) {
           </div>
 
           {/* Bottom Progress Bar & Milestones */}
-          <div className="w-[70vw] mx-auto relative mb-12 select-none">
+          <div className="w-[70vw] mx-auto relative mb-12 select-none z-10">
             <div className="h-[2px] bg-zinc-800/40 w-full relative">
               {/* Progress fill */}
               <div className="horizontal-progress absolute left-0 top-0 h-full w-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-600 shadow-[0_0_8px_rgba(233,162,59,0.8)] origin-left scale-x-0" />
