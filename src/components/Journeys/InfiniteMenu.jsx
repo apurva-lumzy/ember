@@ -598,8 +598,8 @@ class InfiniteGridMenu {
   constructor(canvas, items, onActiveItemChange, onMovementChange, onInit = null, scale = 1.0) {
     this.canvas = canvas;
     this.items = items || [];
-    this.onActiveItemChange = onActiveItemChange || (() => {});
-    this.onMovementChange = onMovementChange || (() => {});
+    this.onActiveItemChange = onActiveItemChange || (() => { });
+    this.onMovementChange = onMovementChange || (() => { });
     this.scaleFactor = scale;
     this.camera.position[2] = 3 * scale;
     this.#init(onInit);
@@ -990,10 +990,9 @@ export default function InfiniteMenu({ items = [], scale = 1.0 }) {
             pointer-events-none
             transition-all
             ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
-            ${
-              isMoving
-                ? 'opacity-0 translate-y-4 duration-[150ms]'
-                : 'opacity-100 translate-y-0 duration-[500ms]'
+            ${isMoving
+              ? 'opacity-0 translate-y-4 duration-[150ms]'
+              : 'opacity-100 translate-y-0 duration-[500ms]'
             }
           `}
         >
