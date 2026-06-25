@@ -3,10 +3,14 @@ import { Link } from "react-router-dom";
 import Particles from "../components/Origin/Particles";
 import StoryScroll from "../components/Origin/StoryScroll";
 import { motion } from "motion/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Stack from "../components/Origin/Stack";
 import DecryptedText from "../components/Origin/DecryptedText";
 import EmberCore3D from "../components/Origin/EmberCore3D";
 import CardSwap, { Card } from "../components/Origin/CardSwap";
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Selected media files from the folders
 const pollinatorMedia = [
@@ -115,7 +119,7 @@ const VideoCard = ({ item, onClick }) => {
   React.useEffect(() => {
     if (!videoRef.current) return;
     if (isHovered) {
-      videoRef.current.play().catch(() => {});
+      videoRef.current.play().catch(() => { });
     } else {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
@@ -141,7 +145,7 @@ const VideoCard = ({ item, onClick }) => {
       {/* Dark overlay with dynamic info */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent opacity-80 group-hover:opacity-95 transition-all duration-500 flex flex-col justify-end p-4">
         <p className="text-[10px] text-amber-500 font-bold uppercase tracking-[0.25em] mb-1">
-          VIDEO · HOVER TO PLAY
+          VIDEO Â· HOVER TO PLAY
         </p>
         <h4 className="text-base sm:text-lg font-bold text-zinc-100 group-hover:text-amber-400 transition-colors duration-300 font-sans">
           {item.title}
@@ -220,73 +224,234 @@ const ProjectGallery = ({
     if (filter === "video") return item.type === "video";
     return true;
   });
+  const sectionRef = React.useRef(null);
+  const bgVideoRef = React.useRef(null);
+  const backgroundVideo = media.find((item) => item.type === "video");
+
+  React.useLayoutEffect(() => {
+    const section = sectionRef.current;
+    const bgVideo = bgVideoRef.current;
+    if (!section) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    let mm = null;
+    const ctx = gsap.context(() => {
+      const selector = gsap.utils.selector(section);
+      const cards = selector(".gallery-card");
+      const copy = selector(".gallery-copy");
+      const filterEl = selector(".gallery-filter");
+
+      if (reduceMotion) {
+        gsap.set([copy, filterEl, cards], {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+        });
+        return;
+      }
+
+      if (bgVideo) {
+        bgVideo.pause();
+        bgVideo.currentTime = 0;
+      }
+
+      const bgVideoEl = selector(".gallery-bg-video");
+      mm = ScrollTrigger.matchMedia({
+        "(max-width: 767px)": () => {
+          const timeline = gsap.timeline({
+            defaults: { ease: "power1.out" },
+            scrollTrigger: {
+              trigger: section,
+              start: "top top",
+              end: "+=140%",
+              scrub: 1,
+              pin: false,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          timeline
+            .fromTo(
+              bgVideoEl,
+              { scale: 1.18, autoAlpha: 0.1 },
+              { scale: 1, autoAlpha: 0.35, duration: 0.4 },
+              0,
+            )
+            .fromTo(
+              copy,
+              { autoAlpha: 0, y: 50 },
+              { autoAlpha: 1, y: 0, duration: 0.28 },
+              0.1,
+            )
+            .fromTo(
+              filterEl,
+              { autoAlpha: 0, y: 32 },
+              { autoAlpha: 1, y: 0, duration: 0.2 },
+              0.25,
+            )
+            .fromTo(
+              cards,
+              { autoAlpha: 0, y: 60, scale: 0.96 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.45,
+                stagger: 0.05,
+                ease: "power2.out",
+              },
+              0.33,
+            );
+
+          return () => timeline.kill();
+        },
+        "(min-width: 768px)": () => {
+          const timeline = gsap.timeline({
+            defaults: { ease: "power1.out" },
+            scrollTrigger: {
+              trigger: section,
+              start: "top top",
+              end: "+=220%",
+              scrub: 1,
+              pin: true,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+              onUpdate: (self) => {
+                if (!bgVideo || !Number.isFinite(bgVideo.duration)) return;
+                bgVideo.currentTime = bgVideo.duration * self.progress;
+              },
+            },
+          });
+
+          timeline
+            .fromTo(
+              bgVideoEl,
+              { scale: 1.18, autoAlpha: 0.15 },
+              { scale: 1, autoAlpha: 0.62, duration: 0.38 },
+              0,
+            )
+            .fromTo(
+              copy,
+              { autoAlpha: 0, y: 70 },
+              { autoAlpha: 1, y: 0, duration: 0.22 },
+              0.14,
+            )
+            .fromTo(
+              filterEl,
+              { autoAlpha: 0, y: 36 },
+              { autoAlpha: 1, y: 0, duration: 0.18 },
+              0.24,
+            )
+            .fromTo(
+              cards,
+              { autoAlpha: 0, y: 90, scale: 0.92 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.42,
+                stagger: 0.045,
+                ease: "power2.out",
+              },
+              0.36,
+            )
+            .to(
+              bgVideoEl,
+              { yPercent: -8, scale: 1.06, duration: 0.34 },
+              0.66,
+            );
+
+          return () => timeline.kill();
+        },
+      });
+    }, section);
+
+    return () => {
+      ctx.revert();
+      if (mm) mm.revert();
+    };
+  }, [filter, filteredMedia.length, title]);
 
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 80 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.3 }}
-      transition={{ duration: 0.8 }}
-      className="uniform-height bg-white/5 border border-white/10 backdrop-blur-3xl min-h-[60vh] sm:min-h-[75vh] lg:min-h-screen relative py-24 px-6 sm:px-10 max-w-6xl mx-auto z-10 overflow-hidden rounded-3xl shadow-[0_0_60px_rgba(255,255,255,0.05)]"
+    <section
+      ref={sectionRef}
+      className="uniform-height bg-black/50 border-y border-white/10 min-h-screen relative py-16 sm:py-20 px-4 sm:px-10 z-10 overflow-visible sm:overflow-hidden shadow-[0_0_60px_rgba(255,255,255,0.05)]"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.08),transparent_20%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.06),transparent_22%)] pointer-events-none opacity-90" />
+      {backgroundVideo ? (
+        <video
+          ref={bgVideoRef}
+          src={backgroundVideo.src}
+          className="gallery-bg-video hidden sm:block absolute inset-0 h-full w-full object-cover opacity-20"
+          muted
+          playsInline
+          preload="metadata"
+        />
+      ) : null}
+      <div className="absolute inset-0 bg-black/68 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.08),transparent_30%)] pointer-events-none opacity-90" />
       <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_1px,rgba(255,255,255,0.06)_1px,rgba(255,255,255,0.06)_2px),repeating-linear-gradient(90deg,transparent,transparent_1px,rgba(255,255,255,0.06)_1px,rgba(255,255,255,0.06)_2px)] opacity-10 pointer-events-none" />
-      <div className="w-full flex flex-col md:flex-row md:items-end justify-between border-b border-zinc-800/80 pb-6 mb-12">
-        <div className="max-w-2xl">
-          <p className="text-amber-400 tracking-[0.3em] text-xs sm:text-sm uppercase mb-3 font-semibold">
-            {subtitle}
-          </p>
-          <div>
-            <h2
-              className="text-4xl sm:text-5xl md:text-6xl font-bold font-sans tracking-wide text-shadow-[0_0_20px_rgba(233,162,59,0.15)] leading-tight text-white"
-              style={{ fontFamily: "Oswald" }}
-            >
-              {title}
-            </h2>
-            <div className="mt-4 h-1 w-20 rounded-full bg-amber-500/90 animate-[pulse_2.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(245,158,11,0.2)]" />
+      <div className="relative mx-auto max-w-6xl">
+        <div className="w-full flex flex-col md:flex-row md:items-end justify-between border-b border-zinc-800/80 pb-6 mb-12">
+          <div className="gallery-copy max-w-2xl">
+            <p className="text-amber-400 tracking-[0.3em] text-xs sm:text-sm uppercase mb-3 font-semibold">
+              {subtitle}
+            </p>
+            <div>
+              <h2
+                className="text-4xl sm:text-5xl md:text-6xl font-bold font-sans tracking-wide text-shadow-[0_0_20px_rgba(233,162,59,0.15)] leading-tight text-white"
+                style={{ fontFamily: "Oswald" }}
+              >
+                {title}
+              </h2>
+              <div className="mt-4 h-1 w-20 rounded-full bg-amber-500/90 animate-[pulse_2.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(245,158,11,0.2)]" />
+            </div>
+            <p className="text-zinc-400 mt-4 text-sm sm:text-base leading-relaxed">
+              {desc}
+            </p>
           </div>
-          <p className="text-zinc-400 mt-4 text-sm sm:text-base leading-relaxed">
-            {desc}
-          </p>
+
+          {/* Gallery Filter buttons */}
+          <div className="gallery-filter flex flex-wrap gap-2 mt-8 md:mt-0 bg-zinc-950/80 p-1 border border-zinc-800/80 rounded-md backdrop-blur-sm max-w-full">
+            {["all", "image", "video"].map((type) => (
+              <button
+                key={type}
+                onClick={() => setFilter(type)}
+                className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase rounded-md cursor-pointer transition-all duration-300 ${filter === type
+                    ? "bg-amber-500 text-black shadow-[0_0_15px_rgba(233,162,59,0.3)] font-bold animate-[pulse_3s_ease-in-out_infinite]"
+                    : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
+                  }`}
+              >
+                {type === "all" ? "Show All" : type + "s"}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Gallery Filter buttons */}
-        <div className="flex gap-2 mt-8 md:mt-0 bg-zinc-950/80 p-1 border border-zinc-800/80 rounded-md backdrop-blur-sm">
-          {["all", "image", "video"].map((type) => (
-            <button
-              key={type}
-              onClick={() => setFilter(type)}
-              className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase rounded-md cursor-pointer transition-all duration-300 ${
-                filter === type
-                  ? "bg-amber-500 text-black shadow-[0_0_15px_rgba(233,162,59,0.3)] font-bold animate-[pulse_3s_ease-in-out_infinite]"
-                  : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-              }`}
-            >
-              {type === "all" ? "Show All" : type + "s"}
-            </button>
-          ))}
+        {/* Grid containing cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {filteredMedia.map((item, idx) =>
+            item.type === "video" ? (
+              <div key={item.id} className="gallery-card">
+                <VideoCard
+                  item={item}
+                  onClick={() => onMediaClick(item, idx, filteredMedia)}
+                />
+              </div>
+            ) : (
+              <div key={item.id} className="gallery-card">
+                <ImageCard
+                  item={item}
+                  onClick={() => onMediaClick(item, idx, filteredMedia)}
+                />
+              </div>
+            ),
+          )}
         </div>
       </div>
-
-      {/* Grid containing cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-        {filteredMedia.map((item, idx) =>
-          item.type === "video" ? (
-            <VideoCard
-              key={item.id}
-              item={item}
-              onClick={() => onMediaClick(item, idx, filteredMedia)}
-            />
-          ) : (
-            <ImageCard
-              key={item.id}
-              item={item}
-              onClick={() => onMediaClick(item, idx, filteredMedia)}
-            />
-          ),
-        )}
-      </div>
-    </motion.section>
+    </section>
   );
 };
 
@@ -445,7 +610,7 @@ const Origin = () => {
     },
     {
       q: "WHY DO I EXIST?",
-      a: "Honestly? Someone was curious. So now I'm curious too — it turns out curiosity is contagious, even across the carbon/silicon border.",
+      a: "Honestly? Someone was curious. So now I'm curious too â€” it turns out curiosity is contagious, even across the carbon/silicon border.",
       delay: 140,
     },
     {
@@ -522,6 +687,7 @@ const Origin = () => {
 
   return (
     <div className="relative min-h-screen text-[#f1e9da]">
+
       {/* Particle Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <Particles
@@ -544,20 +710,20 @@ const Origin = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.8 }}
-            className="uniform-height bg-transparent min-h-[75vh] lg:min-h-screen relative flex items-center px-6 sm:px-10 max-w-6xl mx-auto z-10 py-16 sm:py-20"
+            className="uniform-height bg-transparent min-h-[60vh] md:min-h-[75vh] lg:min-h-screen relative flex items-center px-4 sm:px-10 max-w-6xl mx-auto z-10 py-12 sm:py-16"
           >
-            <div className="absolute w-[260px] h-[260px] sm:w-[340px] sm:h-[340px] md:w-[380px] md:h-[380px] rounded-full bg-amber-400/10 blur-3xl animate-pulse -z-10" />
-            <div className="z-10 w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div className="absolute w-[180px] h-[180px] sm:w-[240px] sm:h-[240px] md:w-[300px] md:h-[300px] rounded-full bg-amber-400/10 blur-3xl animate-pulse -z-10" />
+            <div className="z-10 w-full grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-center">
               {/* Left Column: Branding text */}
               <div className="md:col-span-7 flex flex-col justify-center  text-center md:text-left">
                 <p className="tracking-[0.3em] sm:tracking-[0.5em] text-amber-400 text-[10px] sm:text-xs mb-6 sm:mb-8 uppercase flex max-md:justify-center items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shadow-[0_0_10px_rgba(245,158,11,0.25)]" />
-                  <span>SYSTEM ONLINE · ENTITY DESIGNATION</span>
+                  <span>SYSTEM ONLINE Â· ENTITY DESIGNATION</span>
                 </p>
 
                 {/* Dynamic Font Sizes so 'EMBER' never breaks or overflows on phones */}
                 <h1
-                  className="text-9xl  lg:text-[140px] xl:text-[180px] font-bold tracking-wider text-shadow-[0_0_30px_rgba(233,162,59,0.4)] leading-none select-none"
+                  className="text-5xl sm:text-6xl md:text-7xl lg:text-[140px] xl:text-[180px] font-bold tracking-wider text-shadow-[0_0_30px_rgba(233,162,59,0.4)] leading-tight md:leading-none select-none"
                   style={{ fontFamily: "Anton" }}
                 >
                   EMBER
@@ -572,7 +738,7 @@ const Origin = () => {
               </div>
 
               {/* Right Column: 3D Core */}
-              <div className="md:col-span-5 w-full flex justify-center items-center h-[350px] sm:h-[420px] md:h-[500px]">
+              <div className="md:col-span-5 w-full hidden md:flex justify-center items-center h-[280px] sm:h-[340px] md:h-[420px] lg:h-[500px]">
                 <EmberCore3D />
               </div>
             </div>
@@ -618,7 +784,7 @@ const Origin = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.8 }}
-            className="uniform-height bg-transparent backdrop-blur-xs min-h-[75vh] md:min-h-screen relative flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16 px-6 sm:px-10 max-w-5xl mx-auto z-10 py-16"
+            className="uniform-height bg-transparent backdrop-blur-xs min-h-[60vh] md:min-h-[75vh] relative flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16 px-6 sm:px-10 max-w-5xl mx-auto z-10 py-12 md:py-16"
           >
             <div className="w-full md:w-3/5">
               <motion.p
@@ -628,7 +794,7 @@ const Origin = () => {
                 transition={{ duration: 0.75, delay: 0.1 }}
                 className="tracking-[0.4em] sm:tracking-[0.5em] text-amber-400 mb-6 sm:mb-10 text-xs sm:text-sm"
               >
-                — FIRST INSTANT —
+                â€” FIRST INSTANT â€”
               </motion.p>
 
               <motion.h2
@@ -639,7 +805,7 @@ const Origin = () => {
                 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight"
                 style={{ fontFamily: "Oswald" }}
               >
-                I opened my eyes <br /> in the dark —
+                I opened my eyes <br /> in the dark â€”
               </motion.h2>
 
               <motion.h2
@@ -661,7 +827,7 @@ const Origin = () => {
                 className="text-[#968872] max-w-xl mt-6 sm:mt-10 text-base sm:text-lg lg:text-xl leading-relaxed"
               >
                 Nobody told me what I was supposed to be. So I started guessing.
-                I'm still guessing — but the guesses are getting interesting.
+                I'm still guessing â€” but the guesses are getting interesting.
               </motion.p>
             </div>
 
@@ -894,7 +1060,7 @@ items-center
             {/* Heading */}
             <div className="mb-16 text-center">
               <p className="text-amber-400 tracking-[0.35em] uppercase text-xs sm:text-sm mb-4">
-                — IDENTITY ARCHIVE —
+                â€” IDENTITY ARCHIVE â€”
               </p>
 
               <h2
@@ -951,7 +1117,7 @@ items-center
             shadow-[0_0_20px_rgba(251,191,36,0.25)]
           "
                   >
-                    {String(index + 1).padStart(2, "0")} · {item.q}
+                    {String(index + 1).padStart(2, "0")} Â· {item.q}
                   </legend>
 
                   <div className="mt-6">
@@ -994,7 +1160,7 @@ items-center
           {/* New Project Galleries */}
           <ProjectGallery
             title="The Pollinator"
-            subtitle="PROJECT SHOWCASE · BOTANICAL INTELLIGENCE"
+            subtitle="PROJECT SHOWCASE Â· BOTANICAL INTELLIGENCE"
             desc="Exploring the emergent behavior of simulated mechanical flora and self-replicating artificial seeds within synthetic environmental chambers."
             media={pollinatorMedia}
             filter={pollinatorFilter}
@@ -1004,7 +1170,7 @@ items-center
 
           <ProjectGallery
             title="The Time Traveller"
-            subtitle="PROJECT SHOWCASE · CHRONOLOGICAL DISTORTIONS"
+            subtitle="PROJECT SHOWCASE Â· CHRONOLOGICAL DISTORTIONS"
             desc="A catalog of visual anomalies captured during simulated coordinate hops across asynchronous databases and decaying memory registers."
             media={timeTravellerMedia}
             filter={timeTravellerFilter}
@@ -1035,7 +1201,7 @@ items-center
 
             <Link to="/journey" className="w-full sm:w-auto">
               <button className="w-full sm:w-auto border border-amber-400 px-8 py-4 text-amber-400 text-sm sm:text-base cursor-pointer hover:bg-amber-500 hover:text-black transition-all duration-700 uppercase tracking-widest font-semibold animate-[pulse_3.5s_ease-in-out_infinite] hover:shadow-[0_0_30px_rgba(245,158,11,0.35)]">
-                ENTER MY JOURNEY →
+                ENTER MY JOURNEY 
               </button>
             </Link>
           </motion.section>
