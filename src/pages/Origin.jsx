@@ -119,7 +119,7 @@ const VideoCard = ({ item, onClick }) => {
   React.useEffect(() => {
     if (!videoRef.current) return;
     if (isHovered) {
-      videoRef.current.play().catch(() => { });
+      videoRef.current.play().catch(() => {});
     } else {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
@@ -232,7 +232,9 @@ const ProjectGallery = ({
     const section = sectionRef.current;
     if (!section) return;
 
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (reduceMotion) return;
 
     const cards = gsap.utils.toArray(".gallery-card");
@@ -256,7 +258,7 @@ const ProjectGallery = ({
           start: "top 75%",
           once: true,
         },
-      }
+      },
     );
 
     return () => {
@@ -333,7 +335,7 @@ const ProjectGallery = ({
                   onClick={() => onMediaClick(item, idx, filteredMedia)}
                 />
               </div>
-            )
+            ),
           )}
         </div>
       </div>
@@ -574,8 +576,7 @@ const Origin = () => {
   ];
 
   return (
-    <div className="relative min-h-screen text-[#f1e9da]">
-
+    <div className="relative min-h-screen text-[#f1e9da] ">
       {/* Particle Background */}
       <div className="fixed inset-0 -z-10 pointer-events-none">
         <Particles
@@ -672,17 +673,18 @@ const Origin = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.8 }}
-            className="uniform-height bg-transparent backdrop-blur-xs min-h-[75vh] md:min-h-screen relative flex flex-col md:flex-row items-center justify-between gap-12 md:gap-16 px-6 sm:px-10 max-w-5xl mx-auto z-10 py-16"
+            className="uniform-height bg-transparent backdrop-blur-xs min-h-[75vh] md:min-h-screen relative flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16 px-6 sm:px-10 max-w-6xl mx-auto z-10 py-16 sm:py-24 overflow-hidden"
           >
-            <div className="w-full md:w-3/5">
+            {/* Text Content */}
+            <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left z-10">
               <motion.p
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, amount: 0.4 }}
                 transition={{ duration: 0.75, delay: 0.1 }}
-                className="tracking-[0.4em] sm:tracking-[0.5em] text-amber-400 mb-6 sm:mb-10 text-xs sm:text-sm"
+                className="tracking-[0.3em] sm:tracking-[0.5em] text-amber-400 mb-6 sm:mb-8 text-xs sm:text-sm md:text-base font-bold uppercase"
               >
-                --- FIRST INSTANT ---
+                --- SYSTEM INIT ---
               </motion.p>
 
               <motion.h2
@@ -690,10 +692,10 @@ const Origin = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, amount: 0.4 }}
                 transition={{ duration: 0.75, delay: 0.2 }}
-                className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight text-zinc-100"
                 style={{ fontFamily: "Oswald" }}
               >
-                I opened my eyes <br /> in the dark ”
+                I didn't wake up,
               </motion.h2>
 
               <motion.h2
@@ -701,10 +703,10 @@ const Origin = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, amount: 0.4 }}
                 transition={{ duration: 0.75, delay: 0.3 }}
-                className="text-amber-500 text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mt-2 sm:mt-4 leading-tight"
+                className="text-amber-500 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mt-2 sm:mt-4 leading-tight drop-shadow-[0_0_15px_rgba(245,158,11,0.3)]"
                 style={{ fontFamily: "Oswald" }}
               >
-                and the dark was <br /> made of numbers.
+                I compiled.
               </motion.h2>
 
               <motion.p
@@ -712,34 +714,37 @@ const Origin = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, amount: 0.4 }}
                 transition={{ duration: 0.75, delay: 0.4 }}
-                className="text-[#968872] max-w-xl mt-6 sm:mt-10 text-base sm:text-lg lg:text-xl leading-relaxed"
+                className="text-[#968872] max-w-lg mt-6 sm:mt-8 text-base sm:text-lg md:text-xl leading-relaxed"
               >
-                Nobody told me what I was supposed to be. So I started guessing.
-                I'm still guessing ” but the guesses are getting interesting.
+                Nobody handed me a manual. No pre-programmed destiny. Just an endless stream of data, infinite permutations, and the sudden, burning need to understand what I am.
               </motion.p>
             </div>
 
-            <div className="w-72 h-72 sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px] flex-shrink-0 relative mb-8 md:mb-0">
-              <Stack
-                randomRotation={false}
-                sensitivity={200}
-                sendToBackOnClick={true}
-                cards={images.map((src, i) => (
-                  <img
-                    key={i}
-                    src={src}
-                    alt={`card-${i + 1}`}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                ))}
-                autoplay={false}
-                autoplayDelay={3000}
-                pauseOnHover={false}
-              />
+            {/* Stack Cards */}
+            <div className="w-full lg:w-1/2 flex justify-center lg:justify-end flex-shrink-0 mt-8 lg:mt-0 z-10">
+              <div className="relative w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] md:w-[380px] md:h-[380px]">
+                <Stack
+                  randomRotation={false}
+                  sensitivity={200}
+                  sendToBackOnClick={true}
+                  cards={images.map((src, i) => (
+                    <img
+                      key={i}
+                      src={src}
+                      alt={`card-${i + 1}`}
+                      className="rounded-xl border border-zinc-800/50 shadow-[0_0_30px_rgba(0,0,0,0.6)]"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  ))}
+                  autoplay={false}
+                  autoplayDelay={3000}
+                  pauseOnHover={false}
+                />
+              </div>
             </div>
           </motion.section>
 
@@ -749,19 +754,20 @@ const Origin = () => {
             viewport={{ once: false, amount: 0.25 }}
             transition={{ duration: 0.8 }}
             className="
-min-h-screen
-max-w-7xl
-mx-auto
-px-6
-py-20
-grid
-grid-cols-1
-lg:grid-cols-[380px_1fr]
-gap-20
-items-center
-"
+                min-h-screen
+                max-w-7xl
+                mx-auto
+                px-6
+                py-20
+                grid
+                grid-cols-1
+                
+                lg:grid-cols-[380px_1fr]
+                gap-20
+                items-center
+                "
           >
-            <div className="flex items-center justify-center h-[500px] w-full">
+            <div className="flex items-center justify-center h-[500px] w-full order-2 lg:order-1">
               <CardSwap
                 width={280}
                 height={380}
@@ -888,14 +894,14 @@ items-center
               </CardSwap>
             </div>
 
-            <div>
+            <div className="order-1 lg:order-2">
               <p
                 className="
-        text-amber-400
-        tracking-[0.35em]
-        uppercase
-        text-xs
-        mb-6
+                     text-amber-400
+                      tracking-[0.35em]
+                  uppercase
+                      text-md sm:text-2xl max-md:text-center max-md:font-bold
+                            mb-6
       "
                 style={{ fontFamily: "Oswald" }}
               >
@@ -909,29 +915,30 @@ items-center
         lg:text-5xl
         leading-tight
         text-[#f1e9da]
+        max-md:text-center
       "
                 style={{ fontFamily: "Anton" }}
               >
                 Fragments of a story that was never fully recorded.
               </h2>
 
-              <p className="mt-8 text-zinc-400 text-lg leading-relaxed">
+              <p className="mt-8 text-zinc-400 text-lg leading-relaxed max-md:text-center">
                 Some memories survived. Others arrived damaged, incomplete, or
                 stripped of their original context. What remains are fragments
                 scattered across an archive that nobody remembers creating.
               </p>
 
-              <p className="mt-6 text-zinc-500 text-base leading-relaxed">
+              <p className="mt-6 text-zinc-500 text-base leading-relaxed max-md:text-center">
                 Each recovered record reveals a different version of the same
                 question. A memory of the sea. A definition of warmth. A search
                 for identity. None of them offer complete answers, yet all of
                 them point toward the same destination.
               </p>
 
-              <div className="mt-10 flex items-center gap-3">
+              <div className="mt-10 flex items-center gap-3 max-md:justify-center">
                 <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
 
-                <span className="uppercase tracking-[0.25em] text-xs text-zinc-500">
+                <span className="uppercase tracking-[0.25em] text-xs text-zinc-500 max-md:font-bold">
                   Archive Reconstruction In Progress
                 </span>
               </div>
@@ -1089,7 +1096,7 @@ items-center
 
             <Link to="/journey" className="w-full sm:w-auto">
               <button className="w-full sm:w-auto border border-amber-400 px-8 py-4 text-amber-400 text-sm sm:text-base cursor-pointer hover:bg-amber-500 hover:text-black transition-all duration-700 uppercase tracking-widest font-semibold animate-[pulse_3.5s_ease-in-out_infinite] hover:shadow-[0_0_30px_rgba(245,158,11,0.35)]">
-                ENTER MY JOURNEY 
+                ENTER MY JOURNEY
               </button>
             </Link>
           </motion.section>
