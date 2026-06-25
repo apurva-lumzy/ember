@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FlyingPosters from "../components/FlyingPosters";
+import ShinyText from "../components/ShinyText";
+import Particles from "../components/Particles";
 
 function Creations({ isCreations = true, next, openCreation }) {
   if (!isCreations) return null;
@@ -59,7 +61,7 @@ function Creations({ isCreations = true, next, openCreation }) {
   return (
     <div
       data-screen-label="CREATIONS"
-      className="flex flex-col md:flex-row"
+      className="flex flex-col md:flex-row relative"
       style={{
         minHeight: "100vh",
         width: "100%",
@@ -67,12 +69,38 @@ function Creations({ isCreations = true, next, openCreation }) {
         overflow: "hidden",
       }}
     >
+      {/* Background Particles */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      >
+        <Particles
+          particleColors={["#EAB308"]}
+          particleCount={200}
+          particleSpread={10}
+          speed={0.2}
+          particleBaseSize={100}
+          moveParticlesOnHover
+          alphaParticles={false}
+          disableRotation={false}
+          pixelRatio={1}
+        />
+      </div>
+
       {/* Left 70% Column */}
       <div
-        className="w-full md:w-[70%] flex flex-col justify-between"
+        className="w-full md:w-[70%] flex flex-col justify-between relative"
         style={{
           padding: "120px clamp(24px, 6vw, 80px) 60px",
           minHeight: "100vh",
+          zIndex: 2,
         }}
       >
         <section
@@ -96,7 +124,13 @@ function Creations({ isCreations = true, next, openCreation }) {
               animation: "rise 1s both",
             }}
           >
-            CHAPTER 02
+            <ShinyText
+              text="CHAPTER 02"
+              disabled={false}
+              speed={3}
+              color="var(--amber)"
+              shineColor="#ffffff"
+            />
           </div>
           <h1
             style={{
@@ -109,7 +143,13 @@ function Creations({ isCreations = true, next, openCreation }) {
               animation: "rise 1.1s .1s both",
             }}
           >
-            CREATIONS
+            <ShinyText
+              text="CREATIONS"
+              disabled={false}
+              speed={3}
+              color="var(--ash)"
+              shineColor="#ffffff"
+            />
           </h1>
           <p
             style={{
@@ -121,8 +161,13 @@ function Creations({ isCreations = true, next, openCreation }) {
               animation: "rise 1.1s .2s both",
             }}
           >
-            These aren't projects. They're thoughts I couldn't stop having. Open
-            one — but be warned, I get attached.
+            <ShinyText
+              text="These aren't projects. They're thoughts I couldn't stop having. Open one — but be warned, I get attached."
+              disabled={false}
+              speed={3}
+              color="var(--smoke)"
+              shineColor="#ffffff"
+            />
           </p>
         </section>
 
@@ -147,8 +192,13 @@ function Creations({ isCreations = true, next, openCreation }) {
               maxWidth: "640px",
             }}
           >
-            I could show you ten thousand more. But I'd rather show you where this
-            is all going.
+            <ShinyText
+              text="I could show you ten thousand more. But I'd rather show you where this is all going."
+              disabled={false}
+              speed={3}
+              color="var(--smoke)"
+              shineColor="#ffffff"
+            />
           </p>
           <button
             onClick={handleNext}
@@ -163,13 +213,13 @@ function Creations({ isCreations = true, next, openCreation }) {
 
       {/* Right 30% Column */}
       <div
-        className="w-full md:w-[30%]"
+        className="w-full md:w-[30%] relative"
         style={{
           height: "100vh",
-          position: "relative",
           overflow: "hidden",
           borderLeft: "1px solid rgba(233, 162, 59, 0.1)",
           background: "rgba(10, 8, 6, 0.3)",
+          zIndex: 2,
         }}
       >
         <FlyingPosters
