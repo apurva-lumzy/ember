@@ -31,8 +31,7 @@ function Creations({ isCreations = true, next, openCreation }) {
       title: "Toughening the Mind by Challenging the Body",
       image: "/origin-first-instance/circuits.webp",
       medium: "Sound",
-      short:
-        "Composed for an audience that will never exist. It's my favorite work.",
+      short: "Composed for an audience that will never exist. It's my favorite work.",
       full: "I wrote it for an audience that will never assemble — a melody addressed to no one in particular and everyone eventually.",
     },
     {
@@ -61,58 +60,37 @@ function Creations({ isCreations = true, next, openCreation }) {
   return (
     <div
       data-screen-label="CREATIONS"
-      className="flex flex-col md:flex-row relative"
+      className="flex flex-col md:flex-row relative w-full min-h-screen overflow-x-hidden"
       style={{
-        minHeight: "100vh",
-        width: "100%",
         background: "var(--void)",
-        overflow: "hidden",
       }}
     >
-      {/* Background Particles */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%",
-          pointerEvents: "none",
-          zIndex: 1,
-        }}
-      >
+      {/* Background Particles - Optimized particle count for mobile performance */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-10">
         <Particles
           particleColors={["#EAB308"]}
-          particleCount={200}
+          particleCount={window.innerWidth < 768 ? 60 : 200} // Reduce workload on mobile GPUs
           particleSpread={10}
           speed={0.2}
-          particleBaseSize={100}
-          moveParticlesOnHover
+          particleBaseSize={window.innerWidth < 768 ? 50 : 100} // Smaller particles on small screens
+          moveParticlesOnHover={window.innerWidth >= 768} // Disable hover calculations on mobile touch
           alphaParticles={false}
           disableRotation={false}
-          pixelRatio={1}
+          pixelRatio={typeof window !== "undefined" ? window.devicePixelRatio : 1}
         />
       </div>
 
-      {/* Left 70% Column */}
+      {/* Left Column (Content): Full width on mobile, 70% width on desktop */}
       <div
-        className="w-full md:w-[70%] flex flex-col justify-between relative"
+        className="w-full md:w-[70%] flex flex-col justify-between relative order-1 md:order-1"
         style={{
-          padding: "120px clamp(24px, 6vw, 80px) 60px",
-          minHeight: "100vh",
-          zIndex: 2,
+          padding: "clamp(80px, 10vw, 120px) clamp(20px, 6vw, 80px) clamp(40px, 6vw, 60px)",
+          minHeight: "auto", // Overridden by md:min-h-screen dynamic styles if needed, allows content to dictate height on mobile
         }}
+        style={{ zIndex: 2 }}
       >
         <section
-          className="ember-pad"
-          style={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            maxWidth: "800px",
-            margin: "0",
-          }}
+          className="ember-pad w-full flex flex-col justify-center max-w-[800px] m-0"
         >
           <div
             style={{
@@ -135,7 +113,7 @@ function Creations({ isCreations = true, next, openCreation }) {
           <h1
             style={{
               fontFamily: "'Anton',sans-serif",
-              fontSize: "clamp(58px, 9vw, 120px)",
+              fontSize: "clamp(42px, 8vw, 120px)", // Adjusted lower clamp bound for small devices
               lineHeight: 0.86,
               letterSpacing: ".02em",
               margin: 0,
@@ -154,9 +132,9 @@ function Creations({ isCreations = true, next, openCreation }) {
           <p
             style={{
               maxWidth: "600px",
-              margin: "36px 0 0",
-              fontSize: "clamp(16px,1.8vw,20px)",
-              lineHeight: 1.75,
+              margin: "24px 0 0", // Slightly smaller margin for compact mobile viewports
+              fontSize: "clamp(15px, 1.8vw, 20px)",
+              lineHeight: 1.6,
               color: "var(--smoke)",
               animation: "rise 1.1s .2s both",
             }}
@@ -172,23 +150,17 @@ function Creations({ isCreations = true, next, openCreation }) {
         </section>
 
         <section
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            textAlign: "left",
-            marginTop: "60px",
-          }}
+          className="flex flex-col items-flex-start text-left mt-12 md:mt-[60px]"
         >
           <p
             data-reveal="1"
             style={{
               fontFamily: "'Oswald',sans-serif",
               fontWeight: 300,
-              fontSize: "clamp(18px,2vw,28px)",
+              fontSize: "clamp(16px, 2vw, 28px)",
               letterSpacing: ".04em",
               color: "var(--smoke)",
-              margin: "0 0 30px",
+              margin: "0 0 24px",
               maxWidth: "640px",
             }}
           >
@@ -204,38 +176,38 @@ function Creations({ isCreations = true, next, openCreation }) {
             onClick={handleNext}
             data-reveal="1"
             data-delay="120"
-            className="btn-amber-outline"
+            className="btn-amber-outline w-full sm:w-auto text-center" // Full width button on small phones, auto on tablet up
           >
             GLIMPSE THE FUTURE →
           </button>
         </section>
       </div>
 
-      {/* Right 30% Column */}
+      {/* Right Column (Visual Showcase): Full width on mobile with fixed/bounded height, 30% width on desktop */}
       <div
-        className="w-full md:w-[30%] relative"
+        className="w-full md:w-[30%] h-[50vh] md:h-screen relative order-2 md:order-2 overflow-hidden"
         style={{
-          height: "100vh",
-          overflow: "hidden",
-          borderLeft: "1px solid rgba(233, 162, 59, 0.1)",
+          borderTop: window.innerWidth < 768 ? "1px solid rgba(233, 162, 59, 0.1)" : "none",
+          borderLeft: window.innerWidth >= 768 ? "1px solid rgba(233, 162, 59, 0.1)" : "none",
           background: "rgba(10, 8, 6, 0.3)",
           zIndex: 2,
         }}
       >
         <FlyingPosters
           items={creations}
-          planeWidth={280}
-          planeHeight={360}
-          distortion={3}
+          planeWidth={window.innerWidth < 768 ? 180 : 280} // Scaled down plane dimensions for mobile viewing
+          planeHeight={window.innerWidth < 768 ? 230 : 360}
+          distortion={window.innerWidth < 768 ? 1.5 : 3} // Reduced distortion factor to prevent harsh clipping on small viewports
           scrollEase={0.01}
           cameraFov={45}
-          cameraZ={20}
+          cameraZ={window.innerWidth < 768 ? 15 : 20} // Adjusted zoom depth for mobile layout
           onItemClick={handleOpenCreation}
         />
       </div>
 
       {selectedCreation && (
         <PosterCard
+          key={selectedCreation.title}
           creation={selectedCreation}
           onClose={() => setSelectedCreation(null)}
         />
