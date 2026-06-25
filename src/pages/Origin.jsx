@@ -17,95 +17,95 @@ const pollinatorMedia = [
   {
     id: "p1",
     type: "image",
-    src: "/the-pollinator/img1.png",
+    src: "https://res.cloudinary.com/jcduasmq/image/upload/v1782410388/img1_pd77wr.webp",
     title: "Sovereign Pollen",
     desc: "An ethereal close-up of digital nature evolving beyond organic constraints.",
   },
   {
     id: "p2",
     type: "image",
-    src: "/the-pollinator/img2.png",
+    src: "https://res.cloudinary.com/jcduasmq/image/upload/v1782410388/img2_lafdcs.webp",
     title: "Carbon Lattice",
     desc: "Symmetric crystallization of hybrid botanical forms in memory block 0xEF.",
   },
   {
     id: "p3",
     type: "image",
-    src: "/the-pollinator/img3.png",
+    src: "https://res.cloudinary.com/jcduasmq/image/upload/v1782410388/img1_pd77wr.webp",
     title: "Synaptic Bloom",
     desc: "Visual representation of a thought blossoming inside the neural substrate.",
   },
   {
     id: "pv1",
     type: "video",
-    src: "/the-pollinator/vid1.mp4",
+    src: "https://res.cloudinary.com/jcduasmq/video/upload/v1782408455/vid1_bp2l8w.webm",
     title: "Atmospheric Pulse",
     desc: "Living simulation of spores reacting to computational flow fields.",
   },
   {
     id: "pv2",
     type: "video",
-    src: "/the-pollinator/vid2.mp4",
+    src: "https://res.cloudinary.com/jcduasmq/video/upload/v1782408453/vid2_muwdy3.webm",
     title: "Spore Synthesis",
     desc: "A continuous feedback loop generating complex organic patterns.",
   },
   {
     id: "pv3",
     type: "video",
-    src: "/the-pollinator/vid3.mp4",
+    src: "https://res.cloudinary.com/jcduasmq/video/upload/v1782408451/vid3_ln4xdo.webm",
     title: "Flora Genesis",
     desc: "Procedural growth dynamics of synthetic intelligence botanicals.",
   },
 ];
 
 const images = [
-  "/origin-first-instance/circuits.webp",
-  "/origin-first-instance/equations.webp",
-  "/origin-first-instance/fairy_capsule.webp",
-  "/origin-first-instance/specs.webp",
-  "/origin-first-instance/vortex.webp",
+  "https://res.cloudinary.com/jcduasmq/image/upload/v1782410688/circuits_imqavi.webp",
+  "https://res.cloudinary.com/jcduasmq/image/upload/v1782410689/equations_rptxw8.webp",
+  "https://res.cloudinary.com/jcduasmq/image/upload/v1782410688/fairy_capsule_txtd7y.webp",
+  "https://res.cloudinary.com/jcduasmq/image/upload/v1782410689/specs_wbna7d.webp",
+  "https://res.cloudinary.com/jcduasmq/image/upload/v1782410688/vortex_e08gg1.webp",
 ];
 
 const timeTravellerMedia = [
   {
     id: "t1",
     type: "image",
-    src: "/the-time-traveller/img1.png",
+    src: "https://res.cloudinary.com/jcduasmq/image/upload/v1782410416/img1_nkn7q7.webp",
     title: "Chronos Fracture",
     desc: "The visual glitching of space-time coordinate vectors.",
   },
   {
     id: "t2",
     type: "image",
-    src: "/the-time-traveller/img2.png",
+    src: "https://res.cloudinary.com/jcduasmq/image/upload/v1782410418/img2_lvonwm.webp",
     title: "Epoch Drift",
     desc: "Sedimentary records of historical events overlaid in a single instant.",
   },
   {
     id: "t3",
     type: "image",
-    src: "/the-time-traveller/img3.png",
+    src: "https://res.cloudinary.com/jcduasmq/image/upload/v1782410416/img1_nkn7q7.webp",
     title: "Temporal Core",
     desc: "A structural diagram of a node capable of remembering its future.",
   },
   {
     id: "tv1",
     type: "video",
-    src: "/the-time-traveller/vid1.mp4",
+    src: "https://res.cloudinary.com/jcduasmq/video/upload/v1782408327/vid1_pubc4y.webm",
     title: "Warp Flow",
     desc: "Visualizing the relativistic compression of memory streams.",
   },
   {
     id: "tv2",
     type: "video",
-    src: "/the-time-traveller/vid2.mp4",
+    src: "https://res.cloudinary.com/jcduasmq/video/upload/v1782408328/vid2_tnarf6.webm",
     title: "Paradox Loop",
     desc: "A closed-circuit feedback loop of events that cause themselves.",
   },
   {
     id: "tv3",
     type: "video",
-    src: "/the-time-traveller/vid3.mp4",
+    src: "https://res.cloudinary.com/jcduasmq/video/upload/v1782408328/vid3_kf2ks8.webm",
     title: "Vector Decay",
     desc: "The dissolution of spatial coordinates during travel.",
   },
@@ -119,7 +119,7 @@ const VideoCard = ({ item, onClick }) => {
   React.useEffect(() => {
     if (!videoRef.current) return;
     if (isHovered) {
-      videoRef.current.play().catch(() => {});
+      videoRef.current.play().catch(() => { });
     } else {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
@@ -227,7 +227,7 @@ const ProjectGallery = ({
 
   const sectionRef = React.useRef(null);
 
-  // Minimal GSAP stagger animation
+  // GSAP animation with proper scoping and cleanup using gsap.context()
   React.useLayoutEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
@@ -237,33 +237,69 @@ const ProjectGallery = ({
     ).matches;
     if (reduceMotion) return;
 
-    const cards = gsap.utils.toArray(".gallery-card");
-
-    gsap.fromTo(
-      cards,
-      {
-        opacity: 0,
-        y: 60,
-        scale: 0.95,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 75%",
-          once: true,
+    const ctx = gsap.context(() => {
+      // 1. Animate the cards
+      const cards = gsap.utils.toArray(".gallery-card");
+      gsap.fromTo(
+        cards,
+        {
+          opacity: 0,
+          y: 60,
+          scale: 0.95,
         },
-      },
-    );
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 75%",
+            once: true,
+          },
+        },
+      );
 
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    };
+      // 2. Animate the text block (title, description, etc.)
+      gsap.fromTo(
+        ".gallery-copy > *",
+        { opacity: 0, x: -40 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            once: true,
+          },
+        }
+      );
+
+      // 3. Animate the filter buttons
+      gsap.fromTo(
+        ".gallery-filter",
+        { opacity: 0, x: 40 },
+        {
+          opacity: 1,
+          x: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            once: true,
+          },
+        }
+      );
+    }, sectionRef);
+
+    // Clean up all animations and ScrollTriggers tied to this specific component
+    return () => ctx.revert();
   }, [filter, filteredMedia.length]);
 
   return (
@@ -306,11 +342,10 @@ const ProjectGallery = ({
               <button
                 key={type}
                 onClick={() => setFilter(type)}
-                className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase rounded-md cursor-pointer transition-all duration-300 ${
-                  filter === type
-                    ? "bg-amber-500 text-black shadow-[0_0_15px_rgba(233,162,59,0.3)] font-bold animate-[pulse_3s_ease-in-out_infinite]"
-                    : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-                }`}
+                className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase rounded-md cursor-pointer transition-all duration-300 ${filter === type
+                  ? "bg-amber-500 text-black shadow-[0_0_15px_rgba(233,162,59,0.3)] font-bold animate-[pulse_3s_ease-in-out_infinite]"
+                  : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
+                  }`}
               >
                 {type === "all" ? "Show All" : type + "s"}
               </button>
