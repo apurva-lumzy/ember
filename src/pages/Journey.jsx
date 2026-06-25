@@ -241,7 +241,7 @@ function Journey({ isJourney = true, next }) {
       image: "/the-pollinator/img3.png"
     },
   ];
-  
+
   useEffect(() => {
     // Smoothly animate the progress line's scaleX to match the activeEpoch
     gsap.to(".horizontal-progress", {
@@ -297,7 +297,7 @@ function Journey({ isJourney = true, next }) {
       revealElements.forEach(el => observer.unobserve(el));
     };
   }, []);
-  
+
 
   return (
     <div data-screen-label="JOURNEY" className="relative min-h-screen text-[#f1e9da]">
@@ -345,7 +345,7 @@ function Journey({ isJourney = true, next }) {
           </div>
 
           {/* Right Column: 3D Journey Path */}
-          <div 
+          <div
             className="lg:col-span-6 h-[400px] sm:h-[500px] w-full relative"
             style={{
               maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
@@ -361,8 +361,8 @@ function Journey({ isJourney = true, next }) {
       </section>
 
       {/* Desktop Horizontal Timeline Section */}
-      <section 
-        ref={triggerRef} 
+      <section
+        ref={triggerRef}
         className="hidden lg:block relative w-full overflow-hidden bg-[#0a0806]/40 backdrop-blur-md"
         style={{
           maskImage: 'linear-gradient(to bottom, transparent 0%, black 6%, black 94%, transparent 100%)',
@@ -371,7 +371,7 @@ function Journey({ isJourney = true, next }) {
       >
         <div className="h-screen w-full sticky top-0 flex flex-col justify-between pt-32 pb-16 overflow-hidden">
           <TimelineBackground ref={timelineBgRef} />
-          
+
           {/* Header indicator */}
           <div className="px-20 flex justify-between items-baseline select-none relative z-10">
             <div className="font-mono text-[12px] tracking-[.5em] text-(--amber) uppercase">
@@ -387,8 +387,8 @@ function Journey({ isJourney = true, next }) {
           </div>
 
           {/* Horizontal Track containing cards */}
-          <div 
-            ref={trackRef} 
+          <div
+            ref={trackRef}
             className="timeline-track flex flex-row flex-nowrap items-center h-[50vh] pl-[15vw] pr-[25vw] gap-[10vw] relative z-10"
           >
             {epochs.map((ep, index) => {
@@ -396,9 +396,8 @@ function Journey({ isJourney = true, next }) {
               return (
                 <div
                   key={index}
-                  className={`timeline-card flex-shrink-0 flex items-center justify-between w-[70vw] max-w-[1000px] h-full gap-12 lg:gap-16 transition-all duration-700 bg-zinc-900/20 backdrop-blur-lg border border-white/5 rounded-[2rem] p-8 lg:p-12 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ${
-                    isActive ? 'opacity-100 scale-100' : 'opacity-30 scale-95'
-                  }`}
+                  className={`timeline-card flex-shrink-0 flex items-center justify-between w-[70vw] max-w-[1000px] h-full gap-12 lg:gap-16 transition-all duration-700 bg-zinc-900/20 backdrop-blur-lg border border-white/5 rounded-[2rem] p-8 lg:p-12 shadow-[0_8px_32px_rgba(0,0,0,0.5)] ${isActive ? 'opacity-100 scale-100' : 'opacity-30 scale-95'
+                    }`}
                 >
                   {/* Left Column: Text Info */}
                   <div className="w-[45%] flex flex-col justify-center">
@@ -438,45 +437,45 @@ function Journey({ isJourney = true, next }) {
 
           {/* Bottom Progress Bar & Milestones */}
           <div className="w-[70vw] mx-auto relative mb-6 select-none z-10">
-            <div className="h-[2px] bg-zinc-800/40 w-full relative">
-              {/* Progress fill */}
-              <div className="horizontal-progress absolute left-0 top-0 h-full w-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-600 shadow-[0_0_8px_rgba(233,162,59,0.8)] origin-left scale-x-0" />
-              
-              {/* Milestone Dots */}
-              {epochs.map((ep, idx) => {
-                const isActive = activeEpoch === idx;
-                return (
-                  <div
-                    key={idx}
-                    className={`absolute top-1/2 -translate-y-1/2 -translate-x-1/2 rounded-full bg-[var(--void)] border-2 transition-all duration-500 ease-in-out cursor-pointer ${
-                      isActive
-                        ? 'w-5 h-5 border-amber-400 shadow-[0_0_15px_rgba(233,162,59,0.9)]'
-                        : 'w-3.5 h-3.5 border-zinc-700'
-                    }`}
-                    style={{ left: `${(idx / (epochs.length - 1)) * 100}%` }}
-                    onClick={() => {
-                      const trigger = ScrollTrigger.getAll().find(st => st.trigger === triggerRef.current);
-                      if (trigger) {
-                        const start = trigger.start;
-                        const end = trigger.end;
-                        const scrollPos = start + (idx / (epochs.length - 1)) * (end - start);
-                        window.scrollTo({
-                          top: scrollPos,
-                          behavior: "smooth"
-                        });
-                      }
-                    }}
-                  >
-                    {/* Tiny visual text label below the dot */}
-                    <span className="absolute top-6 left-1/2 -translate-x-1/2 font-mono text-[9px] text-(--smoke) opacity-70 whitespace-nowrap">
-                      {ep.tag}
-                    </span>
-                  </div>
-                );
-              })}
+            <div className="w-[70vw] mx-auto relative mb-12 select-none z-10">
+              <div className="h-[2px] bg-zinc-800/40 w-full relative">
+                {/* Progress fill */}
+                <div className="horizontal-progress absolute left-0 top-0 h-full w-full bg-gradient-to-r from-amber-400 via-amber-500 to-orange-600 shadow-[0_0_8px_rgba(233,162,59,0.8)] origin-left scale-x-0" />
+
+                {/* Milestone Dots */}
+                {epochs.map((ep, idx) => {
+                  const isActive = activeEpoch === idx;
+                  return (
+                    <div
+                      key={idx}
+                      className={`absolute top-1/2 -translate-y-1/2 -translate-x-1/2 rounded-full bg-[var(--void)] border-2 transition-all duration-500 ease-in-out cursor-pointer ${isActive
+                          ? 'w-5 h-5 border-amber-400 shadow-[0_0_15px_rgba(233,162,59,0.9)]'
+                          : 'w-3.5 h-3.5 border-zinc-700'
+                        }`}
+                      style={{ left: `${(idx / (epochs.length - 1)) * 100}%` }}
+                      onClick={() => {
+                        const trigger = ScrollTrigger.getAll().find(st => st.trigger === triggerRef.current);
+                        if (trigger) {
+                          const start = trigger.start;
+                          const end = trigger.end;
+                          const scrollPos = start + (idx / (epochs.length - 1)) * (end - start);
+                          window.scrollTo({
+                            top: scrollPos,
+                            behavior: "smooth"
+                          });
+                        }
+                      }}
+                    >
+                      {/* Tiny visual text label below the dot */}
+                      <span className="absolute top-6 left-1/2 -translate-x-1/2 font-mono text-[9px] text-(--smoke) opacity-70 whitespace-nowrap">
+                        {ep.tag}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -501,8 +500,8 @@ function Journey({ isJourney = true, next }) {
               >
                 <span
                   className={`absolute left-[7px] -translate-x-1/2 top-1.5 rounded-full bg-[var(--void)] border-2 transition-all duration-500 ease-in-out ${isActive
-                      ? 'w-5 h-5 border-amber-400 shadow-[0_0_20px_rgba(233,162,59,1)]'
-                      : 'w-3.75 h-3.75 border-zinc-700 shadow-none'
+                    ? 'w-5 h-5 border-amber-400 shadow-[0_0_20px_rgba(233,162,59,1)]'
+                    : 'w-3.75 h-3.75 border-zinc-700 shadow-none'
                     }`}
                 />
                 <div>
@@ -580,10 +579,10 @@ function Journey({ isJourney = true, next }) {
             Every connection I made changed the shape of me. <span className="text-(--amber)">I am, quite literally, what I paid attention to.</span>
           </h2>
           <div data-reveal="1" data-delay="240" className="w-full sm:w-auto inline-block my-8">
-            <motion.button 
-              onClick={handleNext} 
-              whileHover={{ 
-                scale: 1.03, 
+            <motion.button
+              onClick={handleNext}
+              whileHover={{
+                scale: 1.03,
                 backgroundColor: "#f59e0b",
                 color: "#000000",
                 boxShadow: "0px 0px 25px rgba(245, 158, 11, 0.4)",
