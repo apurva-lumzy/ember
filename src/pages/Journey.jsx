@@ -241,7 +241,6 @@ function Journey({ isJourney = true, next }) {
       image: "/the-pollinator/img3.png"
     },
   ];
-
   useEffect(() => {
     // Smoothly animate the progress line's scaleX to match the activeEpoch
     gsap.to(".horizontal-progress", {
@@ -297,8 +296,6 @@ function Journey({ isJourney = true, next }) {
       revealElements.forEach(el => observer.unobserve(el));
     };
   }, []);
-
-
   return (
     <div data-screen-label="JOURNEY" className="relative min-h-screen text-[#f1e9da]">
       {/* LightRays Background */}
@@ -371,7 +368,6 @@ function Journey({ isJourney = true, next }) {
       >
         <div className="h-screen w-full sticky top-0 flex flex-col justify-between pt-32 pb-16 overflow-hidden">
           <TimelineBackground ref={timelineBgRef} />
-
           {/* Header indicator */}
           <div className="px-20 flex justify-between items-baseline select-none relative z-10">
             <div className="font-mono text-[12px] tracking-[.5em] text-(--amber) uppercase">
