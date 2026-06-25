@@ -86,8 +86,8 @@ function Creations({ isCreations = true, next, openCreation }) {
         style={{
           padding: "clamp(80px, 10vw, 120px) clamp(20px, 6vw, 80px) clamp(40px, 6vw, 60px)",
           minHeight: "auto", // Overridden by md:min-h-screen dynamic styles if needed, allows content to dictate height on mobile
+          zIndex: 2
         }}
-        style={{ zIndex: 2 }}
       >
         <section
           className="ember-pad w-full flex flex-col justify-center max-w-[800px] m-0"
