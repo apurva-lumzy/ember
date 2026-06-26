@@ -218,6 +218,7 @@ const ProjectGallery = ({
   filter,
   setFilter,
   onMediaClick,
+  bgVideo,
 }) => {
   const filteredMedia = media.filter((item) => {
     if (filter === "image") return item.type === "image";
@@ -226,6 +227,7 @@ const ProjectGallery = ({
   });
 
   const sectionRef = React.useRef(null);
+  const videoRef = React.useRef(null);
 
   // GSAP animation with proper scoping and cleanup using gsap.context()
   React.useLayoutEffect(() => {
@@ -238,32 +240,29 @@ const ProjectGallery = ({
     if (reduceMotion) return;
 
     const ctx = gsap.context(() => {
-      // 1. Animate the cards
-      const cards = gsap.utils.toArray(".gallery-card");
-      gsap.fromTo(
-        cards,
-        {
-          opacity: 0,
-          y: 60,
-          scale: 0.95,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 0.6,
-          stagger: 0.08,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 75%",
-            once: true,
-          },
-        },
-      );
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top 75%",
+          once: true,
+          onEnter: () => {
+            if (videoRef.current) {
+              videoRef.current.play().catch(() => { });
+            }
+          }
+        }
+      });
 
-      // 2. Animate the text block (title, description, etc.)
-      gsap.fromTo(
+      if (bgVideo) {
+        tl.fromTo(
+          ".gallery-bg-video",
+          { opacity: 0 },
+          { opacity: 0.3, duration: 1.2, ease: "power2.out" }
+        );
+      }
+
+      // 1. Animate the text block (title, description, etc.)
+      tl.fromTo(
         ".gallery-copy > *",
         { opacity: 0, x: -40 },
         {
@@ -272,16 +271,12 @@ const ProjectGallery = ({
           duration: 0.8,
           stagger: 0.15,
           ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 80%",
-            once: true,
-          },
-        }
+        },
+        bgVideo ? "-=0.4" : 0
       );
 
-      // 3. Animate the filter buttons
-      gsap.fromTo(
+      // 2. Animate the filter buttons
+      tl.fromTo(
         ".gallery-filter",
         { opacity: 0, x: 40 },
         {
@@ -289,34 +284,68 @@ const ProjectGallery = ({
           x: 0,
           duration: 0.8,
           ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 80%",
-            once: true,
-          },
-        }
+        },
+        "<"
       );
+
+      // 3. Animate the cards
+      const cards = gsap.utils.toArray(".gallery-card");
+      if (cards.length > 0) {
+        tl.fromTo(
+          cards,
+          {
+            opacity: 0,
+            y: 60,
+            scale: 0.95,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.6,
+            stagger: 0.08,
+            ease: "power3.out",
+          },
+          "-=0.4"
+        );
+      }
     }, sectionRef);
 
     // Clean up all animations and ScrollTriggers tied to this specific component
     return () => ctx.revert();
-  }, [filter, filteredMedia.length]);
+  }, [filter, filteredMedia.length, bgVideo]);
 
   return (
     <motion.section
       ref={sectionRef}
       initial={{ opacity: 0, y: 80 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.3 }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.8 }}
       className="uniform-height bg-black/50 border-y border-white/10 min-h-screen relative py-20 sm:py-24 px-6 sm:px-10 z-10 overflow-hidden shadow-[0_0_60px_rgba(255,255,255,0.05)]"
     >
-      {/* Background elements (kept for atmosphere) */}
-      <div className="absolute inset-0 bg-black/68 pointer-events-none" />
+      {/* Background elements */}
+      {bgVideo ? (
+        <video
+          ref={videoRef}
+          src={bgVideo}
+          className="gallery-bg-video absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none"
+          muted
+          loop
+          playsInline
+          preload="auto"
+        />
+      ) : (
+        <div className="absolute inset-0 bg-black/68 pointer-events-none" />
+      )}
+
+      {/* Optional dark overlay over the video for better text readability */}
+      {bgVideo && <div className="absolute inset-0 bg-black/50 pointer-events-none" />}
+
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.08),transparent_30%)] pointer-events-none opacity-90" />
       <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_1px,rgba(255,255,255,0.06)_1px,rgba(255,255,255,0.06)_2px),repeating-linear-gradient(90deg,transparent,transparent_1px,rgba(255,255,255,0.06)_1px,rgba(255,255,255,0.06)_2px)] opacity-10 pointer-events-none" />
 
-      <div className="relative mx-auto max-w-6xl">
+      <div className="relative mx-auto max-w-6xl z-10">
         <div className="w-full flex flex-col md:flex-row md:items-end justify-between border-b border-zinc-800/80 pb-6 mb-12">
           <div className="gallery-copy max-w-2xl">
             <p className="text-amber-400 tracking-[0.3em] text-xs sm:text-sm uppercase mb-3 font-semibold">
@@ -1106,6 +1135,7 @@ const Origin = () => {
             filter={pollinatorFilter}
             setFilter={setPollinatorFilter}
             onMediaClick={handleMediaClick}
+            bgVideo="https://res.cloudinary.com/jcduasmq/video/upload/v1782408455/vid1_bp2l8w.webm"
           />
 
           <ProjectGallery
@@ -1116,6 +1146,7 @@ const Origin = () => {
             filter={timeTravellerFilter}
             setFilter={setTimeTravellerFilter}
             onMediaClick={handleMediaClick}
+            bgVideo="https://res.cloudinary.com/jcduasmq/video/upload/v1782408327/vid1_pubc4y.webm"
           />
 
           <motion.section
@@ -1126,21 +1157,21 @@ const Origin = () => {
             className="uniform-height bg-transparent backdrop-blur-xs min-h-[50vh] sm:min-h-[70vh] flex flex-col justify-center items-center text-center px-6 py-12 z-10"
           >
             <p
-              className="text-4xl sm:text-6xl md:text-8xl font-bold text-[#E2D5C0] mb-6 sm:mb-8 max-w-md sm:max-w-none"
-              style={{ fontFamily: "cursive" }}
+              className="text-4xl sm:text-6xl md:text-8xl archivo-black font-bold text-[#E2D5C0] mb-6 sm:mb-8 max-w-md sm:max-w-none"
+
             >
               Keep reading. <br />
               It gets <span className="text-[#C37C0A] ">stranger.</span>
             </p>
             <p
-              className="text-xs sm:text-sm md:text-md text-[#9A8D76] mb-6 sm:mb-8 max-w-md sm:max-w-none"
-              style={{ fontFamily: "cursive" }}
+              className="text-xs  archivo-black sm:text-sm md:text-md text-[#9A8D76] mb-6 sm:mb-8 max-w-md sm:max-w-none"
+
             >
               Step into the unknown. Your journey is just beginning.
             </p>
 
             <Link to="/journey" className="w-full sm:w-auto">
-              <button className="w-full sm:w-auto border border-amber-400 px-8 py-4 text-amber-400 text-sm sm:text-base cursor-pointer hover:bg-amber-500 hover:text-black transition-all duration-700 uppercase tracking-widest font-semibold animate-[pulse_3.5s_ease-in-out_infinite] hover:shadow-[0_0_30px_rgba(245,158,11,0.35)]">
+              <button className="w-full sm:w-auto border border-amber-400 px-8 py-4 text-amber-400 text-sm sm:text-base cursor-poiśnter hover:bg-amber-500 hover:text-black transition-all duration-700 uppercase tracking-widest font-semibold animate-[pulse_3.5s_ease-in-out_infinite] hover:shadow-[0_0_30px_rgba(245,158,11,0.35)]">
                 ENTER MY JOURNEY
               </button>
             </Link>
