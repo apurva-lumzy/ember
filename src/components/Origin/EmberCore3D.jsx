@@ -8,8 +8,14 @@ import * as THREE from "three";
  * 3. Sovereign Pollen / Spore Swarm (a double-helix vortex of particles responding dynamically to the cursor).
  * 4. Chronos Rings (nested gyroscopic rings with orbiting data nodes, digital bits, and periodic micro-glitches).
  */
-const EmberCore3D = () => {
+const EmberCore3D = ({ onConvergeComplete, trackerRef }) => {
   const containerRef = useRef(null);
+
+  const introStateRef = useRef({
+    time: 0,
+    phase: 0, // 0: scatter, 1: converge, 2: done
+    calledComplete: false,
+  });
 
   // Interaction & state refs
   const isDraggingRef = useRef(false);
@@ -155,6 +161,20 @@ const EmberCore3D = () => {
       }
     }
 
+    const gridScatterPos = new Float32Array(gridPointCount * 3);
+    const gridScatterVel = new Float32Array(gridPointCount * 3);
+    for (let r = 0; r < gridRows; r++) {
+      for (let c = 0; c < gridCols; c++) {
+        const idx = r * gridCols + c;
+        gridScatterPos[idx * 3] = (Math.random() - 0.5) * 20;
+        gridScatterPos[idx * 3 + 1] = (Math.random() - 0.5) * 20;
+        gridScatterPos[idx * 3 + 2] = (Math.random() - 0.5) * 20;
+        gridScatterVel[idx * 3] = (Math.random() - 0.5) * 2;
+        gridScatterVel[idx * 3 + 1] = (Math.random() - 0.5) * 2;
+        gridScatterVel[idx * 3 + 2] = (Math.random() - 0.5) * 2;
+      }
+    }
+
     const gridGeometry = new THREE.BufferGeometry();
     gridGeometry.setAttribute("position", new THREE.BufferAttribute(gridPositions, 3));
     gridGeometry.setAttribute("color", new THREE.BufferAttribute(gridColors, 3));
@@ -220,6 +240,17 @@ const EmberCore3D = () => {
         baseRadius: baseRadius,
         randomYOffset: Math.random() * Math.PI,
       });
+    }
+
+    const swarmScatterPos = new Float32Array(swarmCount * 3);
+    const swarmScatterVel = new Float32Array(swarmCount * 3);
+    for (let i = 0; i < swarmCount; i++) {
+      swarmScatterPos[i * 3] = (Math.random() - 0.5) * 20;
+      swarmScatterPos[i * 3 + 1] = (Math.random() - 0.5) * 20;
+      swarmScatterPos[i * 3 + 2] = (Math.random() - 0.5) * 20;
+      swarmScatterVel[i * 3] = (Math.random() - 0.5) * 2;
+      swarmScatterVel[i * 3 + 1] = (Math.random() - 0.5) * 2;
+      swarmScatterVel[i * 3 + 2] = (Math.random() - 0.5) * 2;
     }
 
     const swarmGeometry = new THREE.BufferGeometry();
@@ -333,7 +364,8 @@ const EmberCore3D = () => {
     // 9. Input & Interaction Event Handlers
     // ==========================================
     const handleMouseMove = (e) => {
-      const rect = container.getBoundingClientRect();
+      const target = (trackerRef && trackerRef.current) ? trackerRef.current : container;
+      const rect = target.getBoundingClientRect();
       const ndcX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       const ndcY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
       
@@ -402,7 +434,8 @@ const EmberCore3D = () => {
       if (e.touches.length === 1) {
         const clientX = e.touches[0].clientX;
         const clientY = e.touches[0].clientY;
-        const rect = container.getBoundingClientRect();
+        const target = (trackerRef && trackerRef.current) ? trackerRef.current : container;
+        const rect = target.getBoundingClientRect();
         
         mouseRef.current.targetX = (((clientX - rect.left) / rect.width) * 2 - 1) * 2.3;
         mouseRef.current.targetY = (-((clientY - rect.top) / rect.height) * 2 + 1) * 2.3;
@@ -426,16 +459,19 @@ const EmberCore3D = () => {
       isDraggingRef.current = false;
     };
 
-    container.addEventListener("mousedown", handleMouseDown);
-    container.addEventListener("click", handleCanvasClick);
+    // Use tracker for mousedown/click/touch so pointer-events work correctly
+    const interactionTarget = (trackerRef && trackerRef.current) ? trackerRef.current : container;
+
+    interactionTarget.addEventListener("mousedown", handleMouseDown);
+    interactionTarget.addEventListener("click", handleCanvasClick);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
-    container.addEventListener("mouseenter", handleMouseEnter);
-    container.addEventListener("mouseleave", handleMouseLeave);
+    interactionTarget.addEventListener("mouseenter", handleMouseEnter);
+    interactionTarget.addEventListener("mouseleave", handleMouseLeave);
 
-    container.addEventListener("touchstart", handleTouchStart, { passive: true });
-    container.addEventListener("touchmove", handleTouchMove, { passive: true });
-    container.addEventListener("touchend", handleTouchEnd);
+    interactionTarget.addEventListener("touchstart", handleTouchStart, { passive: true });
+    interactionTarget.addEventListener("touchmove", handleTouchMove, { passive: true });
+    interactionTarget.addEventListener("touchend", handleTouchEnd);
 
     const handleResize = () => {
       if (!container) return;
@@ -458,6 +494,43 @@ const EmberCore3D = () => {
 
       const delta = clock.getDelta();
       const elapsed = clock.getElapsedTime();
+
+      // Intro Logic
+      const intro = introStateRef.current;
+      if (intro.phase < 2) {
+        intro.time += delta;
+        if (intro.time < 2.5) {
+          intro.phase = 0; // Scatter
+          for(let i=0; i<gridPointCount; i++) {
+             gridScatterPos[i*3] += gridScatterVel[i*3] * delta;
+             gridScatterPos[i*3+1] += gridScatterVel[i*3+1] * delta;
+             gridScatterPos[i*3+2] += gridScatterVel[i*3+2] * delta;
+             
+             const gx = gridScatterPos[i*3];
+             const gz = gridScatterPos[i*3+2];
+             gridScatterPos[i*3] = gx * Math.cos(delta * 0.2) - gz * Math.sin(delta * 0.2);
+             gridScatterPos[i*3+2] = gx * Math.sin(delta * 0.2) + gz * Math.cos(delta * 0.2);
+          }
+          for(let i=0; i<swarmCount; i++) {
+             swarmScatterPos[i*3] += swarmScatterVel[i*3] * delta;
+             swarmScatterPos[i*3+1] += swarmScatterVel[i*3+1] * delta;
+             swarmScatterPos[i*3+2] += swarmScatterVel[i*3+2] * delta;
+             
+             const sx = swarmScatterPos[i*3];
+             const sz = swarmScatterPos[i*3+2];
+             swarmScatterPos[i*3] = sx * Math.cos(delta * 0.2) - sz * Math.sin(delta * 0.2);
+             swarmScatterPos[i*3+2] = sx * Math.sin(delta * 0.2) + sz * Math.cos(delta * 0.2);
+          }
+        } else if (intro.time < 5.0) {
+          intro.phase = 1; // Converge
+        } else {
+          intro.phase = 2; // Done
+          if (!intro.calledComplete && onConvergeComplete) {
+            intro.calledComplete = true;
+            onConvergeComplete();
+          }
+        }
+      }
 
       // Decay/Smooth interaction factors
       speedMultiplierRef.current += (targetSpeedRef.current - speedMultiplierRef.current) * 0.06;
@@ -500,7 +573,17 @@ const EmberCore3D = () => {
       // Apply base heartbeat scale breathing + glitch impact
       const breath = 1.0 + Math.sin(elapsed * 3.5 * speedMultiplierRef.current) * 0.05 * heartbeatPulseRef.current;
       const currentScale = breath * glitchScale;
-      coreGroup.scale.set(currentScale, currentScale, currentScale);
+
+      let finalScale = currentScale;
+      if (intro.phase === 0) {
+         finalScale = 0;
+      } else if (intro.phase === 1) {
+         const progress = (intro.time - 2.5) / 2.5;
+         const ease = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+         finalScale = currentScale * ease;
+      }
+      coreGroup.scale.set(finalScale, finalScale, finalScale);
+      ringsGroup.scale.set(finalScale, finalScale, finalScale);
 
       // Core glow pulsation intensity
       const pulseIntensity = (1.5 + Math.sin(elapsed * 4.5 * speedMultiplierRef.current) * 0.3) * heartbeatPulseRef.current;
@@ -550,7 +633,25 @@ const EmberCore3D = () => {
           // Wave height formula (ripples from center)
           const waveHeight = Math.sin(x * 2.2 + waveTime) * Math.cos(z * 2.2 + waveTime) * 0.16 * Math.exp(-dist * 0.2) +
                              Math.sin(dist * 4.0 - waveTime * 1.5) * 0.05;
-          gridPos.setY(idx, -1.25 + waveHeight);
+          const targetY = -1.25 + waveHeight;
+          
+          let currentX = x;
+          let currentY = targetY;
+          let currentZ = z;
+
+          if (intro.phase === 0) {
+             currentX = gridScatterPos[idx*3];
+             currentY = gridScatterPos[idx*3+1];
+             currentZ = gridScatterPos[idx*3+2];
+          } else if (intro.phase === 1) {
+             const progress = (intro.time - 2.5) / 2.5;
+             const ease = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+             currentX = THREE.MathUtils.lerp(gridScatterPos[idx*3], x, ease);
+             currentY = THREE.MathUtils.lerp(gridScatterPos[idx*3+1], targetY, ease);
+             currentZ = THREE.MathUtils.lerp(gridScatterPos[idx*3+2], z, ease);
+          }
+
+          gridPos.setXYZ(idx, currentX, currentY, currentZ);
 
           // Color blending: warm amber-gold (1.0, 0.7, 0.1) -> cool teal-cyan (0.0, 0.9, 0.8)
           const waveFactor = Math.sin(dist * 1.8 - waveTime) * 0.5 + 0.5;
@@ -610,7 +711,23 @@ const EmberCore3D = () => {
           py += (dy / (dist + 0.001)) * repulsionStrength;
         }
 
-        swarmPos.setXYZ(i, px, py, pz);
+        let finalX = px;
+        let finalY = py;
+        let finalZ = pz;
+
+        if (intro.phase === 0) {
+           finalX = swarmScatterPos[i*3];
+           finalY = swarmScatterPos[i*3+1];
+           finalZ = swarmScatterPos[i*3+2];
+        } else if (intro.phase === 1) {
+           const progress = (intro.time - 2.5) / 2.5;
+           const ease = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+           finalX = THREE.MathUtils.lerp(swarmScatterPos[i*3], px, ease);
+           finalY = THREE.MathUtils.lerp(swarmScatterPos[i*3+1], py, ease);
+           finalZ = THREE.MathUtils.lerp(swarmScatterPos[i*3+2], pz, ease);
+        }
+
+        swarmPos.setXYZ(i, finalX, finalY, finalZ);
       }
       swarmPos.needsUpdate = true;
 
@@ -662,8 +779,36 @@ const EmberCore3D = () => {
       engineGroup.rotation.y = rotationCurrentRef.current.y + glitchOffsetY;
       engineGroup.rotation.x = rotationCurrentRef.current.x + glitchOffsetX;
 
-      // Levitation floating effect for weightless anti-gravity sensation
-      engineGroup.position.y = Math.sin(elapsed * 0.8) * 0.06;
+      // Animate position and scale to tracker element if intro is done
+      if (intro.phase === 2 && trackerRef && trackerRef.current) {
+         const rect = trackerRef.current.getBoundingClientRect();
+         const cx = rect.left + rect.width / 2;
+         const cy = rect.top + rect.height / 2;
+         
+         const ndcX = (cx / window.innerWidth) * 2 - 1;
+         const ndcY = -(cy / window.innerHeight) * 2 + 1;
+         
+         const vFOV = THREE.MathUtils.degToRad(camera.fov);
+         const visibleHeight = 2 * Math.tan(vFOV / 2) * camera.position.z;
+         const visibleWidth = visibleHeight * camera.aspect;
+         
+         const targetWorldX = (ndcX * visibleWidth) / 2;
+         const targetWorldY = (ndcY * visibleHeight) / 2;
+         
+         engineGroup.position.x += (targetWorldX - engineGroup.position.x) * 0.06;
+         
+         const levitation = Math.sin(elapsed * 0.8) * 0.06;
+         engineGroup.position.y += ((targetWorldY + levitation) - engineGroup.position.y) * 0.06;
+         
+         // Base scale on how much smaller the tracker is compared to full screen
+         const targetScale = Math.min(1.0, (rect.height / window.innerHeight) * 1.5);
+         engineGroup.scale.x += (targetScale - engineGroup.scale.x) * 0.06;
+         engineGroup.scale.y += (targetScale - engineGroup.scale.y) * 0.06;
+         engineGroup.scale.z += (targetScale - engineGroup.scale.z) * 0.06;
+      } else {
+         // Levitation floating effect for center screen
+         engineGroup.position.y = Math.sin(elapsed * 0.8) * 0.06;
+      }
 
       renderer.render(scene, camera);
     };
@@ -677,16 +822,19 @@ const EmberCore3D = () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", handleResize);
 
-      container.removeEventListener("mousedown", handleMouseDown);
-      container.removeEventListener("click", handleCanvasClick);
+      const target = (trackerRef && trackerRef.current) ? trackerRef.current : container;
+      if (target) {
+        target.removeEventListener("mousedown", handleMouseDown);
+        target.removeEventListener("click", handleCanvasClick);
+        target.removeEventListener("mouseenter", handleMouseEnter);
+        target.removeEventListener("mouseleave", handleMouseLeave);
+        target.removeEventListener("touchstart", handleTouchStart);
+        target.removeEventListener("touchmove", handleTouchMove);
+        target.removeEventListener("touchend", handleTouchEnd);
+      }
+      
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
-      container.removeEventListener("mouseenter", handleMouseEnter);
-      container.removeEventListener("mouseleave", handleMouseLeave);
-
-      container.removeEventListener("touchstart", handleTouchStart);
-      container.removeEventListener("touchmove", handleTouchMove);
-      container.removeEventListener("touchend", handleTouchEnd);
 
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);

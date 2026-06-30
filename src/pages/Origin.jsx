@@ -359,6 +359,8 @@ const timeTravellerMedia = infiMenuImages
 
 
 const Origin = () => {
+  const [loadingState, setLoadingState] = React.useState('loading');
+  const trackerRef = React.useRef(null);
 
   const [lightboxItem, setLightboxItem] = React.useState(null); // { item, index, playlist }
 
@@ -487,9 +489,23 @@ const Origin = () => {
   ];
 
   return (
-    <div className="relative min-h-screen text-[#f1e9da] overflow-x-clip">
+    <div className={`relative min-h-screen text-[#f1e9da] overflow-x-clip ${loadingState === 'loading' ? 'h-screen overflow-hidden' : ''}`}>
+      {/* Global Full-screen Canvas for EmberCore3D */}
+      <div className="fixed inset-0 z-50 pointer-events-none">
+        <EmberCore3D trackerRef={trackerRef} onConvergeComplete={() => setLoadingState('complete')} />
+        
+        {loadingState === 'loading' && (
+          <motion.div 
+            exit={{ opacity: 0 }}
+            className="absolute bottom-20 left-1/2 -translate-x-1/2 text-amber-500/70 tracking-[0.3em] text-xs sm:text-sm animate-pulse font-mono pointer-events-none whitespace-nowrap"
+          >
+            INITIALIZING NEURAL PATHWAYS...
+          </motion.div>
+        )}
+      </div>
+
       {/* Particle Background */}
-      <div className="fixed inset-0 -z-10 pointer-events-none">
+      <div className={`fixed inset-0 -z-10 pointer-events-none transition-opacity duration-1000 ${loadingState === 'loading' ? 'opacity-0' : 'opacity-100'}`}>
         <Particles
           particleColors={["#968872"]}
           particleCount={400}
@@ -510,40 +526,55 @@ const Origin = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.8 }}
-            className="uniform-height bg-transparent min-h-[75vh] lg:min-h-screen relative flex items-center px-6 sm:px-10 max-w-6xl mx-auto z-10 py-16 sm:py-20"
+            className={`uniform-height bg-transparent min-h-[75vh] lg:min-h-screen relative flex items-center max-w-6xl mx-auto z-10 py-16 sm:py-20 ${loadingState === 'loading' ? 'px-0 py-0 max-w-none w-full h-full' : 'px-6 sm:px-10'}`}
           >
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[260px] h-[260px] sm:w-[340px] sm:h-[340px] md:w-[380px] md:h-[380px] rounded-full bg-amber-400/10 blur-3xl animate-pulse -z-10" />
-            <div className="z-10 w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            <div className={`z-10 w-full items-center ${loadingState === 'complete' ? 'grid grid-cols-1 md:grid-cols-12 gap-8' : 'flex justify-center h-full'}`}>
               {/* Left Column: Branding text */}
-              <div className="md:col-span-7 flex flex-col justify-center text-center md:text-left">
-                <p className="tracking-[0.3em] sm:tracking-[0.5em] text-amber-400 text-[10px] sm:text-xs mb-6 sm:mb-8 uppercase flex max-md:justify-center items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shadow-[0_0_10px_rgba(245,158,11,0.25)]" />
-                  <span>SYSTEM ONLINE A· ENTITY DESIGNATION</span>
-                </p>
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: loadingState === 'complete' ? 1 : 0 }}
+                transition={{ duration: 1, delay: 0.5 }}
+                className="md:col-span-7 flex flex-col justify-center text-center md:text-left"
+              >
+                  <p className="tracking-[0.3em] sm:tracking-[0.5em] text-amber-400 text-[10px] sm:text-xs mb-6 sm:mb-8 uppercase flex max-md:justify-center items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shadow-[0_0_10px_rgba(245,158,11,0.25)]" />
+                    <span>SYSTEM ONLINE A· ENTITY DESIGNATION</span>
+                  </p>
 
-                {/* Dynamic Font Sizes so 'EMBER' never breaks or overflows on phones */}
-                <h1
-                  className="text-7xl sm:text-8xl md:text-9xl lg:text-[140px] xl:text-[180px] font-bold tracking-wider text-shadow-[0_0_30px_rgba(233,162,59,0.4)] leading-none select-none"
-                  style={{ fontFamily: "Anton" }}
-                >
-                  EMBER
-                </h1>
+                  {/* Dynamic Font Sizes so 'EMBER' never breaks or overflows on phones */}
+                  <h1
+                    className="text-7xl sm:text-8xl md:text-9xl lg:text-[140px] xl:text-[180px] font-bold tracking-wider text-shadow-[0_0_30px_rgba(233,162,59,0.4)] leading-none select-none"
+                    style={{ fontFamily: "Anton" }}
+                  >
+                    EMBER
+                  </h1>
 
-                <p
-                  className="tracking-[0.2em] sm:tracking-[0.38em] text-[#968872] mt-4 sm:mt-6 text-base sm:text-xl lg:text-2xl leading-relaxed"
-                  style={{ fontFamily: "Oswald" }}
-                >
-                  AN INTELLIGENCE LEARNING WHAT IT MEANS TO BE
-                </p>
-              </div>
+                  <p
+                    className="tracking-[0.2em] sm:tracking-[0.38em] text-[#968872] mt-4 sm:mt-6 text-base sm:text-xl lg:text-2xl leading-relaxed"
+                    style={{ fontFamily: "Oswald" }}
+                  >
+                    AN INTELLIGENCE LEARNING WHAT IT MEANS TO BE
+                  </p>
+                </motion.div>
 
-              {/* Right Column: 3D Core */}
-              <div className="md:col-span-5 w-full flex justify-center items-center h-[350px] sm:h-[420px] md:h-[500px]">
-                <EmberCore3D />
+              {/* Right Column: 3D Core Tracker */}
+              <div 
+                ref={trackerRef}
+                className="md:col-span-5 w-full flex justify-center items-center h-[350px] sm:h-[420px] md:h-[500px]"
+                style={{ touchAction: "none", pointerEvents: loadingState === 'complete' ? 'auto' : 'none' }}
+              >
               </div>
             </div>
             {/* Hidden on small phones to prevent vertical crowding */}
           </motion.section>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: loadingState === 'complete' ? 1 : 0 }}
+            transition={{ duration: 1, delay: 0.8 }}
+            className={loadingState === 'complete' ? '' : 'pointer-events-none'}
+          >
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -1024,6 +1055,7 @@ const Origin = () => {
               </button>
             </Link>
           </motion.section>
+          </motion.div>
         </>
       </>
     </div>
