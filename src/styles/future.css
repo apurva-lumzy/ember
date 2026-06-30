@@ -1,0 +1,137 @@
+/* =========================
+   FUTURE PAGE BASE LAYOUT
+========================= */
+
+.future-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  overflow-x: hidden;
+}
+
+/* =========================
+   SECTION / GRID WRAPPER
+========================= */
+
+.cards-wrapper {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+/* =========================
+   CARDS DESIGN
+========================= */
+
+.card {
+  width: 300px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* =========================
+   DRAGGABLE CARDS
+========================= */
+
+.draggable-card {
+  width: 300px;
+  cursor: grab;
+  user-select: none;
+}
+
+.draggable-card:active {
+  cursor: grabbing;
+}
+
+/* =========================
+   SPACE CARDS SECTION
+========================= */
+
+.space-card {
+  width: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* =========================
+   IMAGES INSIDE CARDS
+========================= */
+
+.card img,
+.space-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
+
+/* =========================
+   TEXT STYLING
+========================= */
+
+.card h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.card p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .future-container {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .cards-wrapper {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card,
+  .draggable-card,
+  .space-card {
+    width: 100%;
+  }
+
+  .card h3 {
+    font-size: 16px;
+  }
+
+  .card p {
+    font-size: 13px;
+  }
+}
+
+/* =========================
+   SMALL MOBILE (extra fix)
+========================= */
+
+@media (max-width: 480px) {
+  .future-container {
+    padding: 8px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+}

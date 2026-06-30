@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Lightfall from "../components/lightfall";
 import FlyingPosters from "../components/flyingposter";
 import SpaceCards from "../components/SpaceCards";
+import "../styles/future.css";
 
 const Future = () => {
   return (
