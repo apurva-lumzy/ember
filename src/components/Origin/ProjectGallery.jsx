@@ -50,7 +50,7 @@ const ProjectGallery = ({
   }, [bgVideo]);
 
   const current = media[activeIndex] || {};
-  console.log(current);
+  // console.log(current);
 
   return (
     <motion.section
