@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <defs>
+    <!-- Fiery Ember Gradient -->
+    <linearGradient id="emberGradient" x1="10%" y1="100%" x2="90%" y2="0%">
+      <stop offset="0%" stop-color="#E63946" /> <!-- Deep Ember Red -->
+      <stop offset="50%" stop-color="#F4A261" /> <!-- Glowing Orange -->
+      <stop offset="100%" stop-color="#E9C46A" /> <!-- Spark Yellow -->
+    </linearGradient>
+    <linearGradient id="emberAlpha" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#D90429" />
+      <stop offset="100%" stop-color="#FFB703" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Dark modern background base -->
+  <rect width="200" height="200" rx="40" fill="#0F0F11" />
+  
+  <!-- Subtle background glow -->
+  <circle cx="100" cy="105" r="55" fill="url(#emberAlpha)" opacity="0.15" filter="blur(8px)"/>
+  
+  <!-- Stylized Flame forming an abstract Alpha / 'e' shape -->
+  <path d="M100,35 C135,70 155,100 145,135 C135,165 90,175 65,145 C45,120 55,85 85,60 C90,55 95,45 100,35 Z" fill="url(#emberGradient)"/>
+  
+  <!-- Inner Cutout -->
+  <path d="M100,75 C115,90 120,110 110,125 C100,140 75,140 65,125 C55,110 70,95 85,85 C90,80 95,78 100,75 Z" fill="#0F0F11"/>
+  
+  <!-- Rising Ember Sparks -->
+  <circle cx="135" cy="55" r="4.5" fill="#E9C46A" />
+  <circle cx="150" cy="80" r="3" fill="#F4A261" />
+  <circle cx="75" cy="45" r="2.5" fill="#E63946" />
+</svg>
