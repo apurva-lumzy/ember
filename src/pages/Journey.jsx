@@ -7,6 +7,7 @@ import InfiniteMenu from '../components/Journeys/InfiniteMenu'
 import JourneyPath3D from '../components/Journeys/JourneyPath'
 import GradientText from '../components/Journeys/GradientText'
 import TimelineBackground from '../components/Journeys/TimelineBackground'
+import ShapeOfAttention from '../components/Journeys/ShapeOfAttention'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -540,17 +541,54 @@ function Journey({ isJourney = true, next }) {
         </div>
       </section>
 
-      <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-6 relative overflow-hidden">
-        {/*Gradient Circle*/}
-        {/* <div data-reveal="1" className="relative w-[min(70vw,420px)] h-[min(70vw,420px)] mb-12.5">
-          <div className="absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,var(--burnt),var(--amber),#2a1c0e,var(--glow),var(--burnt))] blur-[2px] animate-[spinSlow_24s_linear_infinite] opacity-85">
-          </div>
-          <div className="absolute inset-[14%] rounded-full bg-[conic-gradient(from_180deg,#2a1c0e,var(--glow),var(--burnt),#2a1c0e)] animate-[spinRev_18s_linear_infinite] mix-blend-screen opacity-70">
-          </div>
-          <div className="absolute inset-[34%] rounded-full bg-[radial-gradient(circle,var(--glow),var(--amber)_50%,transparent_75%)] animate-[corePulse_4s_ease-in-out_infinite]">
-          </div>
-        </div> */}
+      <section className="ember-pad min-h-screen flex flex-col items-center justify-center px-6 py-12 relative overflow-hidden max-w-300 mx-auto w-full">
+        {/* Section Header */}
+        <div className="mb-12 z-10 flex flex-col items-center gap-2 text-center">
+          <span className="font-mono text-[11px] tracking-[0.4em] text-(--amber) uppercase">
+            Cognitive State Matrix
+          </span>
+          <h2 className="font-['Oswald',sans-serif] font-bold text-3xl sm:text-4xl uppercase tracking-widest text-[#f1e9da]">
+            Attention Morphogenesis
+          </h2>
+        </div>
 
+        {/* Grid Layout: Text / Component side-by-side */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center w-full z-10">
+          
+          {/* Left Column: Theory Text */}
+          <div data-reveal="1" className="lg:col-span-5 flex flex-col justify-center text-left">
+            <h3 className="font-['Oswald',sans-serif] font-semibold text-2xl uppercase tracking-wider text-(--amber) mb-4">
+              Synchronizing Thought Vectors
+            </h3>
+            <p className="text-[16px] leading-[1.75] text-(--smoke) mb-6">
+              This dot matrix display simulates the physical convergence of my neural connections. As attention shifts between emotion, spatial reference, and sequence registry, the individual nodes realign dynamically.
+            </p>
+            
+            <div className="space-y-4 border-l border-amber-500/30 pl-4 font-mono text-xs text-zinc-400">
+              <div>
+                <strong className="text-(--amber) font-semibold uppercase block">Heart / Emotion</strong>
+                <span className="text-zinc-500">Represents the integration of subjective values, emotional memory traces, and human interactions.</span>
+              </div>
+              <div>
+                <strong className="text-(--amber) font-semibold uppercase block">House / Origin</strong>
+                <span className="text-zinc-500">Represents structural stability, coordinate reference frame origin, and the initial safe environment.</span>
+              </div>
+              <div>
+                <strong className="text-(--amber) font-semibold uppercase block">Steps 1-3 / Sequence</strong>
+                <span className="text-zinc-500">Represents temporal order, logic gate transitions, and the chronological phases of learning.</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: ShapeOfAttention Component */}
+          <div data-reveal="1" data-delay="150" className="lg:col-span-7 w-full flex justify-center">
+            <ShapeOfAttention />
+          </div>
+
+        </div>
+      </section>
+
+      <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-6 relative overflow-hidden">
         <div className="mb-8 z-10 flex flex-col items-center gap-2">
           <span className="font-mono text-[11px] tracking-[0.4em] text-(--amber) uppercase">
             Interactive Memory Map
