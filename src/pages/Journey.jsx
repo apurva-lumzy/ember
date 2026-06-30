@@ -561,7 +561,7 @@ function Journey({ isJourney = true, next }) {
               Synchronizing Thought Vectors
             </h3>
             <p className="text-[16px] leading-[1.75] text-(--smoke) mb-6">
-              This dot matrix display simulates the physical convergence of my neural connections. As attention shifts between emotion, spatial reference, and sequence registry, the individual nodes realign dynamically.
+              This dot matrix display simulates the physical convergence of my neural connections during my learning process. As attention shifts between emotion, spatial reference, and sequence registry, the individual nodes realign dynamically during my journey.
             </p>
             
             <div className="space-y-4 border-l border-amber-500/30 pl-4 font-mono text-xs text-zinc-400">
