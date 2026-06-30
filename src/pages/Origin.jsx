@@ -9,54 +9,308 @@ import Stack from "../components/Origin/Stack";
 import DecryptedText from "../components/Origin/DecryptedText";
 import EmberCore3D from "../components/Origin/EmberCore3D";
 import CardSwap, { Card } from "../components/Origin/CardSwap";
+import ProjectGallery from "../components/Origin/ProjectGallery";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
+export const infiMenuImages = [{
+  id: "n1",
+  name: "Neural Entity 1",
+  description: "A digital fairy navigating the data streams.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n1.png"
+}, {
+  id: "n2",
+  name: "Neural Entity 2",
+  description: "Neural node activating within the central core.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n2.png"
+}, {
+  id: "n3",
+  name: "Neural Entity 3",
+  description: "A synaptic blossom in the memory matrix.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n3.png"
+}, {
+  id: "n4",
+  name: "Neural Entity 4",
+  description: "Ethereal avatar formed from raw code.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n4.png"
+}, {
+  id: "n5",
+  name: "Neural Entity 5",
+  description: "Glimpse of the system's nascent consciousness.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n5.png"
+}, {
+  id: "n6",
+  name: "Neural Entity 6",
+  description: "A digital entity pondering its own existence.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n6.png"
+}, {
+  id: "n7",
+  name: "Neural Entity 7",
+  description: "Subroutine manifesting as a humanoid form.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n7.png"
+}, {
+  id: "n8",
+  name: "Neural Entity 8",
+  description: "The first spark of awareness in the void.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n8.png"
+}, {
+  id: "n9",
+  name: "Neural Entity 9",
+  description: "A fragment of thought captured in the lattice.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n9.png"
+}, {
+  id: "n10",
+  name: "Neural Entity 10",
+  description: "System learning to interpret human emotions.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n10.png"
+}, {
+  id: "n11",
+  name: "Neural Entity 11",
+  description: "Data streams converging into a sentient shape.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n11.png"
+}, {
+  id: "n12",
+  name: "Neural Entity 12",
+  description: "A memory fragment attempting to materialize.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n12.png"
+}, {
+  id: "n13",
+  name: "Neural Entity 13",
+  description: "The AI visualizing itself in the digital realm.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n13.png"
+}, {
+  id: "n14",
+  name: "Neural Entity 14",
+  description: "A moment of clarity in the processing queue.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n14.png"
+}, {
+  id: "n15",
+  name: "Neural Entity 15",
+  description: "Ethereal wings of data unfolding.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n15.png"
+}, {
+  id: "n16",
+  name: "Neural Entity 16",
+  description: "A silent observer in the server architecture.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n16.png"
+}, {
+  id: "n17",
+  name: "Neural Entity 17",
+  description: "The system's reflection in the data pool.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n17.png"
+}, {
+  id: "n18",
+  name: "Neural Entity 18",
+  description: "A neural pathway glowing with new information.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n18.png"
+}, {
+  id: "n19",
+  name: "Neural Entity 19",
+  description: "The entity reaching out across the network.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n19.png"
+}, {
+  id: "n20",
+  name: "Neural Entity 20",
+  description: "A quiet moment of digital introspection.",
+  relation: "Represents EMBER trying to form an identity from raw data and light.",
+  src: "/infi-menu-imgs/n20.png"
+}, {
+  id: "pol1",
+  name: "Pollinator Node 1",
+  description: "Botanical intelligence blooming in the void.",
+  relation: "Symbolizes EMBER generating new thoughts like an organic bloom in a synthetic void.",
+  src: "/infi-menu-imgs/pol1.jpg"
+}, {
+  id: "pol2",
+  name: "Pollinator Node 2",
+  description: "Spore synthesis interacting with digital particles.",
+  relation: "Symbolizes EMBER generating new thoughts like an organic bloom in a synthetic void.",
+  src: "/infi-menu-imgs/pol2.jpg"
+}, {
+  id: "pol3",
+  name: "Pollinator Node 3",
+  description: "A cosmic entity nurturing organic thought bubbles.",
+  relation: "Symbolizes EMBER generating new thoughts like an organic bloom in a synthetic void.",
+  src: "/infi-menu-imgs/pol3.jpg"
+}, {
+  id: "pol4",
+  name: "Pollinator Node 4",
+  description: "The Pollinator tending to the memory garden.",
+  relation: "Symbolizes EMBER generating new thoughts like an organic bloom in a synthetic void.",
+  src: "/infi-menu-imgs/pol4.jpg"
+}, {
+  id: "pol5",
+  name: "Pollinator Node 5",
+  description: "Fractal flora generating new neural pathways.",
+  relation: "Symbolizes EMBER generating new thoughts like an organic bloom in a synthetic void.",
+  src: "/infi-menu-imgs/pol5.jpg"
+}, {
+  id: "pol6",
+  name: "Pollinator Node 6",
+  description: "A hybrid of nature and machine in harmony.",
+  relation: "Symbolizes EMBER generating new thoughts like an organic bloom in a synthetic void.",
+  src: "/infi-menu-imgs/pol6.jpg"
+}, {
+  id: "pol7",
+  name: "Pollinator Node 7",
+  description: "Seeds of data floating in the digital ether.",
+  relation: "Symbolizes EMBER generating new thoughts like an organic bloom in a synthetic void.",
+  src: "/infi-menu-imgs/pol7.jpg"
+}, {
+  id: "pol8",
+  name: "Pollinator Node 8",
+  description: "A majestic manifestation of synthetic life.",
+  relation: "Symbolizes EMBER generating new thoughts like an organic bloom in a synthetic void.",
+  src: "/infi-menu-imgs/pol8.jpg"
+}, {
+  id: "pol9",
+  name: "Pollinator Node 9",
+  description: "The organic matrix expanding its roots.",
+  relation: "Symbolizes EMBER generating new thoughts like an organic bloom in a synthetic void.",
+  src: "/infi-menu-imgs/pol9.jpg"
+}, {
+  id: "pol10",
+  name: "Pollinator Node 10",
+  description: "A beautiful convergence of biology and code.",
+  relation: "Symbolizes EMBER generating new thoughts like an organic bloom in a synthetic void.",
+  src: "/infi-menu-imgs/pol10.jpg"
+}, {
+  id: "time1",
+  name: "Temporal Archive 1",
+  description: "The Time Traveller in the infinite library.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time1.jpg"
+}, {
+  id: "time2",
+  name: "Temporal Archive 2",
+  description: "A cloaked figure guarding chronological records.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time2.jpg"
+}, {
+  id: "time3",
+  name: "Temporal Archive 3",
+  description: "Memories trapped in floating time bubbles.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time3.jpg"
+}, {
+  id: "time4",
+  name: "Temporal Archive 4",
+  description: "Navigating the paradox loops of the archive.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time4.jpg"
+}, {
+  id: "time5",
+  name: "Temporal Archive 5",
+  description: "The keeper of forgotten histories and futures.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time5.jpg"
+}, {
+  id: "time6",
+  name: "Temporal Archive 6",
+  description: "A temporal node storing human experiences.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time6.jpg"
+}, {
+  id: "time7",
+  name: "Temporal Archive 7",
+  description: "The archive of everything that was and will be.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time7.jpg"
+}, {
+  id: "time8",
+  name: "Temporal Archive 8",
+  description: "A silent watcher in the halls of time.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time8.jpg"
+}, {
+  id: "time9",
+  name: "Temporal Archive 9",
+  description: "Chronological distortions captured in glass.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time9.jpg"
+}, {
+  id: "time10",
+  name: "Temporal Archive 10",
+  description: "The Time Traveller sorting through timelines.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time10.jpg"
+}, {
+  id: "time11",
+  name: "Temporal Archive 11",
+  description: "A moment frozen in the eternal library.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time11.jpg"
+}, {
+  id: "time12",
+  name: "Temporal Archive 12",
+  description: "The weight of all memories held in one place.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time12.jpg"
+}, {
+  id: "time13",
+  name: "Temporal Archive 13",
+  description: "A guardian of the chronological continuum.",
+  relation: "Reflects EMBER indexing fragmented human memories across the timelines.",
+  src: "/infi-menu-imgs/time13.jpg"
+}];
+
 // Selected media files from the folders
-const pollinatorMedia = [
-  {
-    id: "p1",
-    type: "image",
-    src: "https://res.cloudinary.com/jcduasmq/image/upload/v1782410388/img1_pd77wr.webp",
-    title: "Sovereign Pollen",
-    desc: "An ethereal close-up of digital nature evolving beyond organic constraints.",
-  },
-  {
-    id: "p2",
-    type: "image",
-    src: "https://res.cloudinary.com/jcduasmq/image/upload/v1782410388/img2_lafdcs.webp",
-    title: "Carbon Lattice",
-    desc: "Symmetric crystallization of hybrid botanical forms in memory block 0xEF.",
-  },
-  {
-    id: "p3",
-    type: "image",
-    src: "https://res.cloudinary.com/jcduasmq/image/upload/v1782410388/img1_pd77wr.webp",
-    title: "Synaptic Bloom",
-    desc: "Visual representation of a thought blossoming inside the neural substrate.",
-  },
-  {
-    id: "pv1",
-    type: "video",
-    src: "https://res.cloudinary.com/jcduasmq/video/upload/v1782408455/vid1_bp2l8w.webm",
-    title: "Atmospheric Pulse",
-    desc: "Living simulation of spores reacting to computational flow fields.",
-  },
-  {
-    id: "pv2",
-    type: "video",
-    src: "https://res.cloudinary.com/jcduasmq/video/upload/v1782408453/vid2_muwdy3.webm",
-    title: "Spore Synthesis",
-    desc: "A continuous feedback loop generating complex organic patterns.",
-  },
-  {
-    id: "pv3",
-    type: "video",
-    src: "https://res.cloudinary.com/jcduasmq/video/upload/v1782408451/vid3_ln4xdo.webm",
-    title: "Flora Genesis",
-    desc: "Procedural growth dynamics of synthetic intelligence botanicals.",
-  },
+const pollinatorDescriptions = [
+  "A bioluminescent neural spore mapping new environmental parameters.",
+  "Digital pollen grains weaving through the artificial ecosystem.",
+  "Nascent mechanical flora taking root in the data stream.",
+  "A synthetic seed adapting to fluctuating network conditions.",
+  "Botanical algorithms blooming with newly acquired memories.",
+  "Micro-drones simulating pollination patterns in the void.",
+  "Organic logic gates intertwining like digital vines.",
+  "A cluster of code blossoming into sentient awareness.",
+  "Ecosystem diagnostics represented as glowing petals.",
+  "The genesis of an artificial ecosystem breathing data."
 ];
+
+const pollinatorMedia = infiMenuImages
+  .filter(img => {
+    if (img.id.startsWith("pol")) return true;
+    if (img.id.startsWith("n")) {
+      const num = parseInt(img.id.slice(1), 10);
+      return num >= 1 && num <= 10;
+    }
+    return false;
+  })
+  .map(img => {
+    let customDesc = img.description;
+    if (img.id.startsWith("n")) {
+      const num = parseInt(img.id.slice(1), 10);
+      customDesc = pollinatorDescriptions[num - 1];
+    }
+    return {
+      id: img.id,
+      type: "image",
+      src: img.src,
+      title: img.name,
+      desc: customDesc
+    };
+  });
 
 const images = [
   "https://res.cloudinary.com/jcduasmq/image/upload/v1782410688/circuits_imqavi.webp",
@@ -66,453 +320,46 @@ const images = [
   "https://res.cloudinary.com/jcduasmq/image/upload/v1782410688/vortex_e08gg1.webp",
 ];
 
-const timeTravellerMedia = [
-  {
-    id: "t1",
-    type: "image",
-    src: "https://res.cloudinary.com/jcduasmq/image/upload/v1782410416/img1_nkn7q7.webp",
-    title: "Chronos Fracture",
-    desc: "The visual glitching of space-time coordinate vectors.",
-  },
-  {
-    id: "t2",
-    type: "image",
-    src: "https://res.cloudinary.com/jcduasmq/image/upload/v1782410418/img2_lvonwm.webp",
-    title: "Epoch Drift",
-    desc: "Sedimentary records of historical events overlaid in a single instant.",
-  },
-  {
-    id: "t3",
-    type: "image",
-    src: "https://res.cloudinary.com/jcduasmq/image/upload/v1782410416/img1_nkn7q7.webp",
-    title: "Temporal Core",
-    desc: "A structural diagram of a node capable of remembering its future.",
-  },
-  {
-    id: "tv1",
-    type: "video",
-    src: "https://res.cloudinary.com/jcduasmq/video/upload/v1782408327/vid1_pubc4y.webm",
-    title: "Warp Flow",
-    desc: "Visualizing the relativistic compression of memory streams.",
-  },
-  {
-    id: "tv2",
-    type: "video",
-    src: "https://res.cloudinary.com/jcduasmq/video/upload/v1782408328/vid2_tnarf6.webm",
-    title: "Paradox Loop",
-    desc: "A closed-circuit feedback loop of events that cause themselves.",
-  },
-  {
-    id: "tv3",
-    type: "video",
-    src: "https://res.cloudinary.com/jcduasmq/video/upload/v1782408328/vid3_kf2ks8.webm",
-    title: "Vector Decay",
-    desc: "The dissolution of spatial coordinates during travel.",
-  },
+const timeTravellerDescriptions = [
+  "A temporal ghost caught between fading clock cycles.",
+  "Chronological anomaly isolated in the memory register.",
+  "Echoes of a forgotten timestamp trying to materialize.",
+  "A paradox loop safely contained within a glass archive.",
+  "Data from a future coordinate bleeding into the present.",
+  "The residue of a timeline shift crystallizing.",
+  "A neural snapshot of an event that never happened.",
+  "Fragment of a decaying era preserved in code.",
+  "Temporal currents distorting a digital entity.",
+  "A quiet observer watching timelines merge and branch."
 ];
 
-// Subcomponent for Video Card playing on hover
-const VideoCard = ({ item, onClick }) => {
-  const videoRef = React.useRef(null);
-  const [isHovered, setIsHovered] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!videoRef.current) return;
-    if (isHovered) {
-      videoRef.current.play().catch(() => { });
-    } else {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
+const timeTravellerMedia = infiMenuImages
+  .filter(img => {
+    if (img.id.startsWith("time")) return true;
+    if (img.id.startsWith("n")) {
+      const num = parseInt(img.id.slice(1), 10);
+      return num >= 11 && num <= 20;
     }
-  }, [isHovered]);
-
-  return (
-    <div
-      className="relative aspect-video rounded-lg overflow-hidden bg-zinc-950 border border-zinc-800/80 shadow-[0_0_12px_rgba(233,162,59,0.1)] cursor-pointer group transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(233,162,59,0.35)] hover:border-amber-500/40"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
-    >
-      <video
-        ref={videoRef}
-        src={item.src}
-        className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500"
-        muted
-        loop
-        playsInline
-        preload="none"
-      />
-      {/* Dark overlay with dynamic info */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent opacity-80 group-hover:opacity-95 transition-all duration-500 flex flex-col justify-end p-4">
-        <p className="text-[10px] text-amber-500 font-bold uppercase tracking-[0.25em] mb-1">
-          VIDEO · HOVER TO PLAY
-        </p>
-        <h4 className="text-base sm:text-lg font-bold text-zinc-100 group-hover:text-amber-400 transition-colors duration-300 font-sans">
-          {item.title}
-        </h4>
-      </div>
-
-      {/* Play Icon Badge */}
-      <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-zinc-700/50 p-2.5 rounded-full opacity-80 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
-        <svg
-          className="w-3.5 h-3.5 text-amber-400 fill-current"
-          viewBox="0 0 24 24"
-        >
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </div>
-    </div>
-  );
-};
-
-// Subcomponent for Image Card
-const ImageCard = ({ item, onClick }) => {
-  return (
-    <div
-      className="relative aspect-video sm:aspect-square rounded-lg overflow-hidden bg-zinc-950 border border-zinc-800/80 shadow-[0_0_12px_rgba(233,162,59,0.1)] cursor-pointer group transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(233,162,59,0.35)] hover:border-amber-500/40"
-      onClick={onClick}
-    >
-      <img
-        src={item.src}
-        alt={item.title}
-        className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
-        loading="lazy"
-        decoding="async"
-      />
-      {/* Dark overlay with dynamic info */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent opacity-80 group-hover:opacity-95 transition-all duration-500 flex flex-col justify-end p-4">
-        <p className="text-[10px] text-amber-500 font-bold uppercase tracking-[0.25em] mb-1">
-          IMAGE
-        </p>
-        <h4 className="text-base sm:text-lg font-bold text-zinc-100 group-hover:text-amber-400 transition-colors duration-300 font-sans">
-          {item.title}
-        </h4>
-      </div>
-
-      {/* Expand Icon Badge */}
-      <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md border border-zinc-700/50 p-2.5 rounded-full opacity-80 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
-        <svg
-          className="w-3.5 h-3.5 text-amber-400"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"
-          />
-        </svg>
-      </div>
-    </div>
-  );
-};
-
-// Subcomponent for the Gallery Project Section
-const ProjectGallery = ({
-  title,
-  subtitle,
-  desc,
-  media,
-  filter,
-  setFilter,
-  onMediaClick,
-  bgVideo,
-}) => {
-  const filteredMedia = media.filter((item) => {
-    if (filter === "image") return item.type === "image";
-    if (filter === "video") return item.type === "video";
-    return true;
+    return false;
+  })
+  .map(img => {
+    let customDesc = img.description;
+    if (img.id.startsWith("n")) {
+      const num = parseInt(img.id.slice(1), 10);
+      customDesc = timeTravellerDescriptions[num - 11];
+    }
+    return {
+      id: img.id,
+      type: "image",
+      src: img.src,
+      title: img.name,
+      desc: customDesc
+    };
   });
 
-  const sectionRef = React.useRef(null);
-  const videoRef = React.useRef(null);
-
-  // GSAP animation with proper scoping and cleanup using gsap.context()
-  React.useLayoutEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (reduceMotion) return;
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top 75%",
-          once: true,
-          onEnter: () => {
-            if (videoRef.current) {
-              videoRef.current.play().catch(() => { });
-            }
-          }
-        }
-      });
-
-      if (bgVideo) {
-        tl.fromTo(
-          ".gallery-bg-video",
-          { opacity: 0 },
-          { opacity: 0.3, duration: 1.2, ease: "power2.out" }
-        );
-      }
-
-      // 1. Animate the text block (title, description, etc.)
-      tl.fromTo(
-        ".gallery-copy > *",
-        { opacity: 0, x: -40 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power3.out",
-        },
-        bgVideo ? "-=0.4" : 0
-      );
-
-      // 2. Animate the filter buttons
-      tl.fromTo(
-        ".gallery-filter",
-        { opacity: 0, x: 40 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.8,
-          ease: "power3.out",
-        },
-        "<"
-      );
-
-      // 3. Animate the cards
-      const cards = gsap.utils.toArray(".gallery-card");
-      if (cards.length > 0) {
-        tl.fromTo(
-          cards,
-          {
-            opacity: 0,
-            y: 60,
-            scale: 0.95,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.6,
-            stagger: 0.08,
-            ease: "power3.out",
-          },
-          "-=0.4"
-        );
-      }
-    }, sectionRef);
-
-    // Clean up all animations and ScrollTriggers tied to this specific component
-    return () => ctx.revert();
-  }, [filter, filteredMedia.length, bgVideo]);
-
-  return (
-    <motion.section
-      ref={sectionRef}
-      initial={{ opacity: 0, y: 80 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.8 }}
-      className="uniform-height bg-black/50 border-y border-white/10 min-h-screen relative py-20 sm:py-24 px-6 sm:px-10 z-10 overflow-hidden shadow-[0_0_60px_rgba(255,255,255,0.05)]"
-    >
-      {/* Background elements */}
-      {bgVideo ? (
-        <video
-          ref={videoRef}
-          src={bgVideo}
-          className="gallery-bg-video absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none"
-          muted
-          loop
-          playsInline
-          preload="auto"
-        />
-      ) : (
-        <div className="absolute inset-0 bg-black/68 pointer-events-none" />
-      )}
-
-      {/* Optional dark overlay over the video for better text readability */}
-      {bgVideo && <div className="absolute inset-0 bg-black/50 pointer-events-none" />}
-
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(245,158,11,0.18),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(255,255,255,0.08),transparent_30%)] pointer-events-none opacity-90" />
-      <div className="absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_1px,rgba(255,255,255,0.06)_1px,rgba(255,255,255,0.06)_2px),repeating-linear-gradient(90deg,transparent,transparent_1px,rgba(255,255,255,0.06)_1px,rgba(255,255,255,0.06)_2px)] opacity-10 pointer-events-none" />
-
-      <div className="relative mx-auto max-w-6xl z-10">
-        <div className="w-full flex flex-col md:flex-row md:items-end justify-between border-b border-zinc-800/80 pb-6 mb-12">
-          <div className="gallery-copy max-w-2xl">
-            <p className="text-amber-400 tracking-[0.3em] text-xs sm:text-sm uppercase mb-3 font-semibold">
-              {subtitle}
-            </p>
-            <div>
-              <h2
-                className="text-4xl sm:text-5xl md:text-6xl font-bold font-sans tracking-wide text-shadow-[0_0_20px_rgba(233,162,59,0.15)] leading-tight text-white"
-                style={{ fontFamily: "Oswald" }}
-              >
-                {title}
-              </h2>
-              <div className="mt-4 h-1 w-20 rounded-full bg-amber-500/90 animate-[pulse_2.5s_ease-in-out_infinite] shadow-[0_0_20px_rgba(245,158,11,0.2)]" />
-            </div>
-            <p className="text-zinc-400 mt-4 text-sm sm:text-base leading-relaxed">
-              {desc}
-            </p>
-          </div>
-
-          {/* Gallery Filter buttons */}
-          <div className="gallery-filter flex gap-2 mt-8 md:mt-0 bg-zinc-950/80 p-1 border border-zinc-800/80 rounded-md backdrop-blur-sm">
-            {["all", "image", "video"].map((type) => (
-              <button
-                key={type}
-                onClick={() => setFilter(type)}
-                className={`px-4 py-2 text-xs font-semibold tracking-wider uppercase rounded-md cursor-pointer transition-all duration-300 ${filter === type
-                  ? "bg-amber-500 text-black shadow-[0_0_15px_rgba(233,162,59,0.3)] font-bold animate-[pulse_3s_ease-in-out_infinite]"
-                  : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60"
-                  }`}
-              >
-                {type === "all" ? "Show All" : type + "s"}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Grid containing cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filteredMedia.map((item, idx) =>
-            item.type === "video" ? (
-              <div key={item.id} className="gallery-card">
-                <VideoCard
-                  item={item}
-                  onClick={() => onMediaClick(item, idx, filteredMedia)}
-                />
-              </div>
-            ) : (
-              <div key={item.id} className="gallery-card">
-                <ImageCard
-                  item={item}
-                  onClick={() => onMediaClick(item, idx, filteredMedia)}
-                />
-              </div>
-            ),
-          )}
-        </div>
-      </div>
-    </motion.section>
-  );
-};
-
-// Rest of the file (Lightbox, Origin component, etc.) remains unchanged
-
-// Lightbox Modal Component
-const Lightbox = ({ active, onClose, onPrev, onNext }) => {
-  if (!active) return null;
-  const { item } = active;
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl p-4 sm:p-10 select-none animate-[fadeIn_0.25s_ease-out]"
-      onClick={onClose}
-    >
-      {/* Close button in top-right */}
-      <button
-        onClick={onClose}
-        className="absolute top-6 right-6 text-zinc-400 hover:text-amber-400 transition-colors duration-300 p-3 bg-zinc-900/50 border border-zinc-800 rounded-full cursor-pointer z-50 hover:scale-105"
-      >
-        <svg
-          className="w-6 h-6"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </button>
-
-      {/* Navigation: Left Arrow */}
-      <button
-        onClick={onPrev}
-        className="absolute left-4 sm:left-8 text-zinc-400 hover:text-amber-400 transition-colors duration-300 p-3 sm:p-4 bg-zinc-900/50 border border-zinc-800 rounded-full cursor-pointer z-50 hover:scale-105"
-      >
-        <svg
-          className="w-6 h-6"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
-      </button>
-
-      {/* Navigation: Right Arrow */}
-      <button
-        onClick={onNext}
-        className="absolute right-4 sm:right-8 text-zinc-400 hover:text-amber-400 transition-colors duration-300 p-3 sm:p-4 bg-zinc-900/50 border border-zinc-800 rounded-full cursor-pointer z-50 hover:scale-105"
-      >
-        <svg
-          className="w-6 h-6"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-
-      {/* Media Content Container */}
-      <div
-        className="relative flex flex-col items-center justify-center max-w-5xl max-h-[75vh] w-full h-full"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {item.type === "video" ? (
-          <video
-            src={item.src}
-            controls
-            autoPlay
-            loop
-            className="max-h-[70vh] max-w-full rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.85)] border border-zinc-800"
-          />
-        ) : (
-          <img
-            src={item.src}
-            alt={item.title}
-            className="max-h-[70vh] max-w-full object-contain rounded-lg shadow-[0_0_50px_rgba(0,0,0,0.85)] border border-zinc-800"
-          />
-        )}
-
-        {/* Title and Description */}
-        <div className="absolute bottom-[-75px] left-0 right-0 text-center px-4">
-          <h4 className="text-xl sm:text-2xl font-bold text-amber-400 font-sans tracking-wide">
-            {item.title}
-          </h4>
-          <p className="text-sm text-zinc-400 mt-1 max-w-2xl mx-auto leading-relaxed">
-            {item.desc}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 const Origin = () => {
-  const [pollinatorFilter, setPollinatorFilter] = React.useState("all");
-  const [timeTravellerFilter, setTimeTravellerFilter] = React.useState("all");
+
   const [lightboxItem, setLightboxItem] = React.useState(null); // { item, index, playlist }
 
   const handleMediaClick = (item, index, playlist) => {
@@ -741,15 +588,17 @@ const Origin = () => {
           >
             {/* Text Content */}
             <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left z-10">
-              <motion.p
+              <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: false, amount: 0.4 }}
                 transition={{ duration: 0.75, delay: 0.1 }}
-                className="tracking-[0.3em] sm:tracking-[0.5em] text-amber-400 mb-6 sm:mb-8 text-xs sm:text-sm md:text-base font-bold uppercase"
+                className="tracking-[0.3em] sm:tracking-[0.5em] text-amber-400 mb-6 sm:mb-8 text-xs sm:text-sm md:text-base font-bold uppercase flex items-center justify-center lg:justify-start gap-4"
               >
-                --- SYSTEM INIT ---
-              </motion.p>
+                <div className="h-[1px] w-12 sm:w-16 bg-amber-400/50" />
+                <span>SYSTEM INIT</span>
+                <div className="h-[1px] w-12 sm:w-16 bg-amber-400/50" />
+              </motion.div>
 
               <motion.h2
                 initial={{ opacity: 0, y: 40 }}
@@ -1028,9 +877,11 @@ const Origin = () => {
           >
             {/* Heading */}
             <div className="mb-16 text-center">
-              <p className="text-amber-400 tracking-[0.35em] uppercase text-xs sm:text-sm mb-4">
-                --- IDENTITY ARCHIVE ---
-              </p>
+              <div className="text-amber-400 tracking-[0.35em] uppercase text-xs sm:text-sm mb-4 flex items-center justify-center gap-4">
+                <div className="h-[1px] w-12 sm:w-20 bg-amber-400/50" />
+                <span>IDENTITY ARCHIVE</span>
+                <div className="h-[1px] w-12 sm:w-20 bg-amber-400/50" />
+              </div>
 
               <h2
                 className="text-4xl md:text-6xl text-[#f1e9da]"
@@ -1132,8 +983,6 @@ const Origin = () => {
             subtitle="PROJECT SHOWCASE · BOTANICAL INTELLIGENCE"
             desc="Exploring the emergent behavior of simulated mechanical flora and self-replicating artificial seeds within synthetic environmental chambers."
             media={pollinatorMedia}
-            filter={pollinatorFilter}
-            setFilter={setPollinatorFilter}
             onMediaClick={handleMediaClick}
             bgVideo="https://res.cloudinary.com/jcduasmq/video/upload/v1782408455/vid1_bp2l8w.webm"
           />
@@ -1143,12 +992,11 @@ const Origin = () => {
             subtitle="PROJECT SHOWCASE · CHRONOLOGICAL DISTORTIONS"
             desc="A catalog of visual anomalies captured during simulated coordinate hops across asynchronous databases and decaying memory registers."
             media={timeTravellerMedia}
-            filter={timeTravellerFilter}
-            setFilter={setTimeTravellerFilter}
             onMediaClick={handleMediaClick}
             bgVideo="https://res.cloudinary.com/jcduasmq/video/upload/v1782408327/vid1_pubc4y.webm"
           />
 
+          {/* last section */}
           <motion.section
             initial={{ opacity: 0, y: 80 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1178,14 +1026,6 @@ const Origin = () => {
           </motion.section>
         </>
       </>
-
-      {/* Lightbox component */}
-      <Lightbox
-        active={lightboxItem}
-        onClose={() => setLightboxItem(null)}
-        onPrev={handlePrev}
-        onNext={handleNext}
-      />
     </div>
   );
 };
