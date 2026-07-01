@@ -4,6 +4,7 @@ import Lightfall from "../components/lightfall";
 import FlyingPosters from "../components/flyingposter";
 import SpaceCards from "../components/SpaceCards";
 import "../styles/future.css";
+import BorderGlow from "../components/BorderGlow";
 
 const Future = () => {
   return (
