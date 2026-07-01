@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Digital Brain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --amber-300: #fcd34d;
+    --amber-400: #fbbf24;
+    --amber-500: #f59e0b;
+    --amber-600: #d97706;
+    --bg: #050403;
+    --cream: #f1e9da;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg);
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  #scene-root {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: radial-gradient(ellipse at 50% 45%, #0b0805 0%, #050403 55%, #000000 100%);
+  }
+
+  #canvas-container {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  #canvas-container canvas {
+    display: block;
+  }
+
+  .ui-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3rem 1.5rem;
+    pointer-events: none;
+  }
+
+  .top-left {
+    max-width: 320px;
+    color: rgba(245, 158, 11, 0.8);
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .top-left .eyebrow {
+    margin: 0 0 0.5rem 0;
+    opacity: 0.85;
+  }
+
+  .top-left h2 {
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 0.08em;
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+    color: var(--amber-500);
+    margin: 0 0 0.9rem 0;
+    text-shadow: 0 0 18px rgba(245, 158, 11, 0.35);
+  }
+
+  .top-left p {
+    color: #9a958a;
+    text-transform: none;
+    letter-spacing: normal;
+    line-height: 1.5;
+    font-size: 0.78rem;
+    margin: 0;
+  }
+
+  .top-right {
+    position: absolute;
+    top: 3rem;
+    right: 1.5rem;
+    text-align: right;
+    color: var(--amber-500);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+  }
+
+  .top-right .particle-count {
+    display: block;
+    margin-top: 0.35rem;
+    color: rgba(245, 158, 11, 0.5);
+    font-size: 0.62rem;
+  }
+
+  .center-cta {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
+    opacity: 1;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .center-cta.hidden {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.08);
+    pointer-events: none;
+  }
+
+  .cta-panel {
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 2.5rem 3rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 60px rgba(245, 158, 11, 0.15);
+    transition: border-color 0.4s ease;
+  }
+
+  .cta-panel:hover {
+    border-color: rgba(245, 158, 11, 0.6);
+  }
+
+  .cta-panel .label {
+    color: rgba(251, 191, 36, 0.85);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin: 0 0 0.8rem 0;
+  }
+
+  .cta-panel h3 {
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 0.04em;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    color: var(--cream);
+    margin: 0 0 1.8rem 0;
+  }
+
+  .begin-btn {
+    padding: 0.85rem 2.2rem;
+    border: 1px solid var(--amber-500);
+    color: var(--amber-400);
+    background: transparent;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+  }
+
+  .begin-btn:hover {
+    background: var(--amber-500);
+    color: #000;
+  }
+
+  .bottom-left {
+    display: flex;
+    gap: 2rem;
+    color: rgba(245, 158, 11, 0.6);
+  }
+
+  .legend-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .legend-dot {
+    width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 50%;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    transition: all 0.4s ease;
+  }
+
+  .legend-dot.active {
+    border-color: var(--amber-500);
+    background: rgba(245, 158, 11, 0.25);
+    box-shadow: 0 0 14px rgba(245, 158, 11, 0.5);
+  }
+
+  .legend-item span {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .restart-btn {
+    position: absolute;
+    bottom: 3rem;
+    right: 1.5rem;
+    pointer-events: auto;
+    padding: 0.6rem 1.3rem;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: var(--amber-400);
+    background: rgba(0, 0, 0, 0.45);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  .restart-btn.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .restart-btn:hover {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: var(--amber-500);
+  }
+
+  .restart-btn svg {
+    width: 13px;
+    height: 13px;
+    transition: transform 0.4s ease;
+  }
+
+  .restart-btn:hover svg {
+    transform: rotate(-160deg);
+  }
+
+  @media (max-width: 640px) {
+    .bottom-left { gap: 1.1rem; }
+    .cta-panel { padding: 2rem 1.6rem; }
+    .top-left { max-width: 220px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .center-cta, .restart-btn, .legend-dot { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="scene-root">
+  <div id="canvas-container"></div>
+
+  <div class="ui-layer">
+    <div class="top-left">
+      <p class="eyebrow">THREE.JS INTERACTIVE COMPONENT</p>
+      <h2>DIGITAL BRAIN</h2>
+      <p>Thousands of particles form a digital brain, pulse with life, dissolve into the void, and reform again.</p>
+    </div>
+
+    <div class="bottom-left" id="legend">
+      <div class="legend-item"><div class="legend-dot" data-state="IDLE"></div><span>Particles</span></div>
+      <div class="legend-item"><div class="legend-dot" data-state="FORMING"></div><span>Brain Form</span></div>
+      <div class="legend-item"><div class="legend-dot" data-state="PULSING"></div><span>Pulse</span></div>
+      <div class="legend-item"><div class="legend-dot" data-state="DISSOLVING"></div><span>Dissolve</span></div>
+    </div>
+  </div>
+
+  <div class="top-right" id="stateLabel">
+    IDLE STATE
+    <span class="particle-count" id="particleCount"></span>
+  </div>
+
+  <div class="center-cta" id="ctaWrap">
+    <div class="cta-panel">
+      <p class="label">WANT TO EXPLORE</p>
+      <h3>SOMETHING CRAZY?</h3>
+      <button class="begin-btn" id="beginBtn">CLICK TO BEGIN</button>
+    </div>
+  </div>
+
+  <button class="restart-btn" id="restartBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="1 4 1 10 7 10"></polyline>
+      <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+    </svg>
+    RESTART
+  </button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function () {
+  const container = document.getElementById('canvas-container');
+  const ctaWrap = document.getElementById('ctaWrap');
+  const beginBtn = document.getElementById('beginBtn');
+  const restartBtn = document.getElementById('restartBtn');
+  const stateLabel = document.getElementById('stateLabel');
+  const particleCountEl = document.getElementById('particleCount');
+  const legendDots = document.querySelectorAll('.legend-dot');
+
+  const PARTICLE_COUNT = 22000;
+  particleCountEl.textContent = PARTICLE_COUNT.toLocaleString() + ' PARTICLES';
+
+  let width = container.clientWidth;
+  let height = container.clientHeight;
+
+  // ---------- Scene / camera / renderer ----------
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x050403, 0.01);
+
+  const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+  camera.position.set(0, 0.3, 14.5);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  container.appendChild(renderer.domElement);
+
+  // ---------- Particle geometry ----------
+  // Instead of a random-colored solid ball, particles are placed on a
+  // wrinkled "shell" (like gyri/sulci on a real brain surface) and shaded
+  // by their surface orientation + fold depth, so the shape actually reads
+  // as a brain instead of a flat glowing blob.
+  const positions = new Float32Array(PARTICLE_COUNT * 3);   // idle (scattered) positions
+  const brainPositions = new Float32Array(PARTICLE_COUNT * 3);
+  const randoms = new Float32Array(PARTICLE_COUNT);
+  const colors = new Float32Array(PARTICLE_COUNT * 3);
+
+  const deepColor = new THREE.Color(0x7a3d05);   // groove / shadow tone
+  const midColor  = new THREE.Color(0xf59e0b);   // amber 500
+  const hiColor   = new THREE.Color(0xffe8b8);   // bright ridge highlight
+
+  const lightDir = new THREE.Vector3(0.45, 0.55, 0.85).normalize();
+
+  // pseudo-noise: sum of incommensurate sinusoids -> wrinkle pattern
+  function wrinkleNoise(theta, phi) {
+    let n = 0;
+    n += Math.sin(theta * 8.0 + phi * 3.1) * 0.5;
+    n += Math.sin(theta * 13.0 - phi * 7.4 + 1.7) * 0.3;
+    n += Math.sin(theta * 5.0 + phi * 17.0 - 0.6) * 0.35;
+    n += Math.cos(theta * 21.0 - phi * 4.2 + 2.4) * 0.18;
+    n += Math.cos(theta * 3.0 + phi * 9.5) * 0.25;
+    return n / (0.5 + 0.3 + 0.35 + 0.18 + 0.25); // normalize to roughly [-1, 1]
+  }
+
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    const i3 = i * 3;
+
+    // Idle: scattered, kept in a range that stays lit and doesn't drown in fog
+    positions[i3]     = (Math.random() - 0.5) * 26;
+    positions[i3 + 1] = (Math.random() - 0.5) * 26;
+    positions[i3 + 2] = (Math.random() - 0.5) * 20;
+
+    // --- Brain surface (thin shell, not a filled ball) ---
+    const theta = Math.random() * Math.PI * 2;      // azimuth
+    const phi = Math.acos(2 * Math.random() - 1);   // polar angle, 0 = top
+
+    // unit direction on sphere (y = up)
+    const nx = Math.sin(phi) * Math.cos(theta);
+    const ny = Math.cos(phi);
+    const nz = Math.sin(phi) * Math.sin(theta);
+
+    const wrinkle = wrinkleNoise(theta, phi);        // ~[-1, 1]
+
+    // base ellipsoid radius per axis (wider than tall, longer front-back)
+    let rx = 3.9, ry = 3.35, rz = 4.35;
+
+    // frontal + temporal lobe bulge (lower-front region a bit fuller)
+    const frontalBulge = Math.max(0, -nz) * 0.35 * Math.max(0, -ny + 0.3);
+    // brain-stem taper at the very bottom
+    const stemTaper = ny < -0.55 ? Math.max(0.35, 1 + (ny + 0.55) * 1.6) : 1.0;
+
+    const ridgeAmp = 0.085;
+    const radiusScale = (1 + wrinkle * ridgeAmp + frontalBulge) * stemTaper;
+
+    let bx = nx * rx * radiusScale;
+    let by = ny * ry * radiusScale;
+    let bz = nz * rz * radiusScale;
+
+    // slight shell thickness so it isn't a perfectly flat surface
+    const shell = 0.9 + Math.random() * 0.1;
+    bx *= shell; by *= shell; bz *= shell;
+
+    // Longitudinal fissure: pull points near the sagittal plane inward
+    // and push the two hemispheres apart -> visible dark seam down the middle
+    const seam = Math.exp(-Math.pow(bx / 0.22, 2));
+    by -= seam * 0.55 * Math.max(0, ny + 0.2);
+    bx += (bx > 0 ? 1 : -1) * seam * 0.28;
+
+    brainPositions[i3]     = bx;
+    brainPositions[i3 + 1] = by;
+    brainPositions[i3 + 2] = bz;
+
+    randoms[i] = Math.random();
+
+    // --- Shading: combine a fixed "light" direction with fold depth ---
+    const normal = new THREE.Vector3(nx, ny, nz);
+    const lit = THREE.MathUtils.clamp(normal.dot(lightDir), 0.0, 1.0);
+    const foldBrightness = (wrinkle + 1) / 2; // 0 = deep groove, 1 = ridge crest
+    let brightness = lit * 0.65 + foldBrightness * 0.55 - seam * 0.5;
+    brightness = THREE.MathUtils.clamp(brightness, 0.0, 1.0);
+
+    const c = new THREE.Color();
+    if (brightness < 0.5) {
+      c.copy(deepColor).lerp(midColor, brightness / 0.5);
+    } else {
+      c.copy(midColor).lerp(hiColor, (brightness - 0.5) / 0.5);
+    }
+    // tiny per-particle sparkle variation
+    c.multiplyScalar(0.9 + Math.random() * 0.2);
+
+    colors[i3]     = c.r;
+    colors[i3 + 1] = c.g;
+    colors[i3 + 2] = c.b;
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('aBrainPosition', new THREE.BufferAttribute(brainPositions, 3));
+  geometry.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1));
+  geometry.setAttribute('aColor', new THREE.BufferAttribute(colors, 3));
+
+  const uniforms = {
+    uTime: { value: 0 },
+    uProgress: { value: 0 },
+    uPulseState: { value: 0 },
+    uDissolve: { value: 0 },
+  };
+
+  const material = new THREE.ShaderMaterial({
+    uniforms,
+    vertexShader: `
+      uniform float uTime;
+      uniform float uProgress;
+      uniform float uPulseState;
+      uniform float uDissolve;
+
+      attribute vec3 aBrainPosition;
+      attribute float aRandom;
+      attribute vec3 aColor;
+
+      varying vec3 vColor;
+      varying float vAlpha;
+
+      vec3 hash3(vec3 p) {
+        p = vec3(dot(p, vec3(127.1, 311.7, 74.7)),
+                  dot(p, vec3(269.5, 183.3, 246.1)),
+                  dot(p, vec3(113.5, 271.9, 124.6)));
+        return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
+      }
+
+      void main() {
+        vec3 idlePos = position;
+        vec3 brainPos = aBrainPosition;
+
+        idlePos.x += sin(uTime * 0.4 + aRandom * 10.0) * 1.2;
+        idlePos.y += cos(uTime * 0.3 + aRandom * 10.0) * 1.2;
+        idlePos.z += sin(uTime * 0.35 + aRandom * 10.0) * 1.2;
+
+        brainPos.x += sin(uTime * 2.0 + aRandom * 10.0) * 0.08;
+        brainPos.y += cos(uTime * 1.5 + aRandom * 10.0) * 0.08;
+        brainPos.z += sin(uTime * 1.8 + aRandom * 10.0) * 0.08;
+
+        float dist = length(brainPos);
+        float delay = dist * 0.09;
+        float p = clamp((uProgress - delay) / 0.8, 0.0, 1.0);
+        p = smoothstep(0.0, 1.0, p);
+
+        vec3 finalPos = mix(idlePos, brainPos, p);
+
+        if (uDissolve > 0.0) {
+          vec3 explodeDir = normalize(brainPos + hash3(brainPos) * 2.0);
+          finalPos += explodeDir * (uDissolve * (4.0 + aRandom * 9.0));
+          finalPos = mix(finalPos, idlePos, smoothstep(0.5, 1.0, uDissolve));
+        }
+
+        float pulse = 0.0;
+        if (uPulseState > 0.0) {
+          float ripple = sin(dist * 2.0 - uTime * 6.0) * 0.5 + 0.5;
+          pulse = ripple * uPulseState;
+          finalPos += normalize(brainPos) * pulse * 0.28;
+        }
+
+        vec4 mvPosition = modelViewMatrix * vec4(finalPos, 1.0);
+        gl_Position = projectionMatrix * mvPosition;
+
+        float sizeBoost = mix(0.85, 1.15, p);
+        gl_PointSize = (2.3 + aRandom * 2.0 + pulse * 3.5) * sizeBoost * (16.0 / -mvPosition.z);
+
+        vColor = aColor;
+
+        float baseAlpha = mix(0.35, 0.92, p);
+        if (uDissolve > 0.0) {
+          baseAlpha = mix(baseAlpha, 0.2, uDissolve);
+        }
+        vAlpha = clamp(baseAlpha + pulse * 0.35, 0.0, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec3 vColor;
+      varying float vAlpha;
+
+      void main() {
+        float dist = length(gl_PointCoord - vec2(0.5));
+        if (dist > 0.5) discard;
+        float alpha = smoothstep(0.5, 0.08, dist) * vAlpha;
+        gl_FragColor = vec4(vColor, alpha);
+      }
+    `,
+    transparent: true,
+    blending: THREE.NormalBlending,
+    depthWrite: false,
+    depthTest: true,
+  });
+
+  const points = new THREE.Points(geometry, material);
+  points.rotation.y = -0.55;
+  points.rotation.x = 0.08;
+  scene.add(points);
+
+  // subtle ambient point light glow behind the brain for depth (rendered as a soft sprite)
+  const glowTex = (function () {
+    const c = document.createElement('canvas');
+    c.width = c.height = 128;
+    const ctx = c.getContext('2d');
+    const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+    g.addColorStop(0, 'rgba(245,158,11,0.16)');
+    g.addColorStop(1, 'rgba(245,158,11,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, 128, 128);
+    return new THREE.CanvasTexture(c);
+  })();
+  const glowSprite = new THREE.Sprite(new THREE.SpriteMaterial({
+    map: glowTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+  }));
+  glowSprite.scale.set(16, 16, 1);
+  glowSprite.position.set(0, 0, -3);
+  scene.add(glowSprite);
+
+  // ---------- State machine ----------
+  let state = 'IDLE';
+  let activeTimeline = null;
+  let loopTimeline = null;
+  let started = false;
+
+  function setState(next) {
+    state = next;
+    stateLabel.firstChild.textContent = next + ' STATE';
+    legendDots.forEach((dot) => {
+      dot.classList.toggle('active', dot.dataset.state === next);
+    });
+  }
+
+  function startSequence() {
+    if (state !== 'IDLE') return;
+    setState('GATHERING');
+
+    activeTimeline = gsap.timeline({
+      onComplete: () => runDissolveLoop(),
+    });
+
+    activeTimeline.to(uniforms.uProgress, {
+      value: 1,
+      duration: 3,
+      ease: 'power3.inOut',
+      onComplete: () => setState('FORMING'),
+    });
+
+    activeTimeline.to(uniforms.uPulseState, {
+      value: 1,
+      duration: 1,
+      ease: 'power2.inOut',
+      onComplete: () => setState('PULSING'),
+    }, '+=0.4');
+
+    activeTimeline.to({}, { duration: 2 });
+  }
+
+  function runDissolveLoop() {
+    setState('DISSOLVING');
+
+    loopTimeline = gsap.timeline({
+      onComplete: () => {
+        setState('REFORMING');
+        uniforms.uProgress.value = 0;
+        uniforms.uDissolve.value = 0;
+        setState('IDLE');
+        startSequence();
+      },
+    });
+
+    loopTimeline.to(uniforms.uPulseState, {
+      value: 0,
+      duration: 0.5,
+      ease: 'power2.out',
+    });
+
+    loopTimeline.to(uniforms.uDissolve, {
+      value: 1,
+      duration: 2.5,
+      ease: 'power2.inOut',
+    }, '-=0.3');
+  }
+
+  function resetAll() {
+    // kill any running tweens tied to our uniforms
+    gsap.killTweensOf(uniforms.uProgress);
+    gsap.killTweensOf(uniforms.uPulseState);
+    gsap.killTweensOf(uniforms.uDissolve);
+    if (activeTimeline) activeTimeline.kill();
+    if (loopTimeline) loopTimeline.kill();
+    activeTimeline = null;
+    loopTimeline = null;
+
+    uniforms.uProgress.value = 0;
+    uniforms.uPulseState.value = 0;
+    uniforms.uDissolve.value = 0;
+
+    started = false;
+    setState('IDLE');
+    ctaWrap.classList.remove('hidden');
+    restartBtn.classList.remove('visible');
+  }
+
+  beginBtn.addEventListener('click', () => {
+    if (started) return;
+    started = true;
+    ctaWrap.classList.add('hidden');
+    restartBtn.classList.add('visible');
+    startSequence();
+  });
+
+  restartBtn.addEventListener('click', () => {
+    resetAll();
+  });
+
+  // ---------- Render loop ----------
+  const clock = new THREE.Clock();
+
+  function animate() {
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    uniforms.uTime.value += delta;
+    points.rotation.y += delta * 0.09;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // ---------- Resize ----------
+  function onResize() {
+    width = container.clientWidth;
+    height = container.clientHeight;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+  }
+  window.addEventListener('resize', onResize);
+
+  setState('IDLE');
+})();
+</script>
+</body>
+</html>
