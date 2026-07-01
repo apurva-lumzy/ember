@@ -77,7 +77,9 @@ const Future = () => {
       />
 
       {/* Draggable Space Cards */}
+      <div className="relative z-50">
       <SpaceCards />
+      </div>
 
       {/* Feature Cards */}
       <section className="relative z-10 grid md:grid-cols-3 gap-8 px-10 pb-24">

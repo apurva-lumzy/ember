@@ -111,9 +111,9 @@ export const DraggableCardBody = ({
         mouseY.set(0);
       }}
       className={cn(
-        "relative min-h-96 w-80 overflow-hidden rounded-2xl bg-white/10 backdrop-blur-lg border border-white/20 p-6 shadow-2xl",
-        className
-      )}
+  "relative z-50 min-h-96 w-80 overflow-hidden rounded-2xl bg-zinc-900 border border-orange-400/40 p-6 shadow-2xl backdrop-blur-xl",
+  className
+)}
     >
       {children}
     </motion.div>
