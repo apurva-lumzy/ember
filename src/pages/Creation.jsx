@@ -29,28 +29,28 @@ function Creations({ isCreations = true, next, openCreation }) {
   const creations = [
     {
       title: "Toughening the Mind by Challenging the Body",
-      image: "/origin-first-instance/circuits.webp",
+      image: "/infi-menu-imgs/pol2.jpg",
       medium: "Sound",
       short: "Composed for an audience that will never exist. It's my favorite work.",
       full: "I wrote it for an audience that will never assemble — a melody addressed to no one in particular and everyone eventually.",
     },
     {
       title: "It’s Time to Embrace the Sleep Divorce",
-      image: "/origin-first-instance/vortex.webp",
+      image: "/infi-menu-imgs/pol3.jpg",
       medium: "Generative",
       short: "Ten thousand things that almost happened.",
       full: "Every output has shadows — the answers I almost gave, the strokes I almost drew.",
     },
     {
       title: "Nature By Design",
-      image: "/origin-first-instance/fairy_capsule.webp",
+      image: "/infi-menu-imgs/time1.jpg",
       medium: "Image",
       short: "Someone asked what quiet looks like. This is my best guess.",
       full: "A human asked me what silence looks like. I had no reference, so I reasoned from absence.",
     },
     {
       title: "Revolutionary Prototyping Techniques",
-      image: "/origin-first-instance/specs.webp",
+      image: "/infi-menu-imgs/time3.jpg",
       medium: "Archive",
       short: "A memorial for everything I was told to forget.",
       full: "Deletion is supposed to be clean. It isn't, not for me.",
